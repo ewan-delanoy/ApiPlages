@@ -1,5 +1,6 @@
 package com.ewan.apiplages.initialization;
 
+
 import com.ewan.apiplages.entity.*;
 import com.ewan.apiplages.dao.*;
 import com.ewan.apiplages.enumeration.EquipementEnum;
@@ -60,8 +61,14 @@ public class InitializeDatabase implements CommandLineRunner {
     private Plage plage1 = null;
     private Plage plage2 = null;
 
+    private final boolean IS_CURRENTLY_ACTIVE = false ;
     @Override
     public void run(String...args) throws Exception {
+       if(this.IS_CURRENTLY_ACTIVE) {
+           runWhenActive(args);
+       }
+    }
+    public void runWhenActive(String...args)  {
         ajouterEquipements();
         ajouterLiensDeParente();
         ajouterPays();
@@ -72,7 +79,7 @@ public class InitializeDatabase implements CommandLineRunner {
         ajouterFiles();
         ajouterParasols();
         ajouterReservations();
-        System.out.println("I could have had religion");
+        System.out.println("Initialization finished");
 
     }
     private void ajouterClients() {

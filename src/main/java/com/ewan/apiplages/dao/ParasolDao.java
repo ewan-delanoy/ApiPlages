@@ -17,14 +17,14 @@ public interface ParasolDao extends JpaRepository<Parasol, Long> {
 			FROM Parasol p   
 			INNER JOIN p.reservations r 
 			WHERE 
-			(File.plage = :plage) AND
-			((r.dateDebut BETWEEN :dateDebut AND : dateFin)  
+			(p.file.plage = :plage) AND
+			((r.dateDebut BETWEEN :dateDebut AND :dateFin)  
 			OR
-			(r.dateFin BETWEEN :dateDebut AND : dateFin)) 
+			(r.dateFin BETWEEN :dateDebut AND :dateFin)) 
 			""")
        List<Object[]> parasolsDisponibles(@Param("plage") Plage plage,
                                          @Param("dateDebut") LocalDate dateDebut,
-                                         @Param("dateDebut") LocalDate dateFin);
+                                         @Param("dateFin") LocalDate dateFin);
 
 
 

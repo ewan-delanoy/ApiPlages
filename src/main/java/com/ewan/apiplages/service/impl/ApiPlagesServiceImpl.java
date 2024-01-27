@@ -5,30 +5,30 @@ import com.ewan.apiplages.dto.*;
 import com.ewan.apiplages.entity.*;
 import com.ewan.apiplages.enumeration.StatutEnum;
 import com.ewan.apiplages.service.ApiPlagesService;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ApiPlagesServiceImpl implements ApiPlagesService {
 
-    private ClientDao clientDao;
+    private final ClientDao clientDao;
 
-    private ConcessionnaireDao concessionnaireDao;
+    private final ConcessionnaireDao concessionnaireDao;
 
-    private EquipementDao equipementDao;
+    private final EquipementDao equipementDao;
 
-    private LienDeParenteDao lienDeParenteDao;
-    private PaysDao paysDao;
+    private final LienDeParenteDao lienDeParenteDao;
+    private final PaysDao paysDao;
 
-    private ParasolDao parasolDao;
+    private final ParasolDao parasolDao;
 
-    private ReservationDao reservationDao;
+    private final PlageDao plageDao;
+    private final ReservationDao reservationDao;
 
-    private StatutDao statutDao;
+    private final StatutDao statutDao;
 
     public ClientDto inscrireNouveauClient(ClientACreerDto clientDto) {
         PaysDto paysDto = clientDto.getPays();
@@ -42,21 +42,33 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         return new ClientDto(client);
     }
 
-    public PreparationFormulaireDto preparerFormulaire(PlageDto plageDto, LocalDate dateDebut, LocalDate dateFin) {
-      List<Object[]> rows = parasolDao.parasolsDisponibles(new Plage(plageDto),dateDebut,dateFin);
-      List<ParasolDto> parasolsDtoDisponibles = Arrays.asList();
+    public List<ReservationDto> mesReservations (Long clientId,String statutNom) {
+        List<Reservation> reservations =
+                reservationDao.reservationsPourClient(clientId, statutNom);
+        List<ReservationDto>  reservationsDto = new ArrayList<>();
+
+        for (Reservation reservation : reservations) {
+            reservationsDto.add(new ReservationDto(reservation));
+        }
+        return reservationsDto;
+    }
+
+    public PreparationFormulaireDto preparerFormulaire(Long plageId, LocalDate dateDebut, LocalDate dateFin) {
+        Plage plage = plageDao.getReferenceById(plageId);
+        List<Object[]> rows = parasolDao.parasolsDisponibles(plage,dateDebut,dateFin);
+        List<ParasolDto> parasolsDtoDisponibles = new ArrayList<>();
 
         for (Object[] aRow : rows) {
             Parasol p = (Parasol) aRow[0];
             parasolsDtoDisponibles.add(new ParasolDto(p));
         }
 
-        PreparationFormulaireDto preparation = new PreparationFormulaireDto();
-        preparation.parasolsDisponibles = parasolsDtoDisponibles;
-        preparation.equipements=tousLesEquipements();
-        preparation.liensDeParente=tousLesLiensDeParente();
-        preparation.paysEnvisageables=tousLesPays();
-        return preparation;
+        return new PreparationFormulaireDto(
+                parasolsDtoDisponibles,
+                tousLesEquipements(),
+                tousLesLiensDeParente(),
+                tousLesPays()
+        );
     }
 
     public ReservationDto effectuerReservation(ReservationACreerDto reservationACreerDto) {
@@ -81,8 +93,8 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
     }
 
     public List<ReservationDto> visualiserReservationsNonTraitees (Long concessionnaireId) {
-        List<Reservation> reservations = reservationDao.reservationsAvecStatut(concessionnaireId, StatutEnum.EN_ATTENTE.getNom());
-        List<ReservationDto>  reservationsDto = Arrays.asList();
+        List<Reservation> reservations = reservationDao.reservationsPourConcessionnaire(concessionnaireId, StatutEnum.EN_ATTENTE.getNom());
+        List<ReservationDto>  reservationsDto = new ArrayList<>();
 
         for (Reservation reservation : reservations) {
             reservationsDto.add(new ReservationDto(reservation));
@@ -104,7 +116,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
 
     private List<EquipementDto> tousLesEquipements() {
         List<Equipement> equipements = equipementDao.findAll();
-        List<EquipementDto> equipementsDto = Arrays.asList();
+        List<EquipementDto> equipementsDto = new ArrayList<>();
 
         for (Equipement equipement : equipements) {
             equipementsDto.add(new EquipementDto(equipement));
@@ -114,7 +126,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
 
     private List<PaysDto> tousLesPays() {
         List<Pays> lesPays = paysDao.findAll();
-        List<PaysDto> lesPaysDto = Arrays.asList();
+        List<PaysDto> lesPaysDto = new ArrayList<>();
 
         for (Pays pays : lesPays) {
             lesPaysDto.add(new PaysDto(pays));
@@ -124,7 +136,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
 
     private List<LienDeParenteDto> tousLesLiensDeParente() {
         List<LienDeParente> liensDeParente = lienDeParenteDao.findAll();
-        List<LienDeParenteDto> liensDeParenteDto = Arrays.asList();
+        List<LienDeParenteDto> liensDeParenteDto = new ArrayList<>();
 
         for (LienDeParente lienDeParente : liensDeParente) {
             liensDeParenteDto.add(new LienDeParenteDto(lienDeParente));
@@ -138,6 +150,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
                                 LienDeParenteDao lienDeParenteDao,
                                 PaysDao paysDao,
                                 ParasolDao parasolDao,
+                                PlageDao plageDao,
                                 ReservationDao reservationDao,
                                 StatutDao statutDao
                                 ) {
@@ -147,6 +160,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         this.lienDeParenteDao = lienDeParenteDao;
         this.paysDao = paysDao ;
         this.parasolDao = parasolDao ;
+        this.plageDao = plageDao;
         this.reservationDao = reservationDao;
         this.statutDao = statutDao;
     }

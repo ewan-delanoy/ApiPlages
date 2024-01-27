@@ -6,11 +6,9 @@ public enum StatutEnum {
     REFUSEE("Refusée");
 
     private String nom;
-
     StatutEnum(String nom) {
         this.nom = nom;
     }
-
     public String getNom() {
         return nom;
     }

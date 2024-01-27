@@ -13,6 +13,17 @@ public interface ReservationDao extends JpaRepository<Reservation, Long> {
 
   public Reservation findByReservationId(Long reservationId);
 
+	@Query("""
+			FROM Reservation r   
+			WHERE 
+			(r.client.utilisateurId = :clientId) AND
+			(r.statut.nom = :statutNom)  
+			""")
+	public List<Reservation> reservationsPourClient(
+			@Param("clientId")Long ClientId,
+			@Param("statutNom")String statutNom
+	);
+
   @Query("""
 			FROM Reservation r   
 			INNER JOIN r.parasols pa
@@ -20,7 +31,7 @@ public interface ReservationDao extends JpaRepository<Reservation, Long> {
 			(pa.file.plage.concessionnaire.utilisateurId = :concessionnaireId) AND
 			(r.statut.nom = :statutNom)  
 			""")
-  public List<Reservation> reservationsAvecStatut(
+  public List<Reservation> reservationsPourConcessionnaire(
       @Param("concessionnaireId")Long ConcessionnaireId,
       @Param("statutNom")String statutNom
   );

@@ -11,8 +11,8 @@ public interface ApiPlagesService {
 
     // services utilisés par le client
     public ClientDto inscrireNouveauClient(ClientACreerDto clientACreerDto);
-
-    public PreparationFormulaireDto preparerFormulaire(PlageDto plageDto, LocalDate dateDebut, LocalDate dateFin);
+    public List<ReservationDto> mesReservations (Long clientId,String statutNom);
+    public PreparationFormulaireDto preparerFormulaire(Long plageId, LocalDate dateDebut, LocalDate dateFin);
 
     public ReservationDto effectuerReservation(ReservationACreerDto reservationACreerDto);
 
