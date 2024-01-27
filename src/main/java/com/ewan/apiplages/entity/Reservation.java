@@ -19,7 +19,6 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 
 @Entity
-
 public class Reservation {
 
     @Id
@@ -27,7 +26,6 @@ public class Reservation {
     private Long reservationId;
 
     @ManyToMany
-    // @Size(min=1, message="La réservation doit inclure au minimum {min} parasol")
     private List<Parasol> parasols;
 
     @ManyToOne

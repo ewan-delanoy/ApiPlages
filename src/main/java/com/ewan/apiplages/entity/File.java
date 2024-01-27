@@ -3,6 +3,7 @@ package com.ewan.apiplages.entity;
 import java.util.List;
 
 import com.ewan.apiplages.dto.FileDto;
+import com.ewan.apiplages.input.ConcessionnaireInput;
 import jakarta.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,3 +63,4 @@ public class File {
         return this.numero;
     }
 }
+

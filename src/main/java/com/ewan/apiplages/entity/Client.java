@@ -5,6 +5,9 @@ import java.util.List;
 
 import com.ewan.apiplages.dto.ClientDto;
 import com.ewan.apiplages.dto.PaysDto;
+import com.ewan.apiplages.input.ClientInput;
+import com.ewan.apiplages.output.ClientOutput;
+import com.ewan.apiplages.output.PaysOutput;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -45,6 +48,22 @@ public class Client extends Utilisateur {
                 clientDto.getMotDePasse(),
                 new Pays(clientDto.getPays()));
         this.utilisateurId = clientDto.getUtilisateurId();
+
+    }
+
+    public Client(ClientInput clientInput) {
+        super(clientInput.nom(),
+                clientInput.prenom(),
+                clientInput.email(),
+                clientInput.motDePasse());
+        this.pays = new Pays(clientInput.paysInput());
+        this.dateHeureInscription = clientInput.dateHeureInscription();
+
+    }
+
+    public ClientOutput toOutput() {
+        return new ClientOutput(this.nom,this.prenom,this.email,this.motDePasse,
+                this.pays.toOutput(),this.dateHeureInscription);
 
     }
 

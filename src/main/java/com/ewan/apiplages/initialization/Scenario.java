@@ -4,6 +4,7 @@ import com.ewan.apiplages.dto.EmplacementDto;
 import com.ewan.apiplages.dto.PreparationFormulaireDto;
 import com.ewan.apiplages.dao.*;
 import com.ewan.apiplages.enumeration.LienDeParenteEnum;
+import com.ewan.apiplages.input.FormInput;
 import com.ewan.apiplages.input.ReservationInput;
 import com.ewan.apiplages.input.SelectionEquipementInput;
 import com.ewan.apiplages.service.ApiPlagesService;
@@ -49,7 +50,8 @@ public class Scenario implements CommandLineRunner {
        String aucunLien = LienDeParenteEnum.AUCUN_LIEN.getNom();
        LocalDate dateDebut = LocalDate.of(2020, 6, 4);
        LocalDate dateFin = LocalDate.of(2020, 6, 19);
-       PreparationFormulaireDto prep = apiPlagesService.preparerFormulaire(plageId, dateDebut, dateFin);
+       FormInput formInput = new FormInput(plageId, dateDebut, dateFin);
+       PreparationFormulaireDto prep = apiPlagesService.preparerFormulaire(formInput);
        List<EmplacementDto> emplacements = prep.emplacementsDisponibles;
        System.out.println("Nb d'emplacements : " + emplacements.size());
        // System.out.println("P : " +prep.toString());
@@ -62,8 +64,8 @@ public class Scenario implements CommandLineRunner {
                 new SelectionEquipementInput(idx2,(byte)0,(byte)1)
         );
        ReservationInput reservationInput=new ReservationInput(clientId,plageId,selections,dateDebut,dateFin,aucunLien);
-       Long newResId =apiPlagesService.effectuerReservation(reservationInput);
-       System.out.println("newResId = " +newResId);
+       // Long newResId =apiPlagesService.effectuerReservation(reservationInput);
+       // System.out.println("newResId = " +newResId);
        // apiPlagesService.supprimerReservation(10L);
 
     }

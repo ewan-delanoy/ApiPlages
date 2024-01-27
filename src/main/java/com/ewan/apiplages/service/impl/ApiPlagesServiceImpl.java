@@ -4,8 +4,7 @@ import com.ewan.apiplages.dao.*;
 import com.ewan.apiplages.dto.*;
 import com.ewan.apiplages.entity.*;
 import com.ewan.apiplages.enumeration.StatutEnum;
-import com.ewan.apiplages.input.ReservationInput;
-import com.ewan.apiplages.input.SelectionEquipementInput;
+import com.ewan.apiplages.input.*;
 import com.ewan.apiplages.service.ApiPlagesService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,21 +33,14 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
 
     private final StatutDao statutDao;
 
-    public ClientDto inscrireNouveauClient(ClientACreerDto clientDto) {
-        PaysDto paysDto = clientDto.getPays();
-        Pays pays = paysDao.findByCode(paysDto.getCode());
-
-        Client client = new Client(
-             clientDto.getNom(), clientDto.getPrenom(),
-             clientDto.getEmail(), clientDto.getMotDePasse(), pays);
-
+    public void inscrireNouveauClient(ClientInput clientInput) {
+        Client client = new Client(clientInput);
         clientDao.save(client);
-        return new ClientDto(client);
     }
 
-    public List<ReservationDto> mesReservations (Long clientId,String statutNom) {
+    public List<ReservationDto> reservationsClient (ReservationsViewInput vInput) {
         List<Reservation> reservations =
-                reservationDao.reservationsPourClient(clientId, statutNom);
+                reservationDao.reservationsPourClient(vInput.utilisateurId(), vInput.statutNom());
         List<ReservationDto>  reservationsDto = new ArrayList<>();
 
         for (Reservation reservation : reservations) {
@@ -57,7 +49,10 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         return reservationsDto;
     }
 
-    public PreparationFormulaireDto preparerFormulaire(Long plageId, LocalDate dateDebut, LocalDate dateFin) {
+    public PreparationFormulaireDto preparerFormulaire(FormInput fInput) {
+        Long plageId = fInput.plageId();
+        LocalDate dateDebut = fInput.dateDebut();
+        LocalDate dateFin = fInput.dateFin();
         Plage plage = plageDao.getReferenceById(plageId);
         List<Long> idsOccupes = parasolDao.idsDesParasolsOccupes(plage,dateDebut,dateFin);
         List<Parasol> parasols = parasolDao.findByFilePlagePlageId(plageId);
@@ -77,9 +72,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         );
     }
 
-    public Long effectuerReservation
-            (ReservationInput reservationInput)
-
+    public Long effectuerReservation(ReservationInput reservationInput)
     {
        // Extraire les parametres de l'input
         Long clientId = reservationInput.clientId();
@@ -109,21 +102,14 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
     }
 
 
-    public ConcessionnaireDto inscrireNouveauConcessionnaire(ConcessionnaireACreerDto concessionnaireDto) {
-
-
-        Concessionnaire concessionnaire = new Concessionnaire(
-                concessionnaireDto.getNom(), concessionnaireDto.getPrenom(),
-                concessionnaireDto.getEmail(), concessionnaireDto.getMotDePasse(),
-                concessionnaireDto.getNumeroDeTelephone()
-                );
-
+    public void inscrireNouveauConcessionnaire(ConcessionnaireInput concessionnaireInput) {
+        Concessionnaire concessionnaire = new Concessionnaire(concessionnaireInput);
         concessionnaireDao.save(concessionnaire);
-        return new ConcessionnaireDto(concessionnaire);
     }
 
-    public List<ReservationDto> visualiserReservationsNonTraitees (Long concessionnaireId) {
-        List<Reservation> reservations = reservationDao.reservationsPourConcessionnaire(concessionnaireId, StatutEnum.EN_ATTENTE.getNom());
+    public List<ReservationDto> reservationsConcessionnaire (ReservationsViewInput vInput) {
+        List<Reservation> reservations =
+                reservationDao.reservationsPourConcessionnaire(vInput.utilisateurId(), vInput.statutNom());
         List<ReservationDto>  reservationsDto = new ArrayList<>();
 
         for (Reservation reservation : reservations) {

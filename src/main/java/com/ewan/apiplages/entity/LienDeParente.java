@@ -2,6 +2,7 @@ package com.ewan.apiplages.entity;
 
 import com.ewan.apiplages.dto.LienDeParenteDto;
 import com.ewan.apiplages.enumeration.LienDeParenteEnum;
+import com.ewan.apiplages.output.LienDeParenteOutput;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -38,6 +39,11 @@ public class LienDeParente {
     public LienDeParente(LienDeParenteEnum lienDeParenteEnum) {
         this(lienDeParenteEnum.getNom(),lienDeParenteEnum.getCoefficient());
     }
+
+    public LienDeParenteOutput toOutput() {
+        return new LienDeParenteOutput(this.nom,this.coefficient);
+    }
+
     public Long getLienDeParenteId() { return this.lienDeParenteId; }
     public String getNom() { return this.nom; }
     public float getCoefficient() { return this.coefficient; }
