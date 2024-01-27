@@ -1,11 +1,9 @@
 package com.ewan.apiplages.entity;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 
-import com.ewan.apiplages.dto.ParasolDto;
-import com.ewan.apiplages.dto.ReservationACreerDto;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,8 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-// import jakarta.validation.constraints.NotNull;
-// import jakarta.validation.constraints.Size;
+
 
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -81,19 +78,6 @@ public class Reservation {
         this.montantAReglerEnEuros = 100;
     }
 
-    public Reservation(ReservationACreerDto reservationACreerDto) {
-        List<ParasolDto> parasolsDto = reservationACreerDto.getParasols();
-        List<Parasol> parasols = Arrays.asList();
-        for (ParasolDto parasolDto : parasolsDto) {
-            parasols.add(new Parasol(parasolDto));
-        }
-        this.client = new Client(reservationACreerDto.getClient());
-        this.parasols = parasols;
-        this.dateDebut = reservationACreerDto.getDateDebut();
-        this.dateFin = reservationACreerDto.getDateFin();
-        this.lienDeParente = new LienDeParente(reservationACreerDto.getLienDeParente());
-
-    }
 
     public Long getReservationId() {return this.reservationId;}
     public Client getClient() {return this.client; }

@@ -3,8 +3,10 @@ package com.ewan.apiplages.initialization;
 import com.ewan.apiplages.dto.EmplacementDto;
 import com.ewan.apiplages.dto.ParasolDto;
 import com.ewan.apiplages.dto.PreparationFormulaireDto;
+import com.ewan.apiplages.dto.SelectionEquipementDto;
 import com.ewan.apiplages.entity.*;
 import com.ewan.apiplages.dao.*;
+import com.ewan.apiplages.enumeration.LienDeParenteEnum;
 import com.ewan.apiplages.service.ApiPlagesService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -43,14 +45,27 @@ public class Scenario implements CommandLineRunner {
         System.out.println(clients);
         */
 
-       Client client1 = clientDao.findByNom("DE ALMEIDA");
-       System.out.println("Client id : " + client1.getUtilisateurId());
+       Long clientId = 5L;
+       Long plageId = 1L;
+       String aucunLien = LienDeParenteEnum.AUCUN_LIEN.getNom();
        LocalDate dateDebut = LocalDate.of(2020, 6, 4);
        LocalDate dateFin = LocalDate.of(2020, 6, 19);
-       PreparationFormulaireDto prep = apiPlagesService.preparerFormulaire(1L, dateDebut, dateFin);
+       PreparationFormulaireDto prep = apiPlagesService.preparerFormulaire(plageId, dateDebut, dateFin);
        List<EmplacementDto> emplacements = prep.emplacementsDisponibles;
        System.out.println("Nb d'emplacements : " + emplacements.size());
-       System.out.println("E1 : " +emplacements.get(0).toString());
+       // System.out.println("P : " +prep.toString());
+       Long idx1 = emplacements.get(60).getParasolId();
+       Long idx2 = emplacements.get(120).getParasolId();
+       System.out.println("idx1 = " +idx1);
+       System.out.println("idx2 = " +idx2);
+       List<SelectionEquipementDto> selections= List.of(
+               new SelectionEquipementDto(idx1,(byte)1,(byte)0),
+                new SelectionEquipementDto(idx2,(byte)0,(byte)1)
+        );
+
+       //Long newResId =apiPlagesService.effectuerReservation(clientId,plageId,selections,dateDebut,dateFin,aucunLien);
+       //System.out.println("newResId = " +newResId);
+       apiPlagesService.supprimerReservation(10L);
 
     }
     public Scenario(

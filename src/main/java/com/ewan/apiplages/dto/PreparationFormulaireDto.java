@@ -16,4 +16,14 @@ public class PreparationFormulaireDto {
         this.paysEnvisageables = paysEnvisageables;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder reponse = new StringBuilder("[");
+        for(EmplacementDto emplacementDto:this.emplacementsDisponibles) {
+            reponse.append(emplacementDto.toString()).append("\n");
+        }
+        reponse.append("]");
+        return (reponse.toString());
+    }
+
 }

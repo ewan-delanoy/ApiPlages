@@ -35,5 +35,7 @@ public interface ReservationDao extends JpaRepository<Reservation, Long> {
       @Param("concessionnaireId")Long ConcessionnaireId,
       @Param("statutNom")String statutNom
   );
+
+  public void deleteByReservationId(Long reservationId);
 }
 

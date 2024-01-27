@@ -34,4 +34,5 @@ public interface ParasolDao extends JpaRepository<Parasol, Long> {
                 Plage plage, byte numeroFile, byte numEmplacement
         );
 
+	Parasol findByParasolId(Long parasolId);
 }

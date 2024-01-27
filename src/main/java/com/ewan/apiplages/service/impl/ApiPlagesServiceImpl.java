@@ -6,12 +6,14 @@ import com.ewan.apiplages.entity.*;
 import com.ewan.apiplages.enumeration.StatutEnum;
 import com.ewan.apiplages.service.ApiPlagesService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class ApiPlagesServiceImpl implements ApiPlagesService {
 
     private final ClientDao clientDao;
@@ -73,11 +75,30 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         );
     }
 
-    public ReservationDto effectuerReservation(ReservationACreerDto reservationACreerDto) {
-       Reservation reservation = new Reservation(reservationACreerDto);
-       reservation.setStatut(statutDao.findByNom(StatutEnum.EN_ATTENTE.getNom()));
+    public Long effectuerReservation
+            (Long clientId,Long plageId,
+             List<SelectionEquipementDto> selections,
+             LocalDate dateDebut,LocalDate dateFin,
+             String lienDeParenteNom)
+    {
+
+        Statut enAttente = statutDao.findByNom(StatutEnum.EN_ATTENTE.getNom());
+        Client client = clientDao.findByUtilisateurId(clientId);
+        LienDeParente lienDeParente = lienDeParenteDao.findByNom(lienDeParenteNom);
+        List<Parasol> parasols = new ArrayList<>();
+        for (SelectionEquipementDto selection : selections) {
+            Parasol parasol = parasolDao.findByParasolId(selection.getParasolId());
+            Equipement equipement = equipementDao.findByNbDeLitsAndNbDeFauteuils
+                    (selection.getNbDeLits(),selection.getNbDeFauteuils());
+            parasol.setEquipement(equipement);
+            parasolDao.save(parasol);
+            parasols.add(parasol);
+        }
+        Reservation reservation = new Reservation(client,parasols,
+                dateDebut,dateFin,
+               lienDeParente,enAttente);
         reservationDao.save(reservation);
-        return new ReservationDto(reservation);
+        return reservation.getReservationId();
     }
 
 
@@ -114,6 +135,10 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         Reservation reservation = reservationDao.findByReservationId(reservationId);
         reservation.setStatut(statutDao.findByNom(StatutEnum.REFUSEE.getNom()));
         reservationDao.save(reservation);
+    }
+
+    public void supprimerReservation (Long reservationId) {
+        reservationDao.deleteByReservationId(reservationId);
     }
 
     private List<EquipementDto> tousLesEquipements() {
