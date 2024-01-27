@@ -1,13 +1,8 @@
 package com.ewan.apiplages.dto;
 
-import com.ewan.apiplages.entity.Equipement;
-import com.ewan.apiplages.entity.File;
-import com.ewan.apiplages.entity.Parasol;
-import com.ewan.apiplages.entity.Reservation;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 
-import java.util.List;
+import com.ewan.apiplages.entity.Parasol;
+
 
 public class ParasolDto {
     private Long parasolId;

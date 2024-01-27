@@ -1,5 +1,6 @@
 package com.ewan.apiplages.initialization;
 
+import com.ewan.apiplages.dto.EmplacementDto;
 import com.ewan.apiplages.dto.ParasolDto;
 import com.ewan.apiplages.dto.PreparationFormulaireDto;
 import com.ewan.apiplages.entity.*;
@@ -47,8 +48,9 @@ public class Scenario implements CommandLineRunner {
        LocalDate dateDebut = LocalDate.of(2020, 6, 4);
        LocalDate dateFin = LocalDate.of(2020, 6, 19);
        PreparationFormulaireDto prep = apiPlagesService.preparerFormulaire(1L, dateDebut, dateFin);
-       List<ParasolDto> parasolsDto = prep.parasols;
-       System.out.println("Nb de parasols : " + parasolsDto.size());
+       List<EmplacementDto> emplacements = prep.emplacementsDisponibles;
+       System.out.println("Nb d'emplacements : " + emplacements.size());
+       System.out.println("E1 : " +emplacements.get(0).toString());
 
     }
     public Scenario(

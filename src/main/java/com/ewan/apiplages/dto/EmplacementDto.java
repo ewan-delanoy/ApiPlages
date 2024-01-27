@@ -22,4 +22,13 @@ public class EmplacementDto {
     public byte getNumEmplacement() {return this.numEmplacement; }
     public byte getNumeroFile() {return this.numeroFile; }
 
+    @Override
+    public String toString() {
+        return (
+                "{ parasolId = " + this.parasolId + ", " +
+                        "numEmplacement = " + this.numEmplacement + ", " +
+                        "numeroFile = " + this.numeroFile + " }"
+        );
+    }
+
 }

@@ -12,17 +12,19 @@ import java.util.List;
 
 public interface ParasolDao extends JpaRepository<Parasol, Long> {
 
+	   List<Parasol> findByFilePlagePlageId(Long plageId);
 
        @Query("""
+   			SELECT p.parasolId 
 			FROM Parasol p   
 			INNER JOIN p.reservations r 
 			WHERE 
 			(p.file.plage = :plage) AND
 			((r.dateDebut BETWEEN :dateDebut AND :dateFin)  
 			OR
-			(r.dateFin BETWEEN :dateDebut AND :dateFin)) 
+			(r.dateFin BETWEEN :dateDebut AND :dateFin))
 			""")
-       List<Object[]> parasolsDisponibles(@Param("plage") Plage plage,
+       List<Long> idsDesParasolsOccupes(@Param("plage") Plage plage,
                                          @Param("dateDebut") LocalDate dateDebut,
                                          @Param("dateFin") LocalDate dateFin);
 

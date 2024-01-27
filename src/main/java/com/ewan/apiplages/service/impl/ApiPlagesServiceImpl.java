@@ -55,16 +55,18 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
 
     public PreparationFormulaireDto preparerFormulaire(Long plageId, LocalDate dateDebut, LocalDate dateFin) {
         Plage plage = plageDao.getReferenceById(plageId);
-        List<Object[]> rows = parasolDao.parasolsDisponibles(plage,dateDebut,dateFin);
-        List<ParasolDto> parasolsDtoDisponibles = new ArrayList<>();
+        List<Long> idsOccupes = parasolDao.idsDesParasolsOccupes(plage,dateDebut,dateFin);
+        List<Parasol> parasols = parasolDao.findByFilePlagePlageId(plageId);
+        List<EmplacementDto> emplacementsDisponibles = new ArrayList<>();
 
-        for (Object[] aRow : rows) {
-            Parasol p = (Parasol) aRow[0];
-            parasolsDtoDisponibles.add(new ParasolDto(p));
+        for (Parasol parasol : parasols) {
+            if(!(idsOccupes.contains(parasol.getParasolId()))) {
+                emplacementsDisponibles.add(new EmplacementDto(parasol));
+            }
         }
 
         return new PreparationFormulaireDto(
-                parasolsDtoDisponibles,
+                emplacementsDisponibles,
                 tousLesEquipements(),
                 tousLesLiensDeParente(),
                 tousLesPays()
