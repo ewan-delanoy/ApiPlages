@@ -4,6 +4,8 @@ import com.ewan.apiplages.dao.*;
 import com.ewan.apiplages.dto.*;
 import com.ewan.apiplages.entity.*;
 import com.ewan.apiplages.enumeration.StatutEnum;
+import com.ewan.apiplages.input.ReservationInput;
+import com.ewan.apiplages.input.SelectionEquipementInput;
 import com.ewan.apiplages.service.ApiPlagesService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,20 +78,25 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
     }
 
     public Long effectuerReservation
-            (Long clientId,Long plageId,
-             List<SelectionEquipementDto> selections,
-             LocalDate dateDebut,LocalDate dateFin,
-             String lienDeParenteNom)
+            (ReservationInput reservationInput)
+
     {
+       // Extraire les parametres de l'input
+        Long clientId = reservationInput.clientId();
+        Long plageId = reservationInput.plageId();
+        List<SelectionEquipementInput> selections=reservationInput.selections();
+        LocalDate dateDebut = reservationInput.dateDebut();
+        LocalDate dateFin = reservationInput.dateFin();
+        String lienDeParenteNom = reservationInput.lienDeParenteNom();
 
         Statut enAttente = statutDao.findByNom(StatutEnum.EN_ATTENTE.getNom());
         Client client = clientDao.findByUtilisateurId(clientId);
         LienDeParente lienDeParente = lienDeParenteDao.findByNom(lienDeParenteNom);
         List<Parasol> parasols = new ArrayList<>();
-        for (SelectionEquipementDto selection : selections) {
-            Parasol parasol = parasolDao.findByParasolId(selection.getParasolId());
+        for (SelectionEquipementInput selection : selections) {
+            Parasol parasol = parasolDao.findByParasolId(selection.parasolId());
             Equipement equipement = equipementDao.findByNbDeLitsAndNbDeFauteuils
-                    (selection.getNbDeLits(),selection.getNbDeFauteuils());
+                    (selection.nbDeLits(),selection.nbDeFauteuils());
             parasol.setEquipement(equipement);
             parasolDao.save(parasol);
             parasols.add(parasol);

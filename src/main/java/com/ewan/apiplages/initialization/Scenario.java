@@ -1,12 +1,11 @@
 package com.ewan.apiplages.initialization;
 
 import com.ewan.apiplages.dto.EmplacementDto;
-import com.ewan.apiplages.dto.ParasolDto;
 import com.ewan.apiplages.dto.PreparationFormulaireDto;
-import com.ewan.apiplages.dto.SelectionEquipementDto;
-import com.ewan.apiplages.entity.*;
 import com.ewan.apiplages.dao.*;
 import com.ewan.apiplages.enumeration.LienDeParenteEnum;
+import com.ewan.apiplages.input.ReservationInput;
+import com.ewan.apiplages.input.SelectionEquipementInput;
 import com.ewan.apiplages.service.ApiPlagesService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -58,14 +57,14 @@ public class Scenario implements CommandLineRunner {
        Long idx2 = emplacements.get(120).getParasolId();
        System.out.println("idx1 = " +idx1);
        System.out.println("idx2 = " +idx2);
-       List<SelectionEquipementDto> selections= List.of(
-               new SelectionEquipementDto(idx1,(byte)1,(byte)0),
-                new SelectionEquipementDto(idx2,(byte)0,(byte)1)
+       List<SelectionEquipementInput> selections= List.of(
+               new SelectionEquipementInput(idx1,(byte)1,(byte)0),
+                new SelectionEquipementInput(idx2,(byte)0,(byte)1)
         );
-
-       //Long newResId =apiPlagesService.effectuerReservation(clientId,plageId,selections,dateDebut,dateFin,aucunLien);
-       //System.out.println("newResId = " +newResId);
-       apiPlagesService.supprimerReservation(10L);
+       ReservationInput reservationInput=new ReservationInput(clientId,plageId,selections,dateDebut,dateFin,aucunLien);
+       Long newResId =apiPlagesService.effectuerReservation(reservationInput);
+       System.out.println("newResId = " +newResId);
+       // apiPlagesService.supprimerReservation(10L);
 
     }
     public Scenario(

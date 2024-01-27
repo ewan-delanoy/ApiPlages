@@ -3,6 +3,7 @@ package com.ewan.apiplages.service;
 
 import com.ewan.apiplages.dto.*;
 import com.ewan.apiplages.entity.LienDeParente;
+import com.ewan.apiplages.input.ReservationInput;
 
 
 import java.time.LocalDate;
@@ -15,12 +16,7 @@ public interface ApiPlagesService {
     public List<ReservationDto> mesReservations (Long clientId,String statutNom);
     public PreparationFormulaireDto preparerFormulaire(Long plageId, LocalDate dateDebut, LocalDate dateFin);
 
-    public Long effectuerReservation
-            (Long clientId,Long plageId,
-             List<SelectionEquipementDto> selections,
-             LocalDate dateDebut,LocalDate dateFin,
-             String lienDeParenteNom
-            );
+    public Long effectuerReservation(ReservationInput reservationInput);
 
     // services utilisés par le concessionnaire
 
