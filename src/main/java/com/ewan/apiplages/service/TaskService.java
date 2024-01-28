@@ -1,15 +1,10 @@
 package com.ewan.apiplages.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import com.ewan.apiplages.dto.PaysDto;
-import com.ewan.apiplages.dto.LienDeParenteDto;
-import com.ewan.apiplages.dto.ParasolDto;
-import com.ewan.apiplages.entity.Pays;
-import com.ewan.apiplages.entity.LienDeParente;
+
 import com.ewan.apiplages.entity.Task;
 import com.ewan.apiplages.repository.TaskRepository;
 import org.springframework.stereotype.Service;

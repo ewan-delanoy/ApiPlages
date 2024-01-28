@@ -1,20 +1,19 @@
 package com.ewan.apiplages.service;
 
 
-import com.ewan.apiplages.dto.*;
-import com.ewan.apiplages.entity.LienDeParente;
+
 import com.ewan.apiplages.input.*;
+import com.ewan.apiplages.output.PreparationFormulaireOutput;
+import com.ewan.apiplages.output.ReservationOutput;
 
-
-import java.time.LocalDate;
 import java.util.List;
 
 public interface ApiPlagesService {
 
     // services utilisés par le client
     public void inscrireNouveauClient(ClientInput clientInput);
-    public List<ReservationDto> reservationsClient (ReservationsViewInput vInput);
-    public PreparationFormulaireDto preparerFormulaire(FormInput fInput);
+    public List<ReservationOutput> reservationsClient (ReservationsViewInput vInput);
+    public PreparationFormulaireOutput preparerFormulaire(FormInput fInput);
 
     public Long effectuerReservation(ReservationInput reservationInput);
 
@@ -22,7 +21,7 @@ public interface ApiPlagesService {
 
     public void inscrireNouveauConcessionnaire(ConcessionnaireInput concessionnaireInput);
 
-    public List<ReservationDto> reservationsConcessionnaire (ReservationsViewInput vInput);
+    public List<ReservationOutput> reservationsConcessionnaire (ReservationsViewInput vInput);
 
     public void accepterReservation (Long reservationId);
 

@@ -2,13 +2,7 @@ package com.ewan.apiplages.entity;
 
 import java.util.List;
 
-import com.ewan.apiplages.dto.FileDto;
-import com.ewan.apiplages.input.ConcessionnaireInput;
 import jakarta.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-
 
 @Entity
 public class File {
@@ -36,12 +30,6 @@ public class File {
         this.plage = plage ;
         this.prixJournalier = (double) (20-2*numero);
         this.numero = numero;
-    }
-
-    public File(FileDto fileDto) {
-        this(new Plage(fileDto.getPlage ()),
-                fileDto.getNumero());
-        this.fileId = fileDto.getFileId();
     }
 
     public String getDescription() {

@@ -1,6 +1,5 @@
 package com.ewan.apiplages.entity;
 
-import com.ewan.apiplages.dto.LienDeParenteDto;
 import com.ewan.apiplages.enumeration.LienDeParenteEnum;
 import com.ewan.apiplages.output.LienDeParenteOutput;
 import jakarta.persistence.Entity;
@@ -27,13 +26,6 @@ public class LienDeParente {
         this();
         this.nom = nom;
         this.coefficient = coefficient;
-    }
-
-    public LienDeParente(LienDeParenteDto lienDeParenteDto) {
-        super() ;
-        this.lienDeParenteId = lienDeParenteDto.getLienDeParenteId();
-        this.nom = lienDeParenteDto.getNom();
-        this.coefficient = lienDeParenteDto.getCoefficient();
     }
 
     public LienDeParente(LienDeParenteEnum lienDeParenteEnum) {

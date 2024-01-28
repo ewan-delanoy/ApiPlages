@@ -1,6 +1,5 @@
 package com.ewan.apiplages.entity;
 
-import com.ewan.apiplages.dto.ConcessionnaireDto;
 import com.ewan.apiplages.input.ConcessionnaireInput;
 import com.ewan.apiplages.output.ConcessionnaireOutput;
 import jakarta.persistence.Entity;
@@ -20,14 +19,6 @@ public class Concessionnaire extends Utilisateur {
         this.numeroDeTelephone = numeroDeTelephone;
     }
 
-    public Concessionnaire(ConcessionnaireDto concessionnaireDto) {
-        this(
-                concessionnaireDto.getNom(),
-                concessionnaireDto.getPrenom(),
-                concessionnaireDto.getEmail(),
-                concessionnaireDto.getMotDePasse(),
-                concessionnaireDto.getNumeroDeTelephone());
-    }
 
     public Concessionnaire(ConcessionnaireInput concessionnaireInput) {
         super(concessionnaireInput.nom(),

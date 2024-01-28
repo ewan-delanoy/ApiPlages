@@ -2,10 +2,8 @@ package com.ewan.apiplages.entity;
 
 import java.util.List;
 
-import com.ewan.apiplages.dto.PaysDto;
-import com.ewan.apiplages.input.ClientInput;
+
 import com.ewan.apiplages.input.PaysInput;
-import com.ewan.apiplages.output.LienDeParenteOutput;
 import com.ewan.apiplages.output.PaysOutput;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -13,7 +11,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-// import jakarta.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -50,7 +47,6 @@ public class Pays {
         this.nom =  paysInput.nom();
 
     }
-    public Pays(PaysDto paysDto) {this(paysDto.getCode(),paysDto.getNom());}
 
     public PaysOutput toOutput() {
         return new PaysOutput(this.code,this.nom);

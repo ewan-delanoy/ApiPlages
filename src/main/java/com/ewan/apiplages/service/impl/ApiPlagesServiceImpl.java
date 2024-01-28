@@ -1,10 +1,10 @@
 package com.ewan.apiplages.service.impl;
 
 import com.ewan.apiplages.dao.*;
-import com.ewan.apiplages.dto.*;
 import com.ewan.apiplages.entity.*;
 import com.ewan.apiplages.enumeration.StatutEnum;
 import com.ewan.apiplages.input.*;
+import com.ewan.apiplages.output.*;
 import com.ewan.apiplages.service.ApiPlagesService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,33 +38,33 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         clientDao.save(client);
     }
 
-    public List<ReservationDto> reservationsClient (ReservationsViewInput vInput) {
+    public List<ReservationOutput> reservationsClient (ReservationsViewInput vInput) {
         List<Reservation> reservations =
                 reservationDao.reservationsPourClient(vInput.utilisateurId(), vInput.statutNom());
-        List<ReservationDto>  reservationsDto = new ArrayList<>();
+        List<ReservationOutput>  reservationsOutput = new ArrayList<>();
 
         for (Reservation reservation : reservations) {
-            reservationsDto.add(new ReservationDto(reservation));
+            reservationsOutput.add(reservation.toOutput());
         }
-        return reservationsDto;
+        return reservationsOutput;
     }
 
-    public PreparationFormulaireDto preparerFormulaire(FormInput fInput) {
+    public PreparationFormulaireOutput preparerFormulaire(FormInput fInput) {
         Long plageId = fInput.plageId();
         LocalDate dateDebut = fInput.dateDebut();
         LocalDate dateFin = fInput.dateFin();
         Plage plage = plageDao.getReferenceById(plageId);
         List<Long> idsOccupes = parasolDao.idsDesParasolsOccupes(plage,dateDebut,dateFin);
         List<Parasol> parasols = parasolDao.findByFilePlagePlageId(plageId);
-        List<EmplacementDto> emplacementsDisponibles = new ArrayList<>();
+        List<EmplacementOutput> emplacementsDisponibles = new ArrayList<>();
 
         for (Parasol parasol : parasols) {
             if(!(idsOccupes.contains(parasol.getParasolId()))) {
-                emplacementsDisponibles.add(new EmplacementDto(parasol));
+                emplacementsDisponibles.add(parasol.toEmplacementOutput());
             }
         }
 
-        return new PreparationFormulaireDto(
+        return new PreparationFormulaireOutput(
                 emplacementsDisponibles,
                 tousLesEquipements(),
                 tousLesLiensDeParente(),
@@ -107,15 +107,15 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         concessionnaireDao.save(concessionnaire);
     }
 
-    public List<ReservationDto> reservationsConcessionnaire (ReservationsViewInput vInput) {
+    public List<ReservationOutput> reservationsConcessionnaire (ReservationsViewInput vInput) {
         List<Reservation> reservations =
                 reservationDao.reservationsPourConcessionnaire(vInput.utilisateurId(), vInput.statutNom());
-        List<ReservationDto>  reservationsDto = new ArrayList<>();
+        List<ReservationOutput>  reservationsOutput = new ArrayList<>();
 
         for (Reservation reservation : reservations) {
-            reservationsDto.add(new ReservationDto(reservation));
+            reservationsOutput.add(reservation.toOutput());
         }
-        return reservationsDto;
+        return reservationsOutput;
     }
 
     public void accepterReservation (Long reservationId) {
@@ -134,34 +134,34 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         reservationDao.deleteByReservationId(reservationId);
     }
 
-    private List<EquipementDto> tousLesEquipements() {
+    private List<EquipementOutput> tousLesEquipements() {
         List<Equipement> equipements = equipementDao.findAll();
-        List<EquipementDto> equipementsDto = new ArrayList<>();
+        List<EquipementOutput> equipementsOutput = new ArrayList<>();
 
         for (Equipement equipement : equipements) {
-            equipementsDto.add(new EquipementDto(equipement));
+            equipementsOutput.add(equipement.toOutput());
         }
-        return equipementsDto;
+        return equipementsOutput;
     }
 
-    private List<PaysDto> tousLesPays() {
+    private List<PaysOutput> tousLesPays() {
         List<Pays> lesPays = paysDao.findAll();
-        List<PaysDto> lesPaysDto = new ArrayList<>();
+        List<PaysOutput> lesPaysOutput = new ArrayList<>();
 
         for (Pays pays : lesPays) {
-            lesPaysDto.add(new PaysDto(pays));
+            lesPaysOutput.add(pays.toOutput());
         }
-        return lesPaysDto;
+        return lesPaysOutput;
     }
 
-    private List<LienDeParenteDto> tousLesLiensDeParente() {
+    private List<LienDeParenteOutput> tousLesLiensDeParente() {
         List<LienDeParente> liensDeParente = lienDeParenteDao.findAll();
-        List<LienDeParenteDto> liensDeParenteDto = new ArrayList<>();
+        List<LienDeParenteOutput> liensDeParenteOutput = new ArrayList<>();
 
         for (LienDeParente lienDeParente : liensDeParente) {
-            liensDeParenteDto.add(new LienDeParenteDto(lienDeParente));
+            liensDeParenteOutput.add(lienDeParente.toOutput());
         }
-        return liensDeParenteDto;
+        return liensDeParenteOutput;
     }
 
     public ApiPlagesServiceImpl(ClientDao clientDao,

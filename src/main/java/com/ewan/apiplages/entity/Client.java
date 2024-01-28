@@ -3,16 +3,13 @@ package com.ewan.apiplages.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.ewan.apiplages.dto.ClientDto;
-import com.ewan.apiplages.dto.PaysDto;
+
 import com.ewan.apiplages.input.ClientInput;
 import com.ewan.apiplages.output.ClientOutput;
-import com.ewan.apiplages.output.PaysOutput;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-// import jakarta.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -41,15 +38,7 @@ public class Client extends Utilisateur {
         this.pays = pays;
     }
 
-    public Client(ClientDto clientDto) {
-        this(clientDto.getNom(),
-                clientDto.getPrenom(),
-                clientDto.getEmail(),
-                clientDto.getMotDePasse(),
-                new Pays(clientDto.getPays()));
-        this.utilisateurId = clientDto.getUtilisateurId();
 
-    }
 
     public Client(ClientInput clientInput) {
         super(clientInput.nom(),

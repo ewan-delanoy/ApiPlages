@@ -1,9 +1,11 @@
 package com.ewan.apiplages.entity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
+import com.ewan.apiplages.output.*;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -74,6 +76,19 @@ public class Reservation {
         this.lienDeParente = lienDeParente;
         this.statut = statut;
         this.montantAReglerEnEuros = 100;
+    }
+
+    public ReservationOutput toOutput() {
+        File file = this.parasols.get(0).getFile();
+        List<ParasolOutput> parasolsOutput = new ArrayList<>();
+        for (Parasol parasol : this.parasols) {
+            parasolsOutput.add(parasol.toOutput());
+        }
+        return new  ReservationOutput(parasolsOutput ,
+                this.client.toOutput(), file.getPlage().getConcessionnaire().toOutput(),
+                this.lienDeParente.toOutput(), this.statut.getNom()
+        );
+
     }
 
 

@@ -1,7 +1,6 @@
 package com.ewan.apiplages.entity;
 
-import com.ewan.apiplages.dto.PlageDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -34,12 +33,6 @@ public class Plage {
         this.concessionnaire = concessionnaire;
     }
 
-    public Plage(PlageDto plageDto) {
-        super();
-        this.plageId = plageDto.getPlageId();
-        this.nom = plageDto.getNom();
-        this.concessionnaire = new Concessionnaire(plageDto.getConcessionnaire());
-    }
 
     public Long getPlageId() {return this.plageId;}
     public String getNom() {return this.nom; }

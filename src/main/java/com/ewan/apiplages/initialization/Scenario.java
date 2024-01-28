@@ -1,12 +1,12 @@
 package com.ewan.apiplages.initialization;
 
-import com.ewan.apiplages.dto.EmplacementDto;
-import com.ewan.apiplages.dto.PreparationFormulaireDto;
 import com.ewan.apiplages.dao.*;
 import com.ewan.apiplages.enumeration.LienDeParenteEnum;
 import com.ewan.apiplages.input.FormInput;
 import com.ewan.apiplages.input.ReservationInput;
 import com.ewan.apiplages.input.SelectionEquipementInput;
+import com.ewan.apiplages.output.EmplacementOutput;
+import com.ewan.apiplages.output.PreparationFormulaireOutput;
 import com.ewan.apiplages.service.ApiPlagesService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -51,12 +51,12 @@ public class Scenario implements CommandLineRunner {
        LocalDate dateDebut = LocalDate.of(2020, 6, 4);
        LocalDate dateFin = LocalDate.of(2020, 6, 19);
        FormInput formInput = new FormInput(plageId, dateDebut, dateFin);
-       PreparationFormulaireDto prep = apiPlagesService.preparerFormulaire(formInput);
-       List<EmplacementDto> emplacements = prep.emplacementsDisponibles;
+       PreparationFormulaireOutput prep = apiPlagesService.preparerFormulaire(formInput);
+       List<EmplacementOutput> emplacements = prep.emplacements();
        System.out.println("Nb d'emplacements : " + emplacements.size());
        // System.out.println("P : " +prep.toString());
-       Long idx1 = emplacements.get(60).getParasolId();
-       Long idx2 = emplacements.get(120).getParasolId();
+       Long idx1 = emplacements.get(60).parasolId();
+       Long idx2 = emplacements.get(120).parasolId();
        System.out.println("idx1 = " +idx1);
        System.out.println("idx2 = " +idx2);
        List<SelectionEquipementInput> selections= List.of(

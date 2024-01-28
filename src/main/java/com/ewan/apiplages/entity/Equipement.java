@@ -1,7 +1,7 @@
 package com.ewan.apiplages.entity;
 
-import com.ewan.apiplages.dto.EquipementDto;
 import com.ewan.apiplages.enumeration.EquipementEnum;
+import com.ewan.apiplages.output.EquipementOutput;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,11 +29,11 @@ public class Equipement {
         this.nbDeFauteuils = nbDeFauteuils;
     }
 
-    public Equipement(EquipementDto equipementDto) {
-        this(equipementDto.getNbDeLits (),
-                equipementDto.getNbDeFauteuils());
-        this.equipementId = equipementDto.getEquipementId();
+    public EquipementOutput toOutput() {
+        return new EquipementOutput(this.nbDeLits,this.nbDeFauteuils);
     }
+
+
 
     public Equipement(EquipementEnum equipementEnum) {
         this(equipementEnum.getNbDeLits (),

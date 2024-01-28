@@ -1,6 +1,5 @@
 package com.ewan.apiplages.entity;
 
-import com.ewan.apiplages.dto.StatutDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,13 +24,6 @@ public class Statut {
         super() ;
         this.nom = nom;
     }
-
-    public Statut(StatutDto statutDto) {
-        super() ;
-        this.statutId = statutDto.getStatutId();
-        this.nom = statutDto.getNom();
-    }
-
     public Long getStatutId() { return this.statutId; }
     public String getNom() { return this.nom; }
 }	
