@@ -38,9 +38,9 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         clientDao.save(client);
     }
 
-    public List<ReservationOutput> reservationsClient (ReservationsViewInput vInput) {
+    public List<ReservationOutput> reservationsClient (Long utilisateurId,String statutNom) {
         List<Reservation> reservations =
-                reservationDao.reservationsPourClient(vInput.utilisateurId(), vInput.statutNom());
+                reservationDao.reservationsPourClient(utilisateurId, statutNom);
         List<ReservationOutput>  reservationsOutput = new ArrayList<>();
 
         for (Reservation reservation : reservations) {
@@ -107,9 +107,9 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         concessionnaireDao.save(concessionnaire);
     }
 
-    public List<ReservationOutput> reservationsConcessionnaire (ReservationsViewInput vInput) {
+    public List<ReservationOutput> reservationsConcessionnaire (Long utilisateurId,String statutNom) {
         List<Reservation> reservations =
-                reservationDao.reservationsPourConcessionnaire(vInput.utilisateurId(), vInput.statutNom());
+                reservationDao.reservationsPourConcessionnaire(utilisateurId, statutNom);
         List<ReservationOutput>  reservationsOutput = new ArrayList<>();
 
         for (Reservation reservation : reservations) {

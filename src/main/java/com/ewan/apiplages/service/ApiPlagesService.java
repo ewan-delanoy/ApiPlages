@@ -12,7 +12,7 @@ public interface ApiPlagesService {
 
     // services utilisés par le client
     public void inscrireNouveauClient(ClientInput clientInput);
-    public List<ReservationOutput> reservationsClient (ReservationsViewInput vInput);
+    public List<ReservationOutput> reservationsClient (Long utilisateurId,String statutNom);
     public PreparationFormulaireOutput preparerFormulaire(FormInput fInput);
 
     public Long effectuerReservation(ReservationInput reservationInput);
@@ -21,7 +21,7 @@ public interface ApiPlagesService {
 
     public void inscrireNouveauConcessionnaire(ConcessionnaireInput concessionnaireInput);
 
-    public List<ReservationOutput> reservationsConcessionnaire (ReservationsViewInput vInput);
+    public List<ReservationOutput> reservationsConcessionnaire (Long utilisateurId,String statutNom);
 
     public void accepterReservation (Long reservationId);
 
