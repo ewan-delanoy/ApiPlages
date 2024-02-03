@@ -20,9 +20,8 @@ public class Client extends Utilisateur {
     @ManyToOne
     private Pays pays;
 
-    @OneToMany(mappedBy="client")
-    @JsonIgnore
-    private List<Reservation> reservations;
+    // @OneToMany(mappedBy="client")
+    // private List<Reservation> reservations;
 
     @Column(updatable = false)
     private LocalDateTime dateHeureInscription;
@@ -51,16 +50,10 @@ public class Client extends Utilisateur {
     }
 
     public ClientOutput toOutput() {
-        return new ClientOutput(this.nom,this.prenom,this.email,this.motDePasse,
+        return new ClientOutput(this.nom,this.prenom,this.email,
                 this.pays.toOutput(),this.dateHeureInscription);
 
     }
 
-    public Long getUtilisateurId() {return this.utilisateurId; }
-    public String getNom() {return this.nom; }
-    public String getPrenom() {return this.prenom;}
-    public String getEmail() {return this.email; }
-    public String getMotDePasse() {return this.motDePasse; }
-    public Pays getPays() {return this.pays; }
-    public LocalDateTime getDateHeureInscription() {return this.dateHeureInscription;}
+
 }

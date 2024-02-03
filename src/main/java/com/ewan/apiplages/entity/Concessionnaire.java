@@ -7,7 +7,6 @@ import jakarta.persistence.Entity;
 
 @Entity
 public class Concessionnaire extends Utilisateur {
-
     private String numeroDeTelephone;
 
     // Le no-args constructor exigé par JPA
@@ -29,17 +28,10 @@ public class Concessionnaire extends Utilisateur {
     }
 
     public ConcessionnaireOutput toOutput() {
-        return new ConcessionnaireOutput(this.nom,this.prenom,this.email,this.motDePasse,
+        return new ConcessionnaireOutput(this.nom,this.prenom,this.email,
                this.numeroDeTelephone);
 
     }
 
-
-    public Long getUtilisateurId() {return this.utilisateurId; }
-    public String getNom() {return this.nom; }
-    public String getPrenom() {return this.prenom;}
-    public String getEmail() {return this.email; }
-    public String getMotDePasse() {return this.motDePasse; }
-    public String getNumeroDeTelephone() {return this.numeroDeTelephone;}
 
 }

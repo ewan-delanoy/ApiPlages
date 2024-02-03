@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,45 +32,24 @@ public class InitializeDatabase implements CommandLineRunner {
     private final StatutDao statutDao;
     private final PasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    private Equipement equipement1 = null;
-    private Equipement equipement2 = null;
-    private Equipement equipement3 = null;
-    private Equipement equipement4 = null;
-    private Equipement equipement5 = null;
+    private final List<Client> clientsEnregistres = new ArrayList<>();
+    private final List<Concessionnaire> concessionnairesEnregistres = new ArrayList<>();
 
-    private LienDeParente lienDeParente1 = null;
+    private final List<Equipement> equipementsEnregistres = new ArrayList<>();
+    private final List<LienDeParente> liensDeParenteEnregistres = new ArrayList<>();
 
-    private LienDeParente lienDeParente2 = null;
+    private final List<Pays> paysEnregistres = new ArrayList<>();
+    private final List<Plage> plagesEnregistrees = new ArrayList<>();
 
-    private LienDeParente lienDeParente3 = null;
-
-    private Pays paysFR = null;
-    private Pays paysGB = null;
-    private Pays paysIT = null;
-    private Pays paysPT = null;
-
-    private Concessionnaire concessionnaire1 = null;
-    private Concessionnaire concessionnaire2 = null;
-
-    private Client client1 = null;
-    private Client client2 = null;
-    private Client client3 = null;
-
-    private Statut statutAttente = null;
-    private Statut statutAcceptee = null;
-    private Statut statutRefusee = null;
-
-    private Plage plage1 = null;
-    private Plage plage2 = null;
-
-    private final boolean IS_CURRENTLY_ACTIVE = true ;
+    private final List<Statut> statutsEnregistres = new ArrayList<>();
     @Override
-    public void run(String...args) throws Exception {
-       if(this.IS_CURRENTLY_ACTIVE) {
-           runWhenActive(args);
-       }
+    public void run(String...args)  {
+
+          runWhenActive(false);
+
     }
-    public void runWhenActive(String...args)  {
+    public void runWhenActive(boolean is_active)  {
+        if(!is_active) return;
         ajouterEquipements();
         ajouterLiensDeParente();
         ajouterPays();
@@ -80,45 +60,39 @@ public class InitializeDatabase implements CommandLineRunner {
         ajouterFiles();
         ajouterEmplacements();
         ajouterReservations();
-        List<Object> peggy1 = reservationDao.affectationsPourClient(5L, StatutEnum.ACCEPTEE.getNom());
-        Object[] peggy3 = (Object[]) peggy1.get(0);
-        // Arrays peggy4 = (Arrays) peggy2;
-        Reservation r1 = (Reservation) peggy3[0];
-        Affectation a1 = (Affectation) peggy3[1];
         System.out.println("Initialization finished");
 
     }
     private void ajouterClients() {
         if (clientDao.count() == 0) {
-            this.client1 = new Client(
+            Client client1 = new Client(
                     "DUPONT", "Alexandre", "alexdupond@sfr.fr",
-                    encoder.encode("abcdefghi"), this.paysFR
+                    encoder.encode("abcdefghi"), recupererPaysEnregistre(1)
             );
-            this.client2 = new Client(
+            Client client2 = new Client(
                     "SEYMOUR", "Jane", "jseymour@gmail.uk",
-                    encoder.encode("abcdefghi"), this.paysGB
+                    encoder.encode("abcdefghi"), recupererPaysEnregistre(2)
             );
-            this.client3 = new Client(
+            Client client3 = new Client(
                     "DE ALMEIDA", "Pedro", "pdealmeida@yahoo.pt",
-                    encoder.encode("abcdefghi"), this.paysPT
+                    encoder.encode("abcdefghi"), recupererPaysEnregistre(4)
             );
-            clientDao.saveAll(Arrays.asList(
-                    this.client1,this.client2,this.client3
-            ));
-
+            clientDao.saveAll(Arrays.asList(client1,client2,client3));
+            clientsEnregistres.add(client1);
+            clientsEnregistres.add(client2);
+            clientsEnregistres.add(client3);
         }
     }
     private void ajouterConcessionnaires() {
         if (concessionnaireDao.count() == 0) {
-            this.concessionnaire1 = new Concessionnaire(
+            Concessionnaire concessionnaire1 = new Concessionnaire(
                     "ROSSI", "Giuseppe", "peppe@humanbooster.fr",
                     encoder.encode("12345678"), "0612345678");
-            this.concessionnaire2 = new Concessionnaire(
+            Concessionnaire concessionnaire2 = new Concessionnaire(
                     "BULL", "John", "johnthebull@wanadoo.uk",
                     encoder.encode("87654321"), "0687654321");
-            concessionnaireDao.saveAll(Arrays.asList(
-                    this.concessionnaire1,this.concessionnaire2
-            ));
+            concessionnaireDao.saveAll(List.of(concessionnaire1,concessionnaire2));
+            concessionnairesEnregistres.addAll(List.of(concessionnaire1,concessionnaire2));
         }
     }
     private void ajouterEmplacements() {
@@ -137,16 +111,14 @@ public class InitializeDatabase implements CommandLineRunner {
         // On teste si des equipements sont déjà en base
         if (equipementDao.count()==0) {
             // il n'y a pas encore d'équipements en base, on en ajoute 5
-            this.equipement1 = new Equipement(EquipementEnum.UN_LIT);
-            this.equipement2 = new Equipement(EquipementEnum.DEUX_LITS);
-            this.equipement3 = new Equipement(EquipementEnum.UN_LIT_UN_FAUTEUIL);
-            this.equipement4 = new Equipement(EquipementEnum.UN_FAUTEUIL);
-            this.equipement5 = new Equipement(EquipementEnum.DEUX_FAUTEUILS);
+            Equipement equipement1 = new Equipement(EquipementEnum.UN_LIT);
+            Equipement equipement2 = new Equipement(EquipementEnum.DEUX_LITS);
+            Equipement equipement3 = new Equipement(EquipementEnum.UN_LIT_UN_FAUTEUIL);
+            Equipement equipement4 = new Equipement(EquipementEnum.UN_FAUTEUIL);
+            Equipement equipement5 = new Equipement(EquipementEnum.DEUX_FAUTEUILS);
 
-            equipementDao.saveAll(Arrays.asList(
-                    this.equipement1,this.equipement2,this.equipement3,
-                    this.equipement4,this.equipement5
-                    ));
+            equipementDao.saveAll(List.of(equipement1,equipement2,equipement3, equipement4,equipement5));
+            equipementsEnregistres.addAll(List.of(equipement1,equipement2,equipement3, equipement4,equipement5));
         }
     }
 
@@ -164,35 +136,36 @@ public class InitializeDatabase implements CommandLineRunner {
     }
     private void ajouterLiensDeParente() {
         if (lienDeParenteDao.count()==0) {
-
-            this.lienDeParente1 = new LienDeParente(LienDeParenteEnum.FRERE_SOEUR);
-            this.lienDeParente2 = new LienDeParente(LienDeParenteEnum.COUSIN_E);
-            this.lienDeParente3 = new LienDeParente(LienDeParenteEnum.AUCUN_LIEN);
-            lienDeParenteDao.saveAll(Arrays.asList(
-                    this.lienDeParente1,this.lienDeParente2,this.lienDeParente3
-            ));
+            LienDeParente frereSoeur = new LienDeParente(LienDeParenteEnum.FRERE_SOEUR);
+            LienDeParente cousin = new LienDeParente(LienDeParenteEnum.COUSIN_E);
+            LienDeParente aucunLien = new LienDeParente(LienDeParenteEnum.AUCUN_LIEN);
+            lienDeParenteDao.saveAll(Arrays.asList(frereSoeur,cousin,aucunLien));
+            liensDeParenteEnregistres.add(frereSoeur);
+            liensDeParenteEnregistres.add(cousin);
+            liensDeParenteEnregistres.add(aucunLien);
         }
     }
 
 
     private void ajouterPays() {
         if (paysDao.count() == 0) {
-            this.paysFR = new Pays("FR", "France");
-            this.paysGB = new Pays("GB", "Royaume-Uni");
-            this.paysIT = new Pays("IT", "Italie");
-            this.paysPT = new Pays("PT", "Portugal");
-            paysDao.saveAll(Arrays.asList(
-                   this.paysFR,this.paysGB,this.paysIT,this.paysPT));
+            Pays paysFR = new Pays("FR", "France");
+            Pays paysGB = new Pays("GB", "Royaume-Uni");
+            Pays paysIT = new Pays("IT", "Italie");
+            Pays paysPT = new Pays("PT", "Portugal");
+            paysDao.saveAll(List.of(paysFR,paysGB,paysIT,paysPT));
+            paysEnregistres.addAll(List.of(paysFR,paysGB,paysIT,paysPT));
         }
     }
 
     private void ajouterPlages() {
         if (plageDao.count() == 0) {
-            this.plage1 = new Plage("Cala Goloritzé", this.concessionnaire1);
-            this.plage2 = new Plage("Acceptée", this.concessionnaire2);
+            Plage plage1 = new Plage("Cala Goloritzé", recupererConcessionnaireEnregistre(1));
+            Plage plage2 = new Plage("Acceptée", recupererConcessionnaireEnregistre(2));
 
-            plageDao.saveAll(Arrays.asList(
-                    this.plage1,this.plage2));
+            plageDao.saveAll(Arrays.asList(plage1,plage2));
+            plagesEnregistrees.add(plage1);
+            plagesEnregistrees.add(plage2);
         }
     }
 
@@ -207,48 +180,72 @@ public class InitializeDatabase implements CommandLineRunner {
                 LocalDate.of(year, month, dayOfMonth+2),
                 lienDeParente,statut);
         reservationDao.save(reservation);
-        File file1 = fileDao.findByPlageAndNumero(this.plage1,(byte)numFile);
+        File file1 = fileDao.findByPlageAndNumero(plage,(byte)numFile);
         Emplacement emplacement1 = emplacementDao.findByFileAndNumEmplacement(file1,(byte)numEmplacement);
-        Affectation affectation1 = new Affectation(emplacement1,this.equipement1,reservation);
+        Affectation affectation1 = new Affectation(emplacement1,recupererEquipementEnregistre(1),reservation);
         Emplacement emplacement2 = emplacementDao.findByFileAndNumEmplacement(file1,(byte)(numEmplacement+1));
-        Affectation affectation2 = new Affectation(emplacement2,this.equipement4,reservation);
+        Affectation affectation2 = new Affectation(emplacement2,recupererEquipementEnregistre(4),reservation);
         affectationDao.saveAll(List.of(affectation1,affectation2));
 
     }
 
-    private void resa1(Client client,int numFile,int numEmplacement,
+    private void iresa(int plage,int client,int numFile,int numEmplacement,
                        int year, int month, int dayOfMonth,
-                       LienDeParente lienDeParente,Statut statut) {
-        resa(this.plage1,client,numFile,numEmplacement,year,month,dayOfMonth,lienDeParente,statut);
+                       int lienDeParente,int statut) {
+        resa(recupererPlageEnregistree(plage),
+                recupererClientEnregistre(client),numFile,numEmplacement,year,month,dayOfMonth,
+                recupererLienDeParenteEnregistre(lienDeParente),recupererStatutEnregistre(statut));
     }
 
     private void ajouterReservations() {
         if (reservationDao.count()==0) {
-           resa1(this.client1,4,18,2020,6,3,this.lienDeParente1,this.statutAcceptee);
-           resa1(this.client1,4,21,2020,6,10,this.lienDeParente1,this.statutAcceptee);
-           resa1(this.client1,4,24,2020,6,17,this.lienDeParente1,this.statutAcceptee);
+           iresa(1,1,4,18,2020,6,3,1,2);
+           iresa(1,1,4,21,2020,6,10,1,2);
+           iresa(1,1,4,24,2021,6,17,1,2);
+
+           iresa(1,2,4,20,2020,6,4,2,2);
+           iresa(1,2,4,23,2020,6,11,2,2);
+           iresa(1,2,4,26,2020,6,18,2,2);
 
 
-           resa1(this.client2,4,20,2020,6,4,this.lienDeParente2,this.statutAcceptee);
-           resa1(this.client2,4,23,2020,6,11,this.lienDeParente2,this.statutAcceptee);
-           resa1(this.client2,4,26,2020,6,18,this.lienDeParente2,this.statutAcceptee);
-
-
-           resa1(this.client3,4,22,2020,6,5,this.lienDeParente3,this.statutAcceptee);
-           resa1(this.client3,4,25,2020,6,12,this.lienDeParente3,this.statutAcceptee);
-           resa1(this.client3,4,28,2020,6,19,this.lienDeParente3,this.statutAcceptee);
+           iresa(1,3,3,22,2020,6,5,3,2);
+           iresa(1,3,3,25,2020,6,12,3,2);
+           iresa(2,3,3,28,2020,7,19,3,3);
 
         }
 
     }
     private void ajouterStatuts() {
         if (statutDao.count()==0) {
-            this.statutAttente = new Statut(StatutEnum.EN_ATTENTE.getNom());
-            this.statutAcceptee = new Statut(StatutEnum.ACCEPTEE.getNom());
-            this.statutRefusee = new Statut(StatutEnum.REFUSEE.getNom());
-            statutDao.saveAll(Arrays.asList(
-                    this.statutAttente,this.statutAcceptee,this.statutRefusee));
+            Statut enAttente = new Statut(StatutEnum.EN_ATTENTE.getNom());
+            Statut acceptee = new Statut(StatutEnum.ACCEPTEE.getNom());
+            Statut refusee = new Statut(StatutEnum.REFUSEE.getNom());
+            statutDao.saveAll(Arrays.asList(enAttente,acceptee,refusee));
+            statutsEnregistres.add(enAttente);
+            statutsEnregistres.add(acceptee);
+            statutsEnregistres.add(refusee);
         }
+    }
+
+    private Client recupererClientEnregistre(int idx) {
+        return clientsEnregistres.get(idx-1);
+    }
+
+    private Concessionnaire recupererConcessionnaireEnregistre(int idx) {return concessionnairesEnregistres.get(idx-1);}
+
+    private Equipement recupererEquipementEnregistre(int idx) { return equipementsEnregistres.get(idx-1);}
+    private LienDeParente recupererLienDeParenteEnregistre(int idx) {
+        return liensDeParenteEnregistres.get(idx-1);
+    }
+    private Statut recupererStatutEnregistre(int idx) {
+        return statutsEnregistres.get(idx-1);
+    }
+
+    private Pays recupererPaysEnregistre(int idx) {
+        return paysEnregistres.get(idx-1);
+    }
+    private Plage recupererPlageEnregistree(int idx) {
+        return plagesEnregistrees.get(idx-1);
     }
 
     public InitializeDatabase(

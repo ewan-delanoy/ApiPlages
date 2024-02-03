@@ -38,18 +38,15 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         clientDao.save(client);
     }
 
-    public List<ReservationOutput> reservationsClient (Long utilisateurId, String statutNom) {
-        List<Object> listeDePaires= reservationDao.affectationsPourClient(utilisateurId, statutNom);
-
-        List<Reservation> reservations = this.extraireReservations(listeDePaires);
-        List<ReservationOutput>  reservationsOutput = new ArrayList<>();
-
-        for (Reservation reservation : reservations) {
-            List<Affectation> affectations = extraireAffectations(reservation.getReservationId(),listeDePaires);
-            reservationsOutput.add(reservation.toOutput(affectations));
-        }
-        return reservationsOutput;
+    public TripleReservationOutput reservationsClient (Long clientId) {
+        return new TripleReservationOutput(
+                this.reservationsClientAvecStatut(clientId,StatutEnum.EN_ATTENTE),
+                this.reservationsClientAvecStatut(clientId,StatutEnum.ACCEPTEE),
+                this.reservationsClientAvecStatut(clientId,StatutEnum.REFUSEE)
+        );
     }
+
+
 
 
     public PreparationFormulaireOutput preparerFormulaire(FormInput fInput) {
@@ -79,7 +76,6 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
     {
        // Extraire les parametres de l'input
         Long clientId = reservationInput.clientId();
-        Long plageId = reservationInput.plageId();
         List<AffectationInput> affectationsInput=reservationInput.affectations();
         LocalDate dateDebut = reservationInput.dateDebut();
         LocalDate dateFin = reservationInput.dateFin();
@@ -114,18 +110,15 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         concessionnaireDao.save(concessionnaire);
     }
 
-    public List<ReservationOutput> reservationsConcessionnaire (Long utilisateurId, String statutNom) {
-        List<Object> listeDePaires= reservationDao.affectationsPourConcessionnaire(utilisateurId, statutNom);
 
-        List<Reservation> reservations = this.extraireReservations(listeDePaires);
-        List<ReservationOutput>  reservationsOutput = new ArrayList<>();
-
-        for (Reservation reservation : reservations) {
-            List<Affectation> affectations = extraireAffectations(reservation.getReservationId(),listeDePaires);
-            reservationsOutput.add(reservation.toOutput(affectations));
-        }
-        return reservationsOutput;
+    public TripleReservationOutput reservationsConcessionnaire (Long concessionnaireId) {
+        return new TripleReservationOutput(
+                this.reservationsConcessionnaireAvecStatut(concessionnaireId,StatutEnum.EN_ATTENTE),
+                this.reservationsConcessionnaireAvecStatut(concessionnaireId,StatutEnum.ACCEPTEE),
+                this.reservationsConcessionnaireAvecStatut(concessionnaireId,StatutEnum.REFUSEE)
+        );
     }
+
 
     public void accepterReservation (Long reservationId) {
         Reservation reservation = reservationDao.findByReservationId(reservationId);
@@ -141,6 +134,16 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
 
     public void supprimerReservation (Long reservationId) {
         reservationDao.deleteByReservationId(reservationId);
+    }
+
+    private List<ReservationOutput> reservationsClientAvecStatut (Long clientId, StatutEnum statutEnum) {
+        List<Object> listeDePaires= reservationDao.affectationsPourClient(clientId,  statutEnum.getNom());
+        return this.extraireReservations(listeDePaires);
+    }
+    private List<ReservationOutput> reservationsConcessionnaireAvecStatut (Long clientId, StatutEnum statutEnum) {
+        List<Object> listeDePaires= reservationDao.affectationsPourConcessionnaire(clientId,  statutEnum.getNom());
+        return this.extraireReservations(listeDePaires);
+
     }
 
     private List<EquipementOutput> tousLesEquipements() {
@@ -186,7 +189,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         return affectations;
     }
 
-    private List<Reservation> extraireReservations(List<Object> listeDePaires) {
+    private List<ReservationOutput> extraireReservations(List<Object> listeDePaires) {
         List<Reservation>  reservations = new ArrayList<>();
         List<Long> idsDejaTrouves = new ArrayList<>();
         for(Object paire: listeDePaires) {
@@ -198,7 +201,13 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
                 idsDejaTrouves.add(reservationId);
             }
         }
-        return reservations;
+        List<ReservationOutput>  reservationsOutput = new ArrayList<>();
+        for (Reservation reservation : reservations) {
+            List<Affectation> affectations = extraireAffectations(reservation.getReservationId(),listeDePaires);
+            reservationsOutput.add(reservation.toOutput(affectations));
+        }
+        return reservationsOutput;
+
     }
 
     public ApiPlagesServiceImpl(AffectationDao affectationDao,

@@ -4,15 +4,14 @@ package com.ewan.apiplages.service;
 
 import com.ewan.apiplages.input.*;
 import com.ewan.apiplages.output.PreparationFormulaireOutput;
-import com.ewan.apiplages.output.ReservationOutput;
+import com.ewan.apiplages.output.TripleReservationOutput;
 
-import java.util.List;
 
 public interface ApiPlagesService {
 
     // services utilisés par le client
     public void inscrireNouveauClient(ClientInput clientInput);
-    public List<ReservationOutput> reservationsClient (Long utilisateurId, String statutNom);
+    public TripleReservationOutput reservationsClient (Long utilisateurId);
     public PreparationFormulaireOutput preparerFormulaire(FormInput fInput);
 
     public Long effectuerReservation(ReservationInput reservationInput);
@@ -21,7 +20,7 @@ public interface ApiPlagesService {
 
     public void inscrireNouveauConcessionnaire(ConcessionnaireInput concessionnaireInput);
 
-    public List<ReservationOutput> reservationsConcessionnaire (Long utilisateurId, String statutNom);
+    public TripleReservationOutput reservationsConcessionnaire (Long utilisateurId);
 
     public void accepterReservation (Long reservationId);
 
