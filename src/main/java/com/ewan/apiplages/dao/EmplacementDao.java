@@ -13,15 +13,15 @@ import java.util.List;
 public interface EmplacementDao extends JpaRepository<Emplacement, Long> {
 
 	@Query("""
-   			SELECT e.emplacementId
-			FROM Emplacement e   
-			INNER JOIN e.affectations a 
-			WHERE 
-			(e.file.plage = :plage) AND
-			((a.reservation.dateDebut BETWEEN :dateDebut AND :dateFin)  
-			OR
-			((a.reservation.dateFin BETWEEN :dateDebut AND :dateFin))
-			""")
+      SELECT e.emplacementId
+      		FROM Emplacement e
+      		INNER JOIN e.affectations a
+      		WHERE
+      		(e.file.plage = :plage) AND
+      		((a.reservation.dateDebut BETWEEN :dateDebut AND :dateFin)
+      		OR
+      		(a.reservation.dateFin BETWEEN :dateDebut AND :dateFin))
+      		""")
 	List<Long> idsDesEmplacementsOccupes(@Param("plage") Plage plage,
 									 @Param("dateDebut") LocalDate dateDebut,
 									 @Param("dateFin") LocalDate dateFin);
