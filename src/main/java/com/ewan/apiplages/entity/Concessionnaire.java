@@ -33,5 +33,6 @@ public class Concessionnaire extends Utilisateur {
 
     }
 
+    public Long getUtilisateurId() {return this.utilisateurId;}
 
 }

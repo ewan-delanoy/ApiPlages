@@ -33,9 +33,10 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
 
     private final StatutDao statutDao;
 
-    public void inscrireNouveauClient(ClientInput clientInput) {
+    public Long inscrireNouveauClient(ClientInput clientInput) {
         Client client = new Client(clientInput);
         clientDao.save(client);
+        return client.getUtilisateurId();
     }
 
     public TripleReservationOutput reservationsClient (Long clientId) {
@@ -105,9 +106,10 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
     }
 
 
-    public void inscrireNouveauConcessionnaire(ConcessionnaireInput concessionnaireInput) {
+    public Long inscrireNouveauConcessionnaire(ConcessionnaireInput concessionnaireInput) {
         Concessionnaire concessionnaire = new Concessionnaire(concessionnaireInput);
         concessionnaireDao.save(concessionnaire);
+        return concessionnaire.getUtilisateurId();
     }
 
 

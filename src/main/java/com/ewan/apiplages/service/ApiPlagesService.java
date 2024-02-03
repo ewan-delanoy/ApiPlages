@@ -10,23 +10,23 @@ import com.ewan.apiplages.output.TripleReservationOutput;
 public interface ApiPlagesService {
 
     // services utilisés par le client
-    public void inscrireNouveauClient(ClientInput clientInput);
-    public TripleReservationOutput reservationsClient (Long utilisateurId);
-    public PreparationFormulaireOutput preparerFormulaire(FormInput fInput);
+    Long inscrireNouveauClient(ClientInput clientInput);
+    TripleReservationOutput reservationsClient (Long utilisateurId);
+    PreparationFormulaireOutput preparerFormulaire(FormInput fInput);
 
-    public Long effectuerReservation(ReservationInput reservationInput);
+    Long effectuerReservation(ReservationInput reservationInput);
 
     // services utilisés par le concessionnaire
 
-    public void inscrireNouveauConcessionnaire(ConcessionnaireInput concessionnaireInput);
+    Long inscrireNouveauConcessionnaire(ConcessionnaireInput concessionnaireInput);
 
-    public TripleReservationOutput reservationsConcessionnaire (Long utilisateurId);
+    TripleReservationOutput reservationsConcessionnaire (Long utilisateurId);
 
-    public void accepterReservation (Long reservationId);
+    void accepterReservation (Long reservationId);
 
-    public void refuserReservation (Long reservationId);
+    void refuserReservation (Long reservationId);
 
-    public void supprimerReservation (Long reservationId);
+    void supprimerReservation (Long reservationId);
 
 
 

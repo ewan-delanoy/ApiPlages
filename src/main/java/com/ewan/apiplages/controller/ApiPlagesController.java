@@ -1,6 +1,8 @@
 package com.ewan.apiplages.controller;
 
 
+import com.ewan.apiplages.input.ClientInput;
+import com.ewan.apiplages.input.ConcessionnaireInput;
 import com.ewan.apiplages.input.FormInput;
 import com.ewan.apiplages.input.ReservationInput;
 import com.ewan.apiplages.output.TripleReservationOutput;
@@ -11,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Controller
 public class ApiPlagesController {
@@ -25,7 +26,7 @@ public class ApiPlagesController {
     @PostMapping("/reservation")
     public ResponseEntity<Long> createReservation(@RequestBody ReservationInput reservationInput) {
         Long newReservationId = apiPlagesService.effectuerReservation(reservationInput);
-        return new ResponseEntity<Long>(newReservationId, HttpStatus.CREATED);
+        return new ResponseEntity<>(newReservationId, HttpStatus.CREATED);
     }
 
     @GetMapping("/clients/{id}/reservations")
@@ -38,6 +39,17 @@ public class ApiPlagesController {
         return apiPlagesService.reservationsConcessionnaire(id);
     }
 
+    @PostMapping("/clients")
+    public ResponseEntity<Long> signUpNewCustomer(@RequestBody ClientInput clientInput) {
+        Long newClientId = apiPlagesService.inscrireNouveauClient(clientInput);
+        return new ResponseEntity<>(newClientId, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/clients")
+    public ResponseEntity<Long> signUpNewManager(@RequestBody ConcessionnaireInput concessionnaireInput) {
+        Long newConcessionnaireId = apiPlagesService.inscrireNouveauConcessionnaire(concessionnaireInput);
+        return new ResponseEntity<>(newConcessionnaireId, HttpStatus.CREATED);
+    }
     @GetMapping("/temporary")
     public @ResponseBody FormInput temporary() {
         Long plageId = 1L;

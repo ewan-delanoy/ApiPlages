@@ -1,7 +1,6 @@
 package com.ewan.apiplages.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 import com.ewan.apiplages.input.ClientInput;
@@ -9,9 +8,7 @@ import com.ewan.apiplages.output.ClientOutput;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -55,5 +52,6 @@ public class Client extends Utilisateur {
 
     }
 
+    public Long getUtilisateurId() {return this.utilisateurId;}
 
 }
