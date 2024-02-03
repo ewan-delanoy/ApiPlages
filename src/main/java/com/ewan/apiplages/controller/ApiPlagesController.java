@@ -1,10 +1,8 @@
 package com.ewan.apiplages.controller;
 
 
-import com.ewan.apiplages.input.ClientInput;
-import com.ewan.apiplages.input.ConcessionnaireInput;
-import com.ewan.apiplages.input.FormInput;
-import com.ewan.apiplages.input.ReservationInput;
+import com.ewan.apiplages.input.*;
+import com.ewan.apiplages.output.PreparationFormulaireOutput;
 import com.ewan.apiplages.output.TripleReservationOutput;
 import com.ewan.apiplages.service.ApiPlagesService;
 import org.springframework.http.HttpStatus;
@@ -13,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
 
 @Controller
 public class ApiPlagesController {
@@ -30,13 +30,17 @@ public class ApiPlagesController {
     }
 
     @GetMapping("/clients/{id}/reservations")
-    public @ResponseBody TripleReservationOutput reservationsClient(@PathVariable Long id) {
-        return apiPlagesService.reservationsClient(id);
+    public @ResponseBody ResponseEntity<TripleReservationOutput> reservationsClient(@PathVariable Long id) {
+        return new ResponseEntity<>(apiPlagesService.reservationsClient(id), HttpStatus.FOUND);
     }
 
+    @PostMapping("/clients/{id}/form-data")
+    public @ResponseBody ResponseEntity<PreparationFormulaireOutput> preparerFormulaire(@RequestBody FormInput formInput) {
+        return new ResponseEntity<>(apiPlagesService.preparerFormulaire(formInput), HttpStatus.FOUND);
+    }
     @GetMapping("/concessionnaires/{id}/reservations")
-    public @ResponseBody TripleReservationOutput reservationsConcessionnaire(@PathVariable Long id) {
-        return apiPlagesService.reservationsConcessionnaire(id);
+    public @ResponseBody ResponseEntity<TripleReservationOutput> reservationsConcessionnaire(@PathVariable Long id) {
+        return new ResponseEntity<>(apiPlagesService.reservationsClient(id), HttpStatus.FOUND);
     }
 
     @PostMapping("/clients")
@@ -45,19 +49,27 @@ public class ApiPlagesController {
         return new ResponseEntity<>(newClientId, HttpStatus.CREATED);
     }
 
-    @PostMapping("/clients")
+    @PostMapping("/concessionnaires")
     public ResponseEntity<Long> signUpNewManager(@RequestBody ConcessionnaireInput concessionnaireInput) {
         Long newConcessionnaireId = apiPlagesService.inscrireNouveauConcessionnaire(concessionnaireInput);
         return new ResponseEntity<>(newConcessionnaireId, HttpStatus.CREATED);
     }
-    @GetMapping("/temporary")
-    public @ResponseBody FormInput temporary() {
+    @GetMapping("/ask-for-form-input")
+    public @ResponseBody FormInput askForFormInput() {
         Long plageId = 1L;
         LocalDate dateDebut = LocalDate.of(2020, 6, 4);
         LocalDate dateFin = LocalDate.of(2020, 6, 19);
         return  new FormInput(plageId, dateDebut, dateFin);
     }
 
+    @GetMapping("/ask-for-client-input")
+    public @ResponseBody ClientInput askForClientInput() {
+        LocalDateTime dateHeureInscription = LocalDateTime.of(2019,
+                Month.JULY, 29, 19, 30, 40);
+        return  new ClientInput("Blair", "Anthony", "tony.blair@mail.co.uk",
+                "yeah its me",
+                new PaysInput("GB","Grande-Bretagne"), dateHeureInscription);
+    }
 
 
 }

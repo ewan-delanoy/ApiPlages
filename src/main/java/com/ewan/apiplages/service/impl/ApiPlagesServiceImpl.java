@@ -6,6 +6,8 @@ import com.ewan.apiplages.enumeration.StatutEnum;
 import com.ewan.apiplages.input.*;
 import com.ewan.apiplages.output.*;
 import com.ewan.apiplages.service.ApiPlagesService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,8 +35,10 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
 
     private final StatutDao statutDao;
 
+    private final PasswordEncoder encoder = new BCryptPasswordEncoder();
+
     public Long inscrireNouveauClient(ClientInput clientInput) {
-        Client client = new Client(clientInput);
+        Client client = new Client(clientInput,encoder);
         clientDao.save(client);
         return client.getUtilisateurId();
     }
@@ -107,7 +111,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
 
 
     public Long inscrireNouveauConcessionnaire(ConcessionnaireInput concessionnaireInput) {
-        Concessionnaire concessionnaire = new Concessionnaire(concessionnaireInput);
+        Concessionnaire concessionnaire = new Concessionnaire(concessionnaireInput,encoder);
         concessionnaireDao.save(concessionnaire);
         return concessionnaire.getUtilisateurId();
     }

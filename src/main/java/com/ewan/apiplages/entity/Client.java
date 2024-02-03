@@ -8,7 +8,7 @@ import com.ewan.apiplages.output.ClientOutput;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @Entity
@@ -23,6 +23,7 @@ public class Client extends Utilisateur {
     @Column(updatable = false)
     private LocalDateTime dateHeureInscription;
 
+
     // No-args constructor demandé par JPA
     protected Client() {
         super();
@@ -36,11 +37,11 @@ public class Client extends Utilisateur {
 
 
 
-    public Client(ClientInput clientInput) {
+    public Client(ClientInput clientInput,PasswordEncoder encoder) {
         super(clientInput.nom(),
                 clientInput.prenom(),
                 clientInput.email(),
-                clientInput.motDePasse());
+                encoder.encode(clientInput.motDePasse()));
         this.pays = new Pays(clientInput.paysInput());
         this.dateHeureInscription = clientInput.dateHeureInscription();
 
