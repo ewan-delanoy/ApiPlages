@@ -14,28 +14,34 @@ public interface ReservationDao extends JpaRepository<Reservation, Long> {
   public Reservation findByReservationId(Long reservationId);
 
 	@Query("""
+            SELECT r,a
 			FROM Reservation r   
+			INNER JOIN r.affectations a
 			WHERE 
 			(r.client.utilisateurId = :clientId) AND
 			(r.statut.nom = :statutNom)  
 			""")
-	public List<Reservation> reservationsPourClient(
+	public List<Object> affectationsPourClient(
 			@Param("clientId")Long ClientId,
 			@Param("statutNom")String statutNom
 	);
 
-  @Query("""
+	@Query("""
+            SELECT r,a
 			FROM Reservation r   
-			INNER JOIN r.parasols pa
+			INNER JOIN r.affectations a
 			WHERE 
-			(pa.file.plage.concessionnaire.utilisateurId = :concessionnaireId) AND
+			(a.emplacement.file.plage.concessionnaire.utilisateurId = :concessionnaireId) AND
 			(r.statut.nom = :statutNom)  
 			""")
-  public List<Reservation> reservationsPourConcessionnaire(
-      @Param("concessionnaireId")Long ConcessionnaireId,
-      @Param("statutNom")String statutNom
-  );
+	public List<Object> affectationsPourConcessionnaire(
+			@Param("concessionnaireId")Long ConcessionnaireId,
+			@Param("statutNom")String statutNom
+	);
+
+
 
   public void deleteByReservationId(Long reservationId);
+
 }
 

@@ -30,9 +30,10 @@ public class ApiPlagesController {
 
     @GetMapping("/reservations/{id}")
     public @ResponseBody List<ReservationOutput> reservationsClient(@PathVariable Long id) {
-        List<ReservationOutput> reservations = apiPlagesService.reservationsClient(id, StatutEnum.ACCEPTEE.getNom());
+        String acceptee = StatutEnum.ACCEPTEE.getNom();
+        List<ReservationOutput> reservations = apiPlagesService.reservationsClient(id, acceptee);
         return reservations;
-        // return new ResponseEntity<List<ReservationOutput>>(reservations, HttpStatus.FOUND);
+
     }
 
 }

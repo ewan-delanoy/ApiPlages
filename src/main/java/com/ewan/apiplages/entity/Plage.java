@@ -1,7 +1,10 @@
 package com.ewan.apiplages.entity;
 
 
+
+import com.ewan.apiplages.output.PlageOutput;
 import jakarta.persistence.*;
+
 
 import java.util.List;
 
@@ -33,6 +36,11 @@ public class Plage {
         this.concessionnaire = concessionnaire;
     }
 
+    public PlageOutput toOutput() {
+        return new PlageOutput(this.plageId,this.nom,
+                this.concessionnaire.toOutput()
+        );
+    }
 
     public Long getPlageId() {return this.plageId;}
     public String getNom() {return this.nom; }

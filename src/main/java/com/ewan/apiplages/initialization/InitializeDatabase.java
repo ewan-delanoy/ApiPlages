@@ -18,12 +18,13 @@ import java.util.List;
 @Component
 public class InitializeDatabase implements CommandLineRunner {
 
+    private final AffectationDao affectationDao;
     private final ClientDao clientDao;
     private final ConcessionnaireDao concessionnaireDao;
+    private final EmplacementDao emplacementDao;
     private final EquipementDao equipementDao;
     private final FileDao fileDao;
     private final LienDeParenteDao lienDeParenteDao;
-    private final ParasolDao parasolDao;
     private final PaysDao paysDao;
     private final PlageDao plageDao;
     private final ReservationDao reservationDao;
@@ -61,7 +62,7 @@ public class InitializeDatabase implements CommandLineRunner {
     private Plage plage1 = null;
     private Plage plage2 = null;
 
-    private final boolean IS_CURRENTLY_ACTIVE = false ;
+    private final boolean IS_CURRENTLY_ACTIVE = true ;
     @Override
     public void run(String...args) throws Exception {
        if(this.IS_CURRENTLY_ACTIVE) {
@@ -77,8 +78,13 @@ public class InitializeDatabase implements CommandLineRunner {
         ajouterStatuts();
         ajouterPlages();
         ajouterFiles();
-        ajouterParasols();
+        ajouterEmplacements();
         ajouterReservations();
+        List<Object> peggy1 = reservationDao.affectationsPourClient(5L, StatutEnum.ACCEPTEE.getNom());
+        Object[] peggy3 = (Object[]) peggy1.get(0);
+        // Arrays peggy4 = (Arrays) peggy2;
+        Reservation r1 = (Reservation) peggy3[0];
+        Affectation a1 = (Affectation) peggy3[1];
         System.out.println("Initialization finished");
 
     }
@@ -115,6 +121,18 @@ public class InitializeDatabase implements CommandLineRunner {
             ));
         }
     }
+    private void ajouterEmplacements() {
+        // On teste si des emplacements sont déjà en base
+        if (emplacementDao.count()==0) {
+            for (File file: fileDao.findAll()) {
+                // Pour chaque file, on ajoute 36 emplacements
+                for (byte numEmplacement = 1; numEmplacement <=36; numEmplacement++) {
+                    emplacementDao.save(new Emplacement(file, numEmplacement));
+                }
+            }
+        }
+    }
+
     private void ajouterEquipements() {
         // On teste si des equipements sont déjà en base
         if (equipementDao.count()==0) {
@@ -156,18 +174,7 @@ public class InitializeDatabase implements CommandLineRunner {
         }
     }
 
-    private void ajouterParasols() {
-        // On teste si des files sont déjà en base
-        if (parasolDao.count()==0) {
-            for (File file: fileDao.findAll()) {
-                // Pour chaque plage, on ajoute 36 files
-                for (byte numEmplacement = 1; numEmplacement <=36; numEmplacement++) {
-                    parasolDao.save(new Parasol(file, numEmplacement));
-                }
-            }
 
-        }
-    }
     private void ajouterPays() {
         if (paysDao.count() == 0) {
             this.paysFR = new Pays("FR", "France");
@@ -189,31 +196,30 @@ public class InitializeDatabase implements CommandLineRunner {
         }
     }
 
-    private Parasol para1(int numeroFile,int numEmplacement) {
-        return parasolDao.findByFilePlageAndFileNumeroAndNumEmplacement(this.plage1,(byte)numeroFile,(byte)numEmplacement);
-    }
 
-    private Parasol para2(int numeroFile,int numEmplacement) {
-        return parasolDao.findByFilePlageAndFileNumeroAndNumEmplacement(this.plage2,(byte)numeroFile,(byte)numEmplacement);
-    }
 
-    private List<Parasol> lpara1(int numeroFile, int numEmplacement) {
-        return Arrays.asList(para1(numeroFile,numEmplacement),para1(numeroFile,numEmplacement+1));
-    }
+    private void resa(Plage plage,Client client,int numFile,int numEmplacement,
+                       int year, int month, int dayOfMonth,
+                       LienDeParente lienDeParente,Statut statut) {
+        Reservation reservation = new Reservation(
+                client,
+                  LocalDate.of(year, month, dayOfMonth),
+                LocalDate.of(year, month, dayOfMonth+2),
+                lienDeParente,statut);
+        reservationDao.save(reservation);
+        File file1 = fileDao.findByPlageAndNumero(this.plage1,(byte)numFile);
+        Emplacement emplacement1 = emplacementDao.findByFileAndNumEmplacement(file1,(byte)numEmplacement);
+        Affectation affectation1 = new Affectation(emplacement1,this.equipement1,reservation);
+        Emplacement emplacement2 = emplacementDao.findByFileAndNumEmplacement(file1,(byte)(numEmplacement+1));
+        Affectation affectation2 = new Affectation(emplacement2,this.equipement4,reservation);
+        affectationDao.saveAll(List.of(affectation1,affectation2));
 
-    private List<Parasol> lpara2(int numeroFile,int numEmplacement) {
-        return Arrays.asList(para2(numeroFile,numEmplacement),para2(numeroFile,numEmplacement+1));
     }
 
     private void resa1(Client client,int numFile,int numEmplacement,
                        int year, int month, int dayOfMonth,
                        LienDeParente lienDeParente,Statut statut) {
-        Reservation reservation = new Reservation(
-                client, lpara1(numFile,numEmplacement),
-                  LocalDate.of(year, month, dayOfMonth),
-                LocalDate.of(year, month, dayOfMonth+2),
-                lienDeParente,statut);
-        reservationDao.save(reservation);
+        resa(this.plage1,client,numFile,numEmplacement,year,month,dayOfMonth,lienDeParente,statut);
     }
 
     private void ajouterReservations() {
@@ -246,24 +252,26 @@ public class InitializeDatabase implements CommandLineRunner {
     }
 
     public InitializeDatabase(
+            AffectationDao affectationDao,
             ClientDao clientDao,
             ConcessionnaireDao concessionnaireDao,
+            EmplacementDao emplacementDao,
             EquipementDao equipementDao,
             FileDao fileDao,
             LienDeParenteDao lienDeParenteDao,
-            ParasolDao parasolDao,
             PaysDao paysDao,
             PlageDao plageDao,
             ReservationDao reservationDao,
             StatutDao statutDao
 
     ) {
+        this.affectationDao = affectationDao;
         this.clientDao = clientDao;
         this.concessionnaireDao = concessionnaireDao;
+        this.emplacementDao = emplacementDao;
         this.equipementDao = equipementDao;
         this.fileDao = fileDao;
         this.lienDeParenteDao = lienDeParenteDao;
-        this.parasolDao = parasolDao;
         this.paysDao = paysDao;
         this.plageDao = plageDao;
         this.reservationDao = reservationDao;

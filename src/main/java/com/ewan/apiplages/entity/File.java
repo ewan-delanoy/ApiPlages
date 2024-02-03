@@ -15,9 +15,6 @@ public class File {
 
     private double prixJournalier;
 
-    @OneToMany(mappedBy="file")
-    private List<Parasol> parasols;
-
     @ManyToOne
     private Plage plage;
 

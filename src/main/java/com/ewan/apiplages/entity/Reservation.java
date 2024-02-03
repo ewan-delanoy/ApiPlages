@@ -6,14 +6,7 @@ import java.util.List;
 
 
 import com.ewan.apiplages.output.*;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-
+import jakarta.persistence.*;
 
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -27,8 +20,8 @@ public class Reservation {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long reservationId;
 
-    @ManyToMany
-    private List<Parasol> parasols;
+    @OneToMany(mappedBy="reservation", fetch=FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<Affectation> affectations;
 
     @ManyToOne
     // @NotNull(message="Merci de préciser le client")
@@ -66,11 +59,10 @@ public class Reservation {
     protected Reservation() {
         super();
     }
-    public Reservation(Client client,List<Parasol> parasols,
+    public Reservation(Client client,
                        LocalDate dateDebut,LocalDate dateFin,
                        LienDeParente lienDeParente,Statut statut) {
         this.client = client ;
-        this.parasols = parasols;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
         this.lienDeParente = lienDeParente;
@@ -78,23 +70,23 @@ public class Reservation {
         this.montantAReglerEnEuros = 100;
     }
 
-    public ReservationOutput toOutput() {
-        File file = this.parasols.get(0).getFile();
-        List<ParasolOutput> parasolsOutput = new ArrayList<>();
-        for (Parasol parasol : this.parasols) {
-            parasolsOutput.add(parasol.toOutput());
+    public ReservationOutput toOutput(List<Affectation> affectations) {
+
+        List<AffectationOutput> affectationsOutput = new ArrayList<>();
+        for (Affectation affectation : affectations) {
+            affectationsOutput.add(affectation.toOutput());
         }
-        return new  ReservationOutput(parasolsOutput ,
-                this.client.toOutput(), file.getPlage().getConcessionnaire().toOutput(),
+        Plage plage = affectations.get(0).getEmplacement().getFile().getPlage();
+        return new ReservationOutput(affectationsOutput,
+                this.client.toOutput(), plage.toOutput(),
                 this.lienDeParente.toOutput(), this.statut.getNom()
         );
-
     }
 
 
     public Long getReservationId() {return this.reservationId;}
     public Client getClient() {return this.client; }
-    public List<Parasol> getParasols() {return this.parasols; }
+
     public LocalDate getDateDebut() {return this.dateDebut; }
     public LocalDate getDateFin() {return this.dateFin; }
 

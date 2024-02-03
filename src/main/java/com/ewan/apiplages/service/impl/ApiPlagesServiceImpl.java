@@ -17,16 +17,16 @@ import java.util.List;
 @Transactional
 public class ApiPlagesServiceImpl implements ApiPlagesService {
 
+    private final AffectationDao affectationDao;
     private final ClientDao clientDao;
 
     private final ConcessionnaireDao concessionnaireDao;
 
+    private final EmplacementDao emplacementDao;
     private final EquipementDao equipementDao;
 
     private final LienDeParenteDao lienDeParenteDao;
     private final PaysDao paysDao;
-
-    private final ParasolDao parasolDao;
 
     private final PlageDao plageDao;
     private final ReservationDao reservationDao;
@@ -38,29 +38,32 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         clientDao.save(client);
     }
 
-    public List<ReservationOutput> reservationsClient (Long utilisateurId,String statutNom) {
-        List<Reservation> reservations =
-                reservationDao.reservationsPourClient(utilisateurId, statutNom);
+    public List<ReservationOutput> reservationsClient (Long utilisateurId, String statutNom) {
+        List<Object> listeDePaires= reservationDao.affectationsPourClient(utilisateurId, statutNom);
+
+        List<Reservation> reservations = this.extraireReservations(listeDePaires);
         List<ReservationOutput>  reservationsOutput = new ArrayList<>();
 
         for (Reservation reservation : reservations) {
-            reservationsOutput.add(reservation.toOutput());
+            List<Affectation> affectations = extraireAffectations(reservation.getReservationId(),listeDePaires);
+            reservationsOutput.add(reservation.toOutput(affectations));
         }
         return reservationsOutput;
     }
+
 
     public PreparationFormulaireOutput preparerFormulaire(FormInput fInput) {
         Long plageId = fInput.plageId();
         LocalDate dateDebut = fInput.dateDebut();
         LocalDate dateFin = fInput.dateFin();
         Plage plage = plageDao.getReferenceById(plageId);
-        List<Long> idsOccupes = parasolDao.idsDesParasolsOccupes(plage,dateDebut,dateFin);
-        List<Parasol> parasols = parasolDao.findByFilePlagePlageId(plageId);
+        List<Long> idsOccupes = emplacementDao.idsDesEmplacementsOccupes(plage,dateDebut,dateFin);
+        List<Emplacement> emplacements = emplacementDao.findByFilePlagePlageId(plageId);
         List<EmplacementOutput> emplacementsDisponibles = new ArrayList<>();
 
-        for (Parasol parasol : parasols) {
-            if(!(idsOccupes.contains(parasol.getParasolId()))) {
-                emplacementsDisponibles.add(parasol.toEmplacementOutput());
+        for (Emplacement emplacement : emplacements) {
+            if(!(idsOccupes.contains(emplacement.getEmplacementId()))) {
+                emplacementsDisponibles.add(emplacement.toOutput());
             }
         }
 
@@ -77,7 +80,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
        // Extraire les parametres de l'input
         Long clientId = reservationInput.clientId();
         Long plageId = reservationInput.plageId();
-        List<SelectionEquipementInput> selections=reservationInput.selections();
+        List<AffectationInput> affectationsInput=reservationInput.affectations();
         LocalDate dateDebut = reservationInput.dateDebut();
         LocalDate dateFin = reservationInput.dateFin();
         String lienDeParenteNom = reservationInput.lienDeParenteNom();
@@ -85,19 +88,23 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         Statut enAttente = statutDao.findByNom(StatutEnum.EN_ATTENTE.getNom());
         Client client = clientDao.findByUtilisateurId(clientId);
         LienDeParente lienDeParente = lienDeParenteDao.findByNom(lienDeParenteNom);
-        List<Parasol> parasols = new ArrayList<>();
-        for (SelectionEquipementInput selection : selections) {
-            Parasol parasol = parasolDao.findByParasolId(selection.parasolId());
-            Equipement equipement = equipementDao.findByNbDeLitsAndNbDeFauteuils
-                    (selection.nbDeLits(),selection.nbDeFauteuils());
-            parasol.setEquipement(equipement);
-            parasolDao.save(parasol);
-            parasols.add(parasol);
-        }
-        Reservation reservation = new Reservation(client,parasols,
+
+
+        Reservation reservation = new Reservation(client,
                 dateDebut,dateFin,
-               lienDeParente,enAttente);
+                lienDeParente,enAttente);
         reservationDao.save(reservation);
+
+        for (AffectationInput affectationInput : affectationsInput) {
+            Emplacement emplacement = emplacementDao.findByEmplacementId(affectationInput.emplacementId());
+            Equipement equipement = equipementDao.findByNbDeLitsAndNbDeFauteuils
+                    (affectationInput.nbDeLits(),affectationInput.nbDeFauteuils());
+            Affectation affectation = new Affectation(
+                    emplacement,equipement,reservation
+            );
+            affectationDao.save(affectation);
+        }
+
         return reservation.getReservationId();
     }
 
@@ -107,13 +114,15 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         concessionnaireDao.save(concessionnaire);
     }
 
-    public List<ReservationOutput> reservationsConcessionnaire (Long utilisateurId,String statutNom) {
-        List<Reservation> reservations =
-                reservationDao.reservationsPourConcessionnaire(utilisateurId, statutNom);
+    public List<ReservationOutput> reservationsConcessionnaire (Long utilisateurId, String statutNom) {
+        List<Object> listeDePaires= reservationDao.affectationsPourConcessionnaire(utilisateurId, statutNom);
+
+        List<Reservation> reservations = this.extraireReservations(listeDePaires);
         List<ReservationOutput>  reservationsOutput = new ArrayList<>();
 
         for (Reservation reservation : reservations) {
-            reservationsOutput.add(reservation.toOutput());
+            List<Affectation> affectations = extraireAffectations(reservation.getReservationId(),listeDePaires);
+            reservationsOutput.add(reservation.toOutput(affectations));
         }
         return reservationsOutput;
     }
@@ -164,22 +173,52 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         return liensDeParenteOutput;
     }
 
-    public ApiPlagesServiceImpl(ClientDao clientDao,
+    private List<Affectation> extraireAffectations(Long reservationId,List<Object> listeDePaires) {
+        List<Affectation>  affectations = new ArrayList<>();
+        for(Object paire: listeDePaires) {
+            Object[] paireCastee = (Object[]) paire;
+            Reservation premier = (Reservation) paireCastee[0];
+            Affectation second = (Affectation) paireCastee[1];
+            if(premier.getReservationId().equals(reservationId)) {
+                affectations.add(second);
+            }
+        }
+        return affectations;
+    }
+
+    private List<Reservation> extraireReservations(List<Object> listeDePaires) {
+        List<Reservation>  reservations = new ArrayList<>();
+        List<Long> idsDejaTrouves = new ArrayList<>();
+        for(Object paire: listeDePaires) {
+            Object[] paireCastee = (Object[]) paire;
+            Reservation reservation = (Reservation) paireCastee[0];
+            Long reservationId = reservation.getReservationId();
+            if(!(idsDejaTrouves.contains(reservationId))) {
+                reservations.add(reservation);
+                idsDejaTrouves.add(reservationId);
+            }
+        }
+        return reservations;
+    }
+
+    public ApiPlagesServiceImpl(AffectationDao affectationDao,
+                                ClientDao clientDao,
                                 ConcessionnaireDao concessionnaireDao,
+                                EmplacementDao emplacementDao,
                                 EquipementDao equipementDao,
                                 LienDeParenteDao lienDeParenteDao,
                                 PaysDao paysDao,
-                                ParasolDao parasolDao,
                                 PlageDao plageDao,
                                 ReservationDao reservationDao,
                                 StatutDao statutDao
                                 ) {
+        this.affectationDao = affectationDao;
         this.clientDao = clientDao ;
         this.concessionnaireDao = concessionnaireDao;
+        this.emplacementDao = emplacementDao;
         this.equipementDao = equipementDao;
         this.lienDeParenteDao = lienDeParenteDao;
         this.paysDao = paysDao ;
-        this.parasolDao = parasolDao ;
         this.plageDao = plageDao;
         this.reservationDao = reservationDao;
         this.statutDao = statutDao;

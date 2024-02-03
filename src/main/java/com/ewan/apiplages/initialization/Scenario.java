@@ -4,7 +4,7 @@ import com.ewan.apiplages.dao.*;
 import com.ewan.apiplages.enumeration.LienDeParenteEnum;
 import com.ewan.apiplages.input.FormInput;
 import com.ewan.apiplages.input.ReservationInput;
-import com.ewan.apiplages.input.SelectionEquipementInput;
+import com.ewan.apiplages.input.AffectationInput;
 import com.ewan.apiplages.output.EmplacementOutput;
 import com.ewan.apiplages.output.PreparationFormulaireOutput;
 import com.ewan.apiplages.service.ApiPlagesService;
@@ -23,7 +23,6 @@ public class Scenario implements CommandLineRunner {
     private final EquipementDao equipementDao;
     private final FileDao fileDao;
     private final LienDeParenteDao lienDeParenteDao;
-    private final ParasolDao parasolDao;
     private final PaysDao paysDao;
     private final PlageDao plageDao;
     private final ReservationDao reservationDao;
@@ -32,7 +31,7 @@ public class Scenario implements CommandLineRunner {
 
     private final ApiPlagesService apiPlagesService;
 
-    private final boolean IS_CURRENTLY_ACTIVE = true ;
+    private final boolean IS_CURRENTLY_ACTIVE = false ;
     @Override
     public void run(String...args) throws Exception {
         if(this.IS_CURRENTLY_ACTIVE) {
@@ -55,13 +54,13 @@ public class Scenario implements CommandLineRunner {
        List<EmplacementOutput> emplacements = prep.emplacements();
        System.out.println("Nb d'emplacements : " + emplacements.size());
        // System.out.println("P : " +prep.toString());
-       Long idx1 = emplacements.get(60).parasolId();
-       Long idx2 = emplacements.get(120).parasolId();
+       Long idx1 = emplacements.get(60).emplacementId();
+       Long idx2 = emplacements.get(120).emplacementId();
        System.out.println("idx1 = " +idx1);
        System.out.println("idx2 = " +idx2);
-       List<SelectionEquipementInput> selections= List.of(
-               new SelectionEquipementInput(idx1,(byte)1,(byte)0),
-                new SelectionEquipementInput(idx2,(byte)0,(byte)1)
+       List<AffectationInput> selections= List.of(
+               new AffectationInput(idx1,(byte)1,(byte)0),
+                new AffectationInput(idx2,(byte)0,(byte)1)
         );
        ReservationInput reservationInput=new ReservationInput(clientId,plageId,selections,dateDebut,dateFin,aucunLien);
        // Long newResId =apiPlagesService.effectuerReservation(reservationInput);
@@ -75,7 +74,6 @@ public class Scenario implements CommandLineRunner {
             EquipementDao equipementDao,
             FileDao fileDao,
             LienDeParenteDao lienDeParenteDao,
-            ParasolDao parasolDao,
             PaysDao paysDao,
             PlageDao plageDao,
             ReservationDao reservationDao,
@@ -88,7 +86,6 @@ public class Scenario implements CommandLineRunner {
         this.equipementDao = equipementDao;
         this.fileDao = fileDao;
         this.lienDeParenteDao = lienDeParenteDao;
-        this.parasolDao = parasolDao;
         this.paysDao = paysDao;
         this.plageDao = plageDao;
         this.reservationDao = reservationDao;
