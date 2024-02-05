@@ -2,6 +2,7 @@ package com.ewan.apiplages.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -34,8 +35,8 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
-                                .requestMatchers("/signup-customer").permitAll()
-                                .requestMatchers("/signup-manager").permitAll()
+                                .requestMatchers(HttpMethod.POST,"/signup-customer").anonymous()
+                                .requestMatchers(HttpMethod.POST,"/signup-manager").anonymous()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement((sessionManagement) ->
