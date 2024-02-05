@@ -22,12 +22,9 @@ public interface ApiPlagesService {
 
     TripleReservationOutput reservationsConcessionnaire (Long utilisateurId);
 
-    void accepterReservation (Long reservationId);
-
-    void refuserReservation (Long reservationId);
 
     void supprimerReservation (Long reservationId);
 
 
-
+    void editerStatutReservation(Long reservationId, String statutNom);
 }

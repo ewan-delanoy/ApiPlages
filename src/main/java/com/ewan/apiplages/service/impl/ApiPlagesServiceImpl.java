@@ -125,18 +125,12 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         );
     }
 
-
-    public void accepterReservation (Long reservationId) {
+    public void editerStatutReservation(Long reservationId, String statutNom) {
         Reservation reservation = reservationDao.findByReservationId(reservationId);
-        reservation.setStatut(statutDao.findByNom(StatutEnum.ACCEPTEE.getNom()));
+        reservation.setStatut(statutDao.findByNom(statutNom));
         reservationDao.save(reservation);
     }
 
-    public void refuserReservation (Long reservationId) {
-        Reservation reservation = reservationDao.findByReservationId(reservationId);
-        reservation.setStatut(statutDao.findByNom(StatutEnum.REFUSEE.getNom()));
-        reservationDao.save(reservation);
-    }
 
     public void supprimerReservation (Long reservationId) {
         reservationDao.deleteByReservationId(reservationId);
