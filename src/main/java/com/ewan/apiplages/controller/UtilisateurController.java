@@ -29,7 +29,7 @@ public class UtilisateurController {
         return ResponseEntity.ok(currentUtilisateur);
     }
 
-    @GetMapping("/")
+    @GetMapping("/all")
     public ResponseEntity<List<Utilisateur>> allUtilisateurs() {
         List <Utilisateur> utilisateurs = utilisateurService.allUtilisateurs();
         return ResponseEntity.ok(utilisateurs);

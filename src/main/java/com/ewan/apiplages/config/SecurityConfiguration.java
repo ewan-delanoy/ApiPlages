@@ -35,8 +35,8 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
-                                .requestMatchers(HttpMethod.POST,"/signup-customer").anonymous()
-                                .requestMatchers(HttpMethod.POST,"/signup-manager").anonymous()
+                                .requestMatchers(HttpMethod.POST,"/auth/**").anonymous()
+                                .requestMatchers(HttpMethod.GET,"/auth/**").anonymous()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement((sessionManagement) ->

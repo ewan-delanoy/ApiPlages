@@ -6,7 +6,7 @@ import com.ewan.apiplages.entity.Utilisateur;
 import com.ewan.apiplages.input.ClientInput;
 import com.ewan.apiplages.input.ConcessionnaireInput;
 import com.ewan.apiplages.input.UtilisateurInput;
-import com.ewan.apiplages.response.LoginResponse;
+import com.ewan.apiplages.output.UtilisateurOutput;
 import com.ewan.apiplages.service.AuthenticationService;
 import com.ewan.apiplages.service.JwtService;
 import org.springframework.http.ResponseEntity;
@@ -40,12 +40,12 @@ public class AuthenticationController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody UtilisateurInput utilisateurInput) {
+    public ResponseEntity<UtilisateurOutput> authenticate(@RequestBody UtilisateurInput utilisateurInput) {
         Utilisateur authenticatedUtilisateur = authenticationService.authenticate(utilisateurInput);
 
         String jwtToken = jwtService.generateToken(authenticatedUtilisateur);
 
-        LoginResponse loginResponse = new LoginResponse(jwtToken,jwtService.getExpirationTime());
+        UtilisateurOutput loginResponse = new UtilisateurOutput(jwtToken,jwtService.getExpirationTime());
 
         return ResponseEntity.ok(loginResponse);
     }
