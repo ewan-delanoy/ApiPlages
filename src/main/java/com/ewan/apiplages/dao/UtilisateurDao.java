@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface UtilisateurDao extends JpaRepository<Utilisateur, Long>  {
     Optional<Utilisateur> findByEmail(String email);
+
+    Utilisateur findByUtilisateurId(Long utilisateurId);
 }

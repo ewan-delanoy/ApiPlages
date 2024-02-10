@@ -1,13 +1,17 @@
 package com.ewan.apiplages.controller;
 
 
+import com.ewan.apiplages.entity.Utilisateur;
 import com.ewan.apiplages.enumeration.LienDeParenteEnum;
 import com.ewan.apiplages.input.*;
 import com.ewan.apiplages.output.PreparationFormulaireOutput;
 import com.ewan.apiplages.output.TripleReservationOutput;
+import com.ewan.apiplages.output.UtilisateurOutput;
 import com.ewan.apiplages.service.ApiPlagesService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -67,6 +71,16 @@ public class ApiPlagesController {
         Long newConcessionnaireId = apiPlagesService.inscrireNouveauConcessionnaire(concessionnaireInput);
         return new ResponseEntity<>(newConcessionnaireId, HttpStatus.CREATED);
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<UtilisateurOutput> authenticatedUtilisateur() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+       Long utilisateurId = ((Utilisateur) authentication.getPrincipal()).getUtilisateurId();
+
+        return ResponseEntity.ok(apiPlagesService.getUtilisateurById(utilisateurId));
+    }
+
     @GetMapping("/ask-for-form-input")
     public @ResponseBody FormInput askForFormInput() {
         Long plageId = 1L;

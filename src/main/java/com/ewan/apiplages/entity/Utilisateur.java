@@ -49,9 +49,6 @@ public abstract class Utilisateur implements UserDetails {
         this.email = email;
         this.motDePasse = motDePasse;
     }
-    public String getNomEtPrenom() {
-        return nom.toUpperCase() + " " + prenom;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -59,6 +56,9 @@ public abstract class Utilisateur implements UserDetails {
     }
 
 
+    public Long getUtilisateurId() {
+        return utilisateurId;
+    }
     public String getPassword() {
         return motDePasse;
     }

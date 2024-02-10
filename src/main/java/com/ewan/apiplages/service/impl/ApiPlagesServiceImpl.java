@@ -6,6 +6,7 @@ import com.ewan.apiplages.enumeration.StatutEnum;
 import com.ewan.apiplages.input.*;
 import com.ewan.apiplages.output.*;
 import com.ewan.apiplages.service.ApiPlagesService;
+import com.ewan.apiplages.util.UtilisateurUtil;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,8 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
     private final ReservationDao reservationDao;
 
     private final StatutDao statutDao;
+
+    private final UtilisateurDao utilisateurDao;
 
     private final PasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -136,6 +139,10 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         reservationDao.deleteByReservationId(reservationId);
     }
 
+    public UtilisateurOutput getUtilisateurById(Long utilisateurId) {
+        return UtilisateurUtil.toOutput(utilisateurDao.findByUtilisateurId(utilisateurId));
+    }
+
     private List<ReservationOutput> reservationsClientAvecStatut (Long clientId, StatutEnum statutEnum) {
         List<Object> listeDePaires= reservationDao.affectationsPourClient(clientId,  statutEnum.getNom());
         return this.extraireReservations(listeDePaires);
@@ -219,7 +226,8 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
                                 PaysDao paysDao,
                                 PlageDao plageDao,
                                 ReservationDao reservationDao,
-                                StatutDao statutDao
+                                StatutDao statutDao,
+                                UtilisateurDao utilisateurDao
                                 ) {
         this.affectationDao = affectationDao;
         this.clientDao = clientDao ;
@@ -231,5 +239,6 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         this.plageDao = plageDao;
         this.reservationDao = reservationDao;
         this.statutDao = statutDao;
+        this.utilisateurDao = utilisateurDao;
     }
 }

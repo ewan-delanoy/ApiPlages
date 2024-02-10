@@ -5,6 +5,7 @@ package com.ewan.apiplages.service;
 import com.ewan.apiplages.input.*;
 import com.ewan.apiplages.output.PreparationFormulaireOutput;
 import com.ewan.apiplages.output.TripleReservationOutput;
+import com.ewan.apiplages.output.UtilisateurOutput;
 
 
 public interface ApiPlagesService {
@@ -27,4 +28,6 @@ public interface ApiPlagesService {
 
 
     void editerStatutReservation(Long reservationId, String statutNom);
+
+    UtilisateurOutput getUtilisateurById(Long utilisateurId);
 }

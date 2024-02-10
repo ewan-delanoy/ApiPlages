@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import com.ewan.apiplages.input.ClientInput;
 import com.ewan.apiplages.output.ClientOutput;
+import com.ewan.apiplages.output.UtilisateurOutput;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -53,6 +54,16 @@ public class Client extends Utilisateur {
 
     }
 
-    public Long getUtilisateurId() {return this.utilisateurId;}
+    public UtilisateurOutput clientToUtilisateurOutput() {
+        return new  UtilisateurOutput(
+                // champs communs à tous les utilisateurs
+                this.utilisateurId,this.nom,this.prenom,this.email,
+                this.pays.toOutput(),this.dateHeureInscription,
+                null
+        );
+    }
+
+
+
 
 }

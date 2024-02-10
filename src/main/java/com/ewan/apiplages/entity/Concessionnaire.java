@@ -2,6 +2,7 @@ package com.ewan.apiplages.entity;
 
 import com.ewan.apiplages.input.ConcessionnaireInput;
 import com.ewan.apiplages.output.ConcessionnaireOutput;
+import com.ewan.apiplages.output.UtilisateurOutput;
 import jakarta.persistence.Entity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -19,6 +20,14 @@ public class Concessionnaire extends Utilisateur {
         this.numeroDeTelephone = numeroDeTelephone;
     }
 
+    public UtilisateurOutput concessionnaireToUtilisateurOutput() {
+        return new  UtilisateurOutput(
+                // champs communs à tous les utilisateurs
+                this.utilisateurId,this.nom,this.prenom,this.email,
+                null,null,
+                this.numeroDeTelephone
+        );
+    }
 
     public Concessionnaire(ConcessionnaireInput concessionnaireInput, PasswordEncoder encoder) {
         super(concessionnaireInput.nom(),
@@ -34,6 +43,5 @@ public class Concessionnaire extends Utilisateur {
 
     }
 
-    public Long getUtilisateurId() {return this.utilisateurId;}
 
 }
