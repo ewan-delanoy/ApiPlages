@@ -11,7 +11,7 @@ import com.ewan.apiplages.output.UtilisateurOutput;
 public interface ApiPlagesService {
 
     // services utilisés par le client
-    Long inscrireNouveauClient(ClientInput clientInput);
+    Long inscrireNouveauClient(ClientRegistrationInput clientRegistrationInput);
     TripleReservationOutput reservationsClient (Long utilisateurId);
     PreparationFormulaireOutput preparerFormulaire(FormInput fInput);
 

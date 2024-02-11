@@ -6,7 +6,7 @@ import com.ewan.apiplages.dao.UtilisateurDao;
 import com.ewan.apiplages.entity.Client;
 import com.ewan.apiplages.entity.Concessionnaire;
 import com.ewan.apiplages.entity.Utilisateur;
-import com.ewan.apiplages.input.ClientInput;
+import com.ewan.apiplages.input.ClientRegistrationInput;
 import com.ewan.apiplages.input.ConcessionnaireInput;
 import com.ewan.apiplages.input.LoginInput;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,7 +39,7 @@ public class AuthenticationService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Client signupCustomer(ClientInput input) {
+    public Client signupCustomer(ClientRegistrationInput input) {
         Client client = new Client(input,passwordEncoder);
         return clientDao.save(client);
     }

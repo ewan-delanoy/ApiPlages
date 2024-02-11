@@ -61,8 +61,8 @@ public class ApiPlagesController {
         return new ResponseEntity<>(true, HttpStatus.ACCEPTED);
     }
     @PostMapping("/clients")
-    public ResponseEntity<Long> signUpNewCustomer(@RequestBody ClientInput clientInput) {
-        Long newClientId = apiPlagesService.inscrireNouveauClient(clientInput);
+    public ResponseEntity<Long> signUpNewCustomer(@RequestBody ClientRegistrationInput clientRegistrationInput) {
+        Long newClientId = apiPlagesService.inscrireNouveauClient(clientRegistrationInput);
         return new ResponseEntity<>(newClientId, HttpStatus.CREATED);
     }
 
@@ -90,10 +90,10 @@ public class ApiPlagesController {
     }
 
     @GetMapping("/ask-for-client-input")
-    public @ResponseBody ClientInput askForClientInput() {
+    public @ResponseBody ClientRegistrationInput askForClientInput() {
         LocalDateTime dateHeureInscription = LocalDateTime.of(2019,
                 Month.JULY, 29, 19, 30, 40);
-        return  new ClientInput("Blair", "Anthony", "tony.blair@mail.co.uk",
+        return  new ClientRegistrationInput("Blair", "Anthony", "tony.blair@mail.co.uk",
                 "yeah its me",
                 new PaysInput("GB","Grande-Bretagne"), dateHeureInscription);
     }

@@ -3,7 +3,7 @@ package com.ewan.apiplages.entity;
 import java.time.LocalDateTime;
 
 
-import com.ewan.apiplages.input.ClientInput;
+import com.ewan.apiplages.input.ClientRegistrationInput;
 import com.ewan.apiplages.output.ClientOutput;
 import com.ewan.apiplages.output.UtilisateurOutput;
 import jakarta.persistence.Column;
@@ -38,13 +38,13 @@ public class Client extends Utilisateur {
 
 
 
-    public Client(ClientInput clientInput,PasswordEncoder encoder) {
-        super(clientInput.nom(),
-                clientInput.prenom(),
-                clientInput.email(),
-                encoder.encode(clientInput.motDePasse()));
-        this.pays = new Pays(clientInput.paysInput());
-        this.dateHeureInscription = clientInput.dateHeureInscription();
+    public Client(ClientRegistrationInput clientRegistrationInput, PasswordEncoder encoder) {
+        super(clientRegistrationInput.nom(),
+                clientRegistrationInput.prenom(),
+                clientRegistrationInput.email(),
+                encoder.encode(clientRegistrationInput.motDePasse()));
+        this.pays = new Pays(clientRegistrationInput.paysInput());
+        this.dateHeureInscription = clientRegistrationInput.dateHeureInscription();
 
     }
 
@@ -56,7 +56,6 @@ public class Client extends Utilisateur {
 
     public UtilisateurOutput clientToUtilisateurOutput() {
         return new  UtilisateurOutput(
-                // champs communs à tous les utilisateurs
                 this.utilisateurId,this.nom,this.prenom,this.email,
                 this.pays.toOutput(),this.dateHeureInscription,
                 null

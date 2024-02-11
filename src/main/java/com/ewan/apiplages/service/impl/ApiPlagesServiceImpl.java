@@ -40,8 +40,8 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
 
     private final PasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public Long inscrireNouveauClient(ClientInput clientInput) {
-        Client client = new Client(clientInput,encoder);
+    public Long inscrireNouveauClient(ClientRegistrationInput clientRegistrationInput) {
+        Client client = new Client(clientRegistrationInput,encoder);
         clientDao.save(client);
         return client.getUtilisateurId();
     }
