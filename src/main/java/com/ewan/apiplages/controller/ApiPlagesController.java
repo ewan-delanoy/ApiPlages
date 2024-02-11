@@ -68,7 +68,7 @@ public class ApiPlagesController {
 
 
 
-    @GetMapping("/me")
+    @GetMapping("/about-me")
     public ResponseEntity<UtilisateurOutput> authenticatedUtilisateur() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -76,6 +76,13 @@ public class ApiPlagesController {
 
         return ResponseEntity.ok(apiPlagesService.getUtilisateurById(utilisateurId));
     }
+
+    @GetMapping("/utilisateurs/{id}")
+    public ResponseEntity<UtilisateurOutput> informationsUtilisateur(@PathVariable Long id) {
+        return ResponseEntity.ok(apiPlagesService.getUtilisateurById(id));
+    }
+
+
 
     @GetMapping("/ask-for-form-input")
     public @ResponseBody FormInput askForFormInput() {
