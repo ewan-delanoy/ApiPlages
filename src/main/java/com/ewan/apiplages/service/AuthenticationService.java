@@ -8,7 +8,7 @@ import com.ewan.apiplages.entity.Concessionnaire;
 import com.ewan.apiplages.entity.Utilisateur;
 import com.ewan.apiplages.input.ClientInput;
 import com.ewan.apiplages.input.ConcessionnaireInput;
-import com.ewan.apiplages.input.UtilisateurInput;
+import com.ewan.apiplages.input.LoginInput;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -49,7 +49,7 @@ public class AuthenticationService {
         return concessionnaireDao.save(concessionnaire);
     }
 
-    public Utilisateur authenticate(UtilisateurInput input) {
+    public Utilisateur authenticate(LoginInput input) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         input.email(),

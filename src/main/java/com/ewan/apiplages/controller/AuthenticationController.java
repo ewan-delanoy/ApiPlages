@@ -5,7 +5,7 @@ import com.ewan.apiplages.entity.Concessionnaire;
 import com.ewan.apiplages.entity.Utilisateur;
 import com.ewan.apiplages.input.ClientInput;
 import com.ewan.apiplages.input.ConcessionnaireInput;
-import com.ewan.apiplages.input.UtilisateurInput;
+import com.ewan.apiplages.input.LoginInput;
 import com.ewan.apiplages.output.LoginOutput;
 import com.ewan.apiplages.service.AuthenticationService;
 import com.ewan.apiplages.service.JwtService;
@@ -40,8 +40,8 @@ public class AuthenticationController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<LoginOutput> authenticate(@RequestBody UtilisateurInput utilisateurInput) {
-        Utilisateur authenticatedUtilisateur = authenticationService.authenticate(utilisateurInput);
+    public ResponseEntity<LoginOutput> authenticate(@RequestBody LoginInput loginInput) {
+        Utilisateur authenticatedUtilisateur = authenticationService.authenticate(loginInput);
 
         String jwtToken = jwtService.generateToken(authenticatedUtilisateur);
 
