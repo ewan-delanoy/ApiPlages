@@ -23,8 +23,6 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
     private final AffectationDao affectationDao;
     private final ClientDao clientDao;
 
-    private final ConcessionnaireDao concessionnaireDao;
-
     private final EmplacementDao emplacementDao;
     private final EquipementDao equipementDao;
 
@@ -110,13 +108,6 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         }
 
         return reservation.getReservationId();
-    }
-
-
-    public Long inscrireNouveauConcessionnaire(ConcessionnaireInput concessionnaireInput) {
-        Concessionnaire concessionnaire = new Concessionnaire(concessionnaireInput,encoder);
-        concessionnaireDao.save(concessionnaire);
-        return concessionnaire.getUtilisateurId();
     }
 
 
@@ -219,7 +210,6 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
 
     public ApiPlagesServiceImpl(AffectationDao affectationDao,
                                 ClientDao clientDao,
-                                ConcessionnaireDao concessionnaireDao,
                                 EmplacementDao emplacementDao,
                                 EquipementDao equipementDao,
                                 LienDeParenteDao lienDeParenteDao,
@@ -231,7 +221,6 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
                                 ) {
         this.affectationDao = affectationDao;
         this.clientDao = clientDao ;
-        this.concessionnaireDao = concessionnaireDao;
         this.emplacementDao = emplacementDao;
         this.equipementDao = equipementDao;
         this.lienDeParenteDao = lienDeParenteDao;

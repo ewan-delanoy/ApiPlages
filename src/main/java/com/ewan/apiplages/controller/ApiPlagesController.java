@@ -66,11 +66,7 @@ public class ApiPlagesController {
         return new ResponseEntity<>(newClientId, HttpStatus.CREATED);
     }
 
-    @PostMapping("/concessionnaires")
-    public ResponseEntity<Long> signUpNewManager(@RequestBody ConcessionnaireInput concessionnaireInput) {
-        Long newConcessionnaireId = apiPlagesService.inscrireNouveauConcessionnaire(concessionnaireInput);
-        return new ResponseEntity<>(newConcessionnaireId, HttpStatus.CREATED);
-    }
+
 
     @GetMapping("/me")
     public ResponseEntity<UtilisateurOutput> authenticatedUtilisateur() {
@@ -98,12 +94,6 @@ public class ApiPlagesController {
                 new PaysInput("GB","Grande-Bretagne"), dateHeureInscription);
     }
 
-    @GetMapping("/ask-for-manager-input")
-    public @ResponseBody ConcessionnaireInput askForManagerInput() {
-        return  new ConcessionnaireInput("Vega", "Suzanne",
-                "suzanne.vega@yahoo.us", "bookOfDreams",
-                "0674231569");
-    }
 
     @GetMapping("/ask-for-reservation-input")
     public @ResponseBody ReservationInput askForMReservationInput() {

@@ -19,7 +19,7 @@ public interface ApiPlagesService {
 
     // services utilisés par le concessionnaire
 
-    Long inscrireNouveauConcessionnaire(ConcessionnaireInput concessionnaireInput);
+
 
     TripleReservationOutput reservationsConcessionnaire (Long utilisateurId);
 

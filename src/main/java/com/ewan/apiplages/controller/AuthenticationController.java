@@ -1,10 +1,8 @@
 package com.ewan.apiplages.controller;
 
 import com.ewan.apiplages.entity.Client;
-import com.ewan.apiplages.entity.Concessionnaire;
 import com.ewan.apiplages.entity.Utilisateur;
 import com.ewan.apiplages.input.ClientRegistrationInput;
-import com.ewan.apiplages.input.ConcessionnaireInput;
 import com.ewan.apiplages.input.LoginInput;
 import com.ewan.apiplages.output.LoginOutput;
 import com.ewan.apiplages.service.AuthenticationService;
@@ -32,12 +30,6 @@ public class AuthenticationController {
         Client registeredCustomer = authenticationService.signupCustomer(clientRegistrationInput);
         return ResponseEntity.ok(registeredCustomer);
     }
-    @PostMapping("/signup-manager")
-    public ResponseEntity<Concessionnaire> registerManager(@RequestBody ConcessionnaireInput concessionnaireInput) {
-        Concessionnaire registeredManager = authenticationService.signupManager(concessionnaireInput);
-        return ResponseEntity.ok(registeredManager);
-    }
-
 
     @PostMapping("/login")
     public ResponseEntity<LoginOutput> authenticate(@RequestBody LoginInput loginInput) {
