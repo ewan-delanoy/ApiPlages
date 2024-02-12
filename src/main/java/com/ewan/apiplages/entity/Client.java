@@ -44,7 +44,7 @@ public class Client extends Utilisateur {
                 clientRegistrationInput.email(),
                 encoder.encode(clientRegistrationInput.motDePasse()));
         this.pays = new Pays(clientRegistrationInput.paysInput());
-        this.dateHeureInscription = clientRegistrationInput.dateHeureInscription();
+        this.dateHeureInscription = LocalDateTime.now();
 
     }
 

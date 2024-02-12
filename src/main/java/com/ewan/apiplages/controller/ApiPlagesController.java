@@ -16,8 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.List;
 
 @Controller
@@ -94,11 +92,11 @@ public class ApiPlagesController {
 
     @GetMapping("/ask-for-client-input")
     public @ResponseBody ClientRegistrationInput askForClientInput() {
-        LocalDateTime dateHeureInscription = LocalDateTime.of(2019,
-                Month.JULY, 29, 19, 30, 40);
+        // LocalDateTime dateHeureInscription = LocalDateTime.of(2019,
+        //        Month.JULY, 29, 19, 30, 40);
         return  new ClientRegistrationInput("Blair", "Anthony", "tony.blair@mail.co.uk",
                 "yeah its me",
-                new PaysInput("GB","Grande-Bretagne"), dateHeureInscription);
+                new PaysInput("GB","Grande-Bretagne"));
     }
 
 
