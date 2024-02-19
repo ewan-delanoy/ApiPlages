@@ -1,6 +1,7 @@
 package com.ewan.apiplages.entity;
 
 
+import com.ewan.apiplages.enumeration.TypeUtilisateurEnum;
 import com.ewan.apiplages.output.ConcessionnaireOutput;
 import com.ewan.apiplages.output.UtilisateurOutput;
 import jakarta.persistence.Entity;
@@ -24,7 +25,7 @@ public class Concessionnaire extends Utilisateur {
                 // champs communs à tous les utilisateurs
                 this.utilisateurId,this.nom,this.prenom,this.email,
                 null,null,
-                this.numeroDeTelephone
+                this.numeroDeTelephone, TypeUtilisateurEnum.CONCESSIONNAIRE.getNom()
         );
     }
 
