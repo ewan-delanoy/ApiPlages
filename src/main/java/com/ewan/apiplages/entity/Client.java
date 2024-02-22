@@ -7,10 +7,10 @@ import com.ewan.apiplages.enumeration.TypeUtilisateurEnum;
 import com.ewan.apiplages.input.ClientRegistrationInput;
 import com.ewan.apiplages.output.ClientOutput;
 import com.ewan.apiplages.output.UtilisateurOutput;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import com.ewan.apiplages.util.crypto.BCryptPasswordEncoder;
 
 
 @Entity
@@ -39,7 +39,7 @@ public class Client extends Utilisateur {
 
 
 
-    public Client(ClientRegistrationInput clientRegistrationInput, PasswordEncoder encoder) {
+    public Client(ClientRegistrationInput clientRegistrationInput, BCryptPasswordEncoder encoder) {
         super(clientRegistrationInput.nom(),
                 clientRegistrationInput.prenom(),
                 clientRegistrationInput.email(),

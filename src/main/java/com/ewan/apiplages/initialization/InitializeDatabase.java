@@ -7,8 +7,7 @@ import com.ewan.apiplages.enumeration.EquipementEnum;
 import com.ewan.apiplages.enumeration.LienDeParenteEnum;
 import com.ewan.apiplages.enumeration.StatutEnum;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.ewan.apiplages.util.crypto.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -30,7 +29,7 @@ public class InitializeDatabase implements CommandLineRunner {
     private final PlageDao plageDao;
     private final ReservationDao reservationDao;
     private final StatutDao statutDao;
-    private final PasswordEncoder encoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     private final List<Client> clientsEnregistres = new ArrayList<>();
     private final List<Concessionnaire> concessionnairesEnregistres = new ArrayList<>();
@@ -45,7 +44,7 @@ public class InitializeDatabase implements CommandLineRunner {
     @Override
     public void run(String...args)  {
 
-          runWhenActive(false);
+          runWhenActive(true);
 
     }
     public void runWhenActive(boolean is_active)  {
@@ -91,8 +90,8 @@ public class InitializeDatabase implements CommandLineRunner {
             Concessionnaire concessionnaire2 = new Concessionnaire(
                     "BULL", "John", "johnthebull@wanadoo.uk",
                     encoder.encode("87654321"), "0687654321");
-            concessionnaireDao.saveAll(List.of(concessionnaire1,concessionnaire2));
-            concessionnairesEnregistres.addAll(List.of(concessionnaire1,concessionnaire2));
+            concessionnaireDao.saveAll(Arrays.asList(concessionnaire1,concessionnaire2));
+            concessionnairesEnregistres.addAll(Arrays.asList(concessionnaire1,concessionnaire2));
         }
     }
     private void ajouterEmplacements() {
@@ -117,8 +116,8 @@ public class InitializeDatabase implements CommandLineRunner {
             Equipement equipement4 = new Equipement(EquipementEnum.UN_FAUTEUIL);
             Equipement equipement5 = new Equipement(EquipementEnum.DEUX_FAUTEUILS);
 
-            equipementDao.saveAll(List.of(equipement1,equipement2,equipement3, equipement4,equipement5));
-            equipementsEnregistres.addAll(List.of(equipement1,equipement2,equipement3, equipement4,equipement5));
+            equipementDao.saveAll(Arrays.asList(equipement1,equipement2,equipement3, equipement4,equipement5));
+            equipementsEnregistres.addAll(Arrays.asList(equipement1,equipement2,equipement3, equipement4,equipement5));
         }
     }
 
@@ -153,8 +152,8 @@ public class InitializeDatabase implements CommandLineRunner {
             Pays paysGB = new Pays("GB", "Royaume-Uni");
             Pays paysIT = new Pays("IT", "Italie");
             Pays paysPT = new Pays("PT", "Portugal");
-            paysDao.saveAll(List.of(paysFR,paysGB,paysIT,paysPT));
-            paysEnregistres.addAll(List.of(paysFR,paysGB,paysIT,paysPT));
+            paysDao.saveAll(Arrays.asList(paysFR,paysGB,paysIT,paysPT));
+            paysEnregistres.addAll(Arrays.asList(paysFR,paysGB,paysIT,paysPT));
         }
     }
 
@@ -185,7 +184,7 @@ public class InitializeDatabase implements CommandLineRunner {
         Affectation affectation1 = new Affectation(emplacement1,recupererEquipementEnregistre(1),reservation);
         Emplacement emplacement2 = emplacementDao.findByFileAndNumEmplacement(file1,(byte)(numEmplacement+1));
         Affectation affectation2 = new Affectation(emplacement2,recupererEquipementEnregistre(4),reservation);
-        affectationDao.saveAll(List.of(affectation1,affectation2));
+        affectationDao.saveAll(Arrays.asList(affectation1,affectation2));
 
     }
 

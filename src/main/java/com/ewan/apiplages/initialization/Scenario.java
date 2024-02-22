@@ -9,11 +9,11 @@ import com.ewan.apiplages.output.EmplacementOutput;
 import com.ewan.apiplages.output.PreparationFormulaireOutput;
 import com.ewan.apiplages.service.ApiPlagesService;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.ewan.apiplages.util.crypto.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -27,7 +27,7 @@ public class Scenario implements CommandLineRunner {
     private final PlageDao plageDao;
     private final ReservationDao reservationDao;
     private final StatutDao statutDao;
-    private final PasswordEncoder encoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     private final ApiPlagesService apiPlagesService;
 
@@ -58,10 +58,10 @@ public class Scenario implements CommandLineRunner {
        Long idx2 = emplacements.get(120).emplacementId();
        System.out.println("idx1 = " +idx1);
        System.out.println("idx2 = " +idx2);
-       List<AffectationInput> selections= List.of(
-               new AffectationInput(idx1,(byte)1,(byte)0),
-                new AffectationInput(idx2,(byte)0,(byte)1)
-        );
+       List<AffectationInput> selections= Arrays.asList(
+               new AffectationInput(idx1, (byte) 1, (byte) 0),
+               new AffectationInput(idx2, (byte) 0, (byte) 1)
+       );
        ReservationInput reservationInput=new ReservationInput(clientId,plageId,selections,dateDebut,dateFin,aucunLien);
        // Long newResId =apiPlagesService.effectuerReservation(reservationInput);
        // System.out.println("newResId = " +newResId);

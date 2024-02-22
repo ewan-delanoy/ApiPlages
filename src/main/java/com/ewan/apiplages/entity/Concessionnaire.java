@@ -4,7 +4,7 @@ package com.ewan.apiplages.entity;
 import com.ewan.apiplages.enumeration.TypeUtilisateurEnum;
 import com.ewan.apiplages.output.ConcessionnaireOutput;
 import com.ewan.apiplages.output.UtilisateurOutput;
-import jakarta.persistence.Entity;
+import javax.persistence.Entity;
 
 
 @Entity

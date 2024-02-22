@@ -2,19 +2,20 @@ package com.ewan.apiplages.service.impl;
 
 import com.ewan.apiplages.dao.*;
 import com.ewan.apiplages.entity.*;
+import com.ewan.apiplages.enumeration.LoginErrorEnum;
 import com.ewan.apiplages.enumeration.StatutEnum;
 import com.ewan.apiplages.input.*;
 import com.ewan.apiplages.output.*;
 import com.ewan.apiplages.service.ApiPlagesService;
-import com.ewan.apiplages.util.UtilisateurUtil;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.ewan.apiplages.util.Util;
+import com.ewan.apiplages.util.crypto.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -36,7 +37,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
 
     private final UtilisateurDao utilisateurDao;
 
-    private final PasswordEncoder encoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public Long inscrireNouveauClient(ClientRegistrationInput clientRegistrationInput) {
         Client client = new Client(clientRegistrationInput,encoder);
@@ -59,7 +60,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         Long plageId = fInput.plageId();
         LocalDate dateDebut = fInput.dateDebut();
         LocalDate dateFin = fInput.dateFin();
-        Plage plage = plageDao.getReferenceById(plageId);
+        Plage plage = plageDao.findByPlageId(plageId);
         List<Long> idsOccupes = emplacementDao.idsDesEmplacementsOccupes(plage,dateDebut,dateFin);
         List<Emplacement> emplacements = emplacementDao.findByFilePlagePlageId(plageId);
         List<EmplacementOutput> emplacementsDisponibles = new ArrayList<>();
@@ -131,16 +132,33 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
     }
 
     public UtilisateurOutput getUtilisateurById(Long utilisateurId) {
-        return UtilisateurUtil.toOutput(utilisateurDao.findByUtilisateurId(utilisateurId));
+        return Util.utilisateurOutput(utilisateurDao.findByUtilisateurId(utilisateurId));
+    }
+
+    public LoginOutput connecterUtilisateur(LoginInput loginInput) {
+        Optional<Utilisateur> utilisateurOptional = utilisateurDao.findByEmail(loginInput.email());
+        if(utilisateurOptional.isPresent()) {
+            Utilisateur utilisateur = utilisateurOptional.get();
+
+
+            if (encoder.matches(loginInput.motDePasse(),utilisateur.getMotDePasse())) {
+                return Util.loginOutputSucces(utilisateur);
+            } else {
+                return Util.loginOutputEchec(LoginErrorEnum.MAUVAIS_MOT_DE_PASSE);
+            }
+        }
+
+        return Util.loginOutputEchec(LoginErrorEnum.MAUVAIS_EMAIL);
+
     }
 
     private List<ReservationOutput> reservationsClientAvecStatut (Long clientId, StatutEnum statutEnum) {
         List<Object> listeDePaires= reservationDao.affectationsPourClient(clientId,  statutEnum.getNom());
-        return this.extraireReservations(listeDePaires);
+        return this.extraireReservationsOutput(listeDePaires);
     }
     private List<ReservationOutput> reservationsConcessionnaireAvecStatut (Long clientId, StatutEnum statutEnum) {
         List<Object> listeDePaires= reservationDao.affectationsPourConcessionnaire(clientId,  statutEnum.getNom());
-        return this.extraireReservations(listeDePaires);
+        return this.extraireReservationsOutput(listeDePaires);
 
     }
 
@@ -187,7 +205,18 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         return affectations;
     }
 
-    private List<ReservationOutput> extraireReservations(List<Object> listeDePaires) {
+    private List<ReservationOutput> extraireReservationsOutput(List<Object> listeDePaires) {
+        List<Reservation> reservations = extraireReservations(listeDePaires);
+        List<ReservationOutput>  reservationsOutput = new ArrayList<>();
+        for (Reservation reservation : reservations) {
+            List<Affectation> affectations = extraireAffectations(reservation.getReservationId(),listeDePaires);
+            reservationsOutput.add(reservation.toOutput(affectations));
+        }
+        return reservationsOutput;
+
+    }
+
+    private static List<Reservation> extraireReservations(List<Object> listeDePaires) {
         List<Reservation>  reservations = new ArrayList<>();
         List<Long> idsDejaTrouves = new ArrayList<>();
         for(Object paire: listeDePaires) {
@@ -199,13 +228,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
                 idsDejaTrouves.add(reservationId);
             }
         }
-        List<ReservationOutput>  reservationsOutput = new ArrayList<>();
-        for (Reservation reservation : reservations) {
-            List<Affectation> affectations = extraireAffectations(reservation.getReservationId(),listeDePaires);
-            reservationsOutput.add(reservation.toOutput(affectations));
-        }
-        return reservationsOutput;
-
+        return reservations;
     }
 
     public ApiPlagesServiceImpl(AffectationDao affectationDao,

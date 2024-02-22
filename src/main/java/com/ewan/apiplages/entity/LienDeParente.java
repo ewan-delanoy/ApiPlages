@@ -2,10 +2,10 @@ package com.ewan.apiplages.entity;
 
 import com.ewan.apiplages.enumeration.LienDeParenteEnum;
 import com.ewan.apiplages.output.LienDeParenteOutput;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 
 @Entity

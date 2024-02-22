@@ -18,23 +18,26 @@ public enum EquipementEnum {
         return nom;
     }
     public byte getNbDeLits() {
-        return switch (this) {
-            case UN_LIT -> 1;
-            case DEUX_LITS -> 2;
-            case UN_LIT_UN_FAUTEUIL -> 1;
-            case UN_FAUTEUIL -> 0;
-            case DEUX_FAUTEUILS -> 0;
-        };
+        switch (this) {
+            case UN_LIT : return 1;
+            case DEUX_LITS : return 2;
+            case UN_LIT_UN_FAUTEUIL : return 1;
+            case UN_FAUTEUIL : return 0;
+            case DEUX_FAUTEUILS : return 0;
+        }
+        return 3;
+
     }
 
     public byte getNbDeFauteuils() {
-        return switch (this) {
-            case UN_LIT -> 0;
-            case DEUX_LITS -> 0;
-            case UN_LIT_UN_FAUTEUIL -> 1;
-            case UN_FAUTEUIL -> 1;
-            case DEUX_FAUTEUILS -> 2;
-        };
+        switch (this) {
+            case UN_LIT : return 0;
+            case DEUX_LITS : return 0;
+            case UN_LIT_UN_FAUTEUIL : return 1;
+            case UN_FAUTEUIL : return 1;
+            case DEUX_FAUTEUILS : return 2;
+        }
+        return 3;
     }
 
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 
 import com.ewan.apiplages.output.*;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 
 import org.springframework.format.annotation.DateTimeFormat;

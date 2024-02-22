@@ -15,11 +15,12 @@ public enum LienDeParenteEnum {
         return nom;
     }
     public float getCoefficient() {
-        return switch (this) {
-            case FRERE_SOEUR -> 0.5f;
-            case COUSIN_E -> 0.75f;
-            case AUCUN_LIEN -> 1f;
-        };
+        switch (this) {
+            case FRERE_SOEUR : return 0.5f;
+            case COUSIN_E : return 0.75f;
+            case AUCUN_LIEN : return 1f;
+        }
+        return 0f;
     }
 
 }

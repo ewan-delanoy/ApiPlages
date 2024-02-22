@@ -1,24 +1,25 @@
 package com.ewan.apiplages.controller;
 
 
-import com.ewan.apiplages.entity.Utilisateur;
 import com.ewan.apiplages.enumeration.LienDeParenteEnum;
 import com.ewan.apiplages.input.*;
+import com.ewan.apiplages.output.LoginOutput;
 import com.ewan.apiplages.output.PreparationFormulaireOutput;
 import com.ewan.apiplages.output.TripleReservationOutput;
 import com.ewan.apiplages.output.UtilisateurOutput;
 import com.ewan.apiplages.service.ApiPlagesService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
+// @CrossOrigin
+@RequestMapping("/api")
 public class ApiPlagesController {
 
     public ApiPlagesService apiPlagesService;
@@ -27,7 +28,7 @@ public class ApiPlagesController {
         this.apiPlagesService = apiPlagesService;
     }
 
-    @PostMapping("/clients/{id}/reservation")
+    @PostMapping("/clients/reservation")
     public ResponseEntity<Long> createReservation(@RequestBody ReservationInput reservationInput) {
         Long newReservationId = apiPlagesService.effectuerReservation(reservationInput);
         return new ResponseEntity<>(newReservationId, HttpStatus.CREATED);
@@ -38,13 +39,13 @@ public class ApiPlagesController {
         return new ResponseEntity<>(apiPlagesService.reservationsClient(id), HttpStatus.FOUND);
     }
 
-    @DeleteMapping("/clients/{id}/reservations/{rid}")
+    @DeleteMapping("/clients/reservations/{rid}")
     public @ResponseBody ResponseEntity<Boolean> supprimerReservation(@PathVariable Long rid) {
         apiPlagesService.supprimerReservation(rid);
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
-    @PostMapping("/clients/{id}/form-data")
+    @PostMapping("/clients/form-data")
     public @ResponseBody ResponseEntity<PreparationFormulaireOutput> preparerFormulaire(@RequestBody FormInput formInput) {
         return new ResponseEntity<>(apiPlagesService.preparerFormulaire(formInput), HttpStatus.FOUND);
     }
@@ -59,20 +60,9 @@ public class ApiPlagesController {
         return new ResponseEntity<>(true, HttpStatus.ACCEPTED);
     }
     @PostMapping("/clients")
-    public ResponseEntity<Long> signUpNewCustomer(@RequestBody ClientRegistrationInput clientRegistrationInput) {
+    public ResponseEntity<Long> inscrireNouveauClient(@RequestBody ClientRegistrationInput clientRegistrationInput) {
         Long newClientId = apiPlagesService.inscrireNouveauClient(clientRegistrationInput);
         return new ResponseEntity<>(newClientId, HttpStatus.CREATED);
-    }
-
-
-
-    @GetMapping("/about-me")
-    public ResponseEntity<UtilisateurOutput> authenticatedUtilisateur() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-       Long utilisateurId = ((Utilisateur) authentication.getPrincipal()).getUtilisateurId();
-
-        return ResponseEntity.ok(apiPlagesService.getUtilisateurById(utilisateurId));
     }
 
     @GetMapping("/utilisateurs/{id}")
@@ -81,6 +71,10 @@ public class ApiPlagesController {
     }
 
 
+    @PostMapping("/connexion")
+    public @ResponseBody ResponseEntity<LoginOutput> connecterUtilisateur(@RequestBody LoginInput loginInput) {
+        return new ResponseEntity<>(apiPlagesService.connecterUtilisateur(loginInput), HttpStatus.FOUND);
+    }
 
     @GetMapping("/ask-for-form-input")
     public @ResponseBody FormInput askForFormInput() {
@@ -104,7 +98,7 @@ public class ApiPlagesController {
     public @ResponseBody ReservationInput askForMReservationInput() {
         Long clientId = 5L;
         Long plageId = 1L;
-        List<AffectationInput> affectations= List.of(
+        List<AffectationInput> affectations= Arrays.asList(
                 new AffectationInput(60L,(byte)1,(byte)0),
                 new AffectationInput(120L,(byte)0,(byte)1)
         );
