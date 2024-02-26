@@ -14,8 +14,8 @@ public class ConcessionnaireOutput {
         this.numeroDeTelephone = numeroDeTelephone;
     }
 
-    public String nom() { return this.nom ; }
-    public String prenom() { return this.prenom ; }
-    public String email() { return this.email ; }
-    public String numeroDeTelephone() { return this.numeroDeTelephone ; }
+    public String getNom() { return this.nom ; }
+    public String getPrenom() { return this.prenom ; }
+    public String getEmail() { return this.email ; }
+    public String getNumeroDeTelephone() { return this.numeroDeTelephone ; }
 }

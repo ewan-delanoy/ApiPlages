@@ -9,6 +9,6 @@ public class PaysOutput {
         this.code = code ;
         this.nom = nom ;
     }
-    public String code() { return this.code; }
-    public String nom() {return this.nom; }
+    public String getCode() { return this.code; }
+    public String getNom() {return this.nom; }
 }

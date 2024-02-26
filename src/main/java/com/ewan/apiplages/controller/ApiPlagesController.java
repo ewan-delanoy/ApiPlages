@@ -73,7 +73,8 @@ public class ApiPlagesController {
 
     @PostMapping("/connexion")
     public @ResponseBody ResponseEntity<LoginOutput> connecterUtilisateur(@RequestBody LoginInput loginInput) {
-        return new ResponseEntity<>(apiPlagesService.connecterUtilisateur(loginInput), HttpStatus.FOUND);
+        LoginOutput resultat = apiPlagesService.connecterUtilisateur(loginInput);
+          return new ResponseEntity<>(resultat, HttpStatus.FOUND);
     }
 
     @GetMapping("/ask-for-form-input")

@@ -51,11 +51,11 @@ public class Scenario implements CommandLineRunner {
        LocalDate dateFin = LocalDate.of(2020, 6, 19);
        FormInput formInput = new FormInput(plageId, dateDebut, dateFin);
        PreparationFormulaireOutput prep = apiPlagesService.preparerFormulaire(formInput);
-       List<EmplacementOutput> emplacements = prep.emplacements();
+       List<EmplacementOutput> emplacements = prep.getEmplacements();
        System.out.println("Nb d'emplacements : " + emplacements.size());
        // System.out.println("P : " +prep.toString());
-       Long idx1 = emplacements.get(60).emplacementId();
-       Long idx2 = emplacements.get(120).emplacementId();
+       Long idx1 = emplacements.get(60).getEmplacementId();
+       Long idx2 = emplacements.get(120).getEmplacementId();
        System.out.println("idx1 = " +idx1);
        System.out.println("idx2 = " +idx2);
        List<AffectationInput> selections= Arrays.asList(

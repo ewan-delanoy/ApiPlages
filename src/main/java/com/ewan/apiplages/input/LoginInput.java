@@ -11,6 +11,6 @@ public class LoginInput {
         this.motDePasse = motDePasse;
     }
 
-    public String email() { return this.email ; }
-    public String motDePasse() { return this.motDePasse ; }
+    public String getEmail() { return this.email ; }
+    public String getMotDePasse() { return this.motDePasse ; }
 }

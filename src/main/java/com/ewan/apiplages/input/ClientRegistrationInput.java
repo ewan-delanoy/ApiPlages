@@ -17,10 +17,10 @@ public class ClientRegistrationInput {
        
     }
 
-    public String nom() { return this.nom ; }
-    public String prenom() { return this.prenom ; }
-    public String email() { return this.email ; }
-    public String motDePasse() { return this.motDePasse ; }
-    public PaysInput paysInput() { return this.paysInput ; }
+    public String getNom() { return this.nom ; }
+    public String getPrenom() { return this.prenom ; }
+    public String getEmail() { return this.email ; }
+    public String getMotDePasse() { return this.motDePasse ; }
+    public PaysInput getPaysInput() { return this.paysInput ; }
 
 }

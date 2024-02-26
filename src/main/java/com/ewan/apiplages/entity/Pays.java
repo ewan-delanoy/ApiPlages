@@ -43,8 +43,8 @@ public class Pays {
 
     public Pays(PaysInput paysInput) {
 
-        this.code = paysInput.code();
-        this.nom =  paysInput.nom();
+        this.code = paysInput.getCode();
+        this.nom =  paysInput.getNom();
 
     }
 

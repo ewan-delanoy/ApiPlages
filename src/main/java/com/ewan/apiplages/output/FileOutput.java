@@ -10,6 +10,6 @@ public class FileOutput {
         this.prixJournalier = prixJournalier;  
     }
 
-    public byte numero() { return this.numero ; }
-    public double prixJournalier() { return this.prixJournalier ; }
+    public byte getNumero() { return this.numero ; }
+    public double getPrixJournalier() { return this.prixJournalier ; }
 }

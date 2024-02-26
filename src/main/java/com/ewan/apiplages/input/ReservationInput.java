@@ -25,12 +25,12 @@ public class ReservationInput {
         this.lienDeParenteNom = lienDeParenteNom;
     }
 
-    public Long clientId() { return this.clientId ; }
-    public Long plageId() { return this.plageId ; }
-    public List<AffectationInput> affectations() { return this.affectations ; }
-    public LocalDate dateDebut() { return this.dateDebut ; }
-    public LocalDate dateFin() { return this.dateFin ; }
-    public String lienDeParenteNom() { return this.lienDeParenteNom ; }
+    public Long getClientId() { return this.clientId ; }
+    public Long getPlageId() { return this.plageId ; }
+    public List<AffectationInput> getAffectations() { return this.affectations ; }
+    public LocalDate getDateDebut() { return this.dateDebut ; }
+    public LocalDate getDateFin() { return this.dateFin ; }
+    public String getLienDeParenteNom() { return this.lienDeParenteNom ; }
                               
 
 }

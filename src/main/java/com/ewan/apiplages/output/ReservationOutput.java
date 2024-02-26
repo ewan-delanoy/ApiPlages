@@ -20,10 +20,10 @@ public class ReservationOutput {
         this.statutNom = statutNom;
     }
     
-    public List<AffectationOutput> affectations() { return this.affectations ; }
-    public ClientOutput client() { return this.client ; }
-    public PlageOutput plage() { return this.plage ; }
-    public LienDeParenteOutput lienDeParente() { return this.lienDeParente ; }
-    public String statutNom() { return this.statutNom ; }
+    public List<AffectationOutput> getAffectations() { return this.affectations ; }
+    public ClientOutput getClient() { return this.client ; }
+    public PlageOutput getPlage() { return this.plage ; }
+    public LienDeParenteOutput getLienDeParente() { return this.lienDeParente ; }
+    public String getStatutNom() { return this.statutNom ; }
 
 }

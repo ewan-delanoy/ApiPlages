@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 
 @SpringBootApplication
-public class ApiPlagesApplication {
+public class   ApiPlagesApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ApiPlagesApplication.class, args);

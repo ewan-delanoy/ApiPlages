@@ -12,7 +12,7 @@ public class PlageOutput {
         this.concessionnaire = concessionnaire;
     }
 
-    public Long plageId() { return this.plageId ; }
-    public String nom() { return this.nom ; }
-    public ConcessionnaireOutput concessionnaire() { return this.concessionnaire ; }
+    public Long getPlageId() { return this.plageId ; }
+    public String getNom() { return this.nom ; }
+    public ConcessionnaireOutput getConcessionnaire() { return this.concessionnaire ; }
 }

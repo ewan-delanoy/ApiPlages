@@ -16,7 +16,7 @@ public class TripleReservationOutput {
         this.refusees = refusees;
     }
 
-    public List<ReservationOutput> enAttente() { return this.enAttente ; }
-    public List<ReservationOutput> acceptees() { return this.acceptees ; }
-    public List<ReservationOutput> refusees() { return this.refusees ; }
+    public List<ReservationOutput> getEnAttente() { return this.enAttente ; }
+    public List<ReservationOutput> getAcceptees() { return this.acceptees ; }
+    public List<ReservationOutput> getRefusees() { return this.refusees ; }
 }

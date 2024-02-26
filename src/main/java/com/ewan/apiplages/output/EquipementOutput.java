@@ -11,6 +11,6 @@ public class EquipementOutput {
         
     }
 
-    public byte nbDeLits() {return this.nbDeLits; }
-    public byte nbDeFauteuils() {return this.nbDeFauteuils; }
+    public byte getNbDeLits() {return this.nbDeLits; }
+    public byte getNbDeFauteuils() {return this.nbDeFauteuils; }
 }

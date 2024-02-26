@@ -40,11 +40,11 @@ public class Client extends Utilisateur {
 
 
     public Client(ClientRegistrationInput clientRegistrationInput, BCryptPasswordEncoder encoder) {
-        super(clientRegistrationInput.nom(),
-                clientRegistrationInput.prenom(),
-                clientRegistrationInput.email(),
-                encoder.encode(clientRegistrationInput.motDePasse()));
-        this.pays = new Pays(clientRegistrationInput.paysInput());
+        super(clientRegistrationInput.getNom(),
+                clientRegistrationInput.getPrenom(),
+                clientRegistrationInput.getEmail(),
+                encoder.encode(clientRegistrationInput.getMotDePasse()));
+        this.pays = new Pays(clientRegistrationInput.getPaysInput());
         this.dateHeureInscription = LocalDateTime.now();
 
     }

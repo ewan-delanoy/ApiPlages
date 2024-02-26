@@ -12,7 +12,7 @@ public class EmplacementOutput {
         this.numeroFile = numeroFile;
     }
 
-    public Long emplacementId() { return this. emplacementId; }
-    public byte numEmplacement() { return this.numEmplacement ; }
-    public byte numeroFile() { return this.numeroFile ; }
+    public Long getEmplacementId() { return this. emplacementId; }
+    public byte getNumEmplacement() { return this.numEmplacement ; }
+    public byte getNumeroFile() { return this.numeroFile ; }
 }

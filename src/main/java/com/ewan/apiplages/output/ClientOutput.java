@@ -21,9 +21,9 @@ public class ClientOutput {
         
     }
 
-    public String nom() { return this.nom ; }
-    public String prenom() { return this.prenom ; }
-    public String email() { return this.email ; }
-    public PaysOutput pays() { return this.pays ; }
-    public LocalDateTime dateHeureInscription() { return this.dateHeureInscription ; }                        
+    public String getNom() { return this.nom ; }
+    public String getPrenom() { return this.prenom ; }
+    public String getEmail() { return this.email ; }
+    public PaysOutput getPays() { return this.pays ; }
+    public LocalDateTime getDateHeureInscription() { return this.dateHeureInscription ; }
 }

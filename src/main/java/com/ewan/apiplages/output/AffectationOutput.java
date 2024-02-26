@@ -16,9 +16,9 @@ public class AffectationOutput {
         
     }
 
-    public byte numeroFile() { return this.numeroFile ; }
-    public double prixJournalierFile() { return this.prixJournalierFile ; }
-    public byte numEmplacement() { return this.numEmplacement ; }
-    public byte nbDeLits() {return this.nbDeLits; }
-    public byte nbDeFauteuils() {return this.nbDeFauteuils; }
+    public byte getNumeroFile() { return this.numeroFile ; }
+    public double getPrixJournalierFile() { return this.prixJournalierFile ; }
+    public byte getNumEmplacement() { return this.numEmplacement ; }
+    public byte getNbDeLits() {return this.nbDeLits; }
+    public byte getNbDeFauteuils() {return this.nbDeFauteuils; }
 }

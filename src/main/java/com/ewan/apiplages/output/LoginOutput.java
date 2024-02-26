@@ -12,6 +12,6 @@ public class LoginOutput {
         this.utilisateurConnecte = utilisateurConnecte;
     }
 
-    public byte codeErreur() { return this.codeErreur ; }
-    public UtilisateurOutput utilisateurConnecte() { return this.utilisateurConnecte ; }
+    public byte getCodeErreur() { return this.codeErreur ; }
+    public UtilisateurOutput getUtilisateurConnecte() { return this.utilisateurConnecte ; }
 }

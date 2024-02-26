@@ -10,6 +10,6 @@ public class LienDeParenteOutput {
         this.coefficient = coefficient;
     }
 
-    public String nom() { return this.nom ; }
-    public float coefficient() { return this.coefficient ; }
+    public String getNom() { return this.nom ; }
+    public float getCoefficient() { return this.coefficient ; }
 }

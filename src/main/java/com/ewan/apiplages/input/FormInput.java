@@ -14,8 +14,8 @@ public class FormInput {
         this.dateFin = dateFin;
     }
 
-    public Long plageId() { return this.plageId ; }
-    public LocalDate dateDebut() { return this.dateDebut ; }
-    public LocalDate dateFin() { return this.dateFin ; }
+    public Long getPlageId() { return this.plageId ; }
+    public LocalDate getDateDebut() { return this.dateDebut ; }
+    public LocalDate getDateFin() { return this.dateFin ; }
 
 }

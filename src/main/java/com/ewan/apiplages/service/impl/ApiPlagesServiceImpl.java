@@ -57,9 +57,9 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
 
 
     public PreparationFormulaireOutput preparerFormulaire(FormInput fInput) {
-        Long plageId = fInput.plageId();
-        LocalDate dateDebut = fInput.dateDebut();
-        LocalDate dateFin = fInput.dateFin();
+        Long plageId = fInput.getPlageId();
+        LocalDate dateDebut = fInput.getDateDebut();
+        LocalDate dateFin = fInput.getDateFin();
         Plage plage = plageDao.findByPlageId(plageId);
         List<Long> idsOccupes = emplacementDao.idsDesEmplacementsOccupes(plage,dateDebut,dateFin);
         List<Emplacement> emplacements = emplacementDao.findByFilePlagePlageId(plageId);
@@ -82,11 +82,11 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
     public Long effectuerReservation(ReservationInput reservationInput)
     {
        // Extraire les parametres de l'input
-        Long clientId = reservationInput.clientId();
-        List<AffectationInput> affectationsInput=reservationInput.affectations();
-        LocalDate dateDebut = reservationInput.dateDebut();
-        LocalDate dateFin = reservationInput.dateFin();
-        String lienDeParenteNom = reservationInput.lienDeParenteNom();
+        Long clientId = reservationInput.getClientId();
+        List<AffectationInput> affectationsInput=reservationInput.getAffectations();
+        LocalDate dateDebut = reservationInput.getDateDebut();
+        LocalDate dateFin = reservationInput.getDateFin();
+        String lienDeParenteNom = reservationInput.getLienDeParenteNom();
 
         Statut enAttente = statutDao.findByNom(StatutEnum.EN_ATTENTE.getNom());
         Client client = clientDao.findByUtilisateurId(clientId);
@@ -99,9 +99,9 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         reservationDao.save(reservation);
 
         for (AffectationInput affectationInput : affectationsInput) {
-            Emplacement emplacement = emplacementDao.findByEmplacementId(affectationInput.emplacementId());
+            Emplacement emplacement = emplacementDao.findByEmplacementId(affectationInput.getEmplacementId());
             Equipement equipement = equipementDao.findByNbDeLitsAndNbDeFauteuils
-                    (affectationInput.nbDeLits(),affectationInput.nbDeFauteuils());
+                    (affectationInput.getNbDeLits(),affectationInput.getNbDeFauteuils());
             Affectation affectation = new Affectation(
                     emplacement,equipement,reservation
             );
@@ -136,12 +136,12 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
     }
 
     public LoginOutput connecterUtilisateur(LoginInput loginInput) {
-        Optional<Utilisateur> utilisateurOptional = utilisateurDao.findByEmail(loginInput.email());
+        Optional<Utilisateur> utilisateurOptional = utilisateurDao.findByEmail(loginInput.getEmail());
         if(utilisateurOptional.isPresent()) {
             Utilisateur utilisateur = utilisateurOptional.get();
 
 
-            if (encoder.matches(loginInput.motDePasse(),utilisateur.getMotDePasse())) {
+            if (encoder.matches(loginInput.getMotDePasse(),utilisateur.getMotDePasse())) {
                 return Util.loginOutputSucces(utilisateur);
             } else {
                 return Util.loginOutputEchec(LoginErrorEnum.MAUVAIS_MOT_DE_PASSE);

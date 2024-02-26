@@ -13,9 +13,9 @@ public class AffectationInput {
         this.nbDeLits = nbDeLits ;
         this.nbDeFauteuils = nbDeFauteuils ;
     }
-    public Long emplacementId() { return this.emplacementId; }
-    public byte nbDeLits() {return this.nbDeLits; }
-    public byte nbDeFauteuils() {return this.nbDeFauteuils; }
+    public Long getEmplacementId() { return this.emplacementId; }
+    public byte getNbDeLits() {return this.nbDeLits; }
+    public byte getNbDeFauteuils() {return this.nbDeFauteuils; }
 
 
 }

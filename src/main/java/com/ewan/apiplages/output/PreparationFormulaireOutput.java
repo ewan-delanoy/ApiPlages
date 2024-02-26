@@ -16,9 +16,9 @@ public class PreparationFormulaireOutput {
         this.paysEnvisageables = paysEnvisageables;
     }
 
-    public List<EmplacementOutput> emplacements() { return this.emplacements; }
-    public List<EquipementOutput> equipements() { return this.equipements; }
-    public List<LienDeParenteOutput> liensDeParente() {return this.liensDeParente; }
-    public List<PaysOutput> paysEnvisageables () {return this.paysEnvisageables; }
+    public List<EmplacementOutput> getEmplacements() { return this.emplacements; }
+    public List<EquipementOutput> getEquipements() { return this.equipements; }
+    public List<LienDeParenteOutput> getLiensDeParente() {return this.liensDeParente; }
+    public List<PaysOutput> getPaysEnvisageables () {return this.paysEnvisageables; }
 
 }
