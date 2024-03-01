@@ -1,6 +1,7 @@
 package com.ewan.apiplages.initialization;
 
 import com.ewan.apiplages.dao.*;
+import com.ewan.apiplages.entity.Client;
 import com.ewan.apiplages.enumeration.LienDeParenteEnum;
 import com.ewan.apiplages.input.FormInput;
 import com.ewan.apiplages.input.ReservationInput;
@@ -39,10 +40,10 @@ public class Scenario implements CommandLineRunner {
         }
     }
     public void runWhenActive(String...args)  {
-       /*
+
         List<Client> clients = clientDao.findAll();
         System.out.println(clients);
-        */
+
 
        Long clientId = 5L;
        Long plageId = 1L;
@@ -51,11 +52,11 @@ public class Scenario implements CommandLineRunner {
        LocalDate dateFin = LocalDate.of(2020, 6, 19);
        FormInput formInput = new FormInput(plageId, dateDebut, dateFin);
        PreparationFormulaireOutput prep = apiPlagesService.preparerFormulaire(formInput);
-       List<EmplacementOutput> emplacements = prep.getEmplacements();
+       List<EmplacementOutput> emplacements = prep.emplacements();
        System.out.println("Nb d'emplacements : " + emplacements.size());
        // System.out.println("P : " +prep.toString());
-       Long idx1 = emplacements.get(60).getEmplacementId();
-       Long idx2 = emplacements.get(120).getEmplacementId();
+       Long idx1 = emplacements.get(60).emplacementId();
+       Long idx2 = emplacements.get(120).emplacementId();
        System.out.println("idx1 = " +idx1);
        System.out.println("idx2 = " +idx2);
        List<AffectationInput> selections= Arrays.asList(

@@ -7,9 +7,9 @@ import com.ewan.apiplages.enumeration.TypeUtilisateurEnum;
 import com.ewan.apiplages.input.ClientRegistrationInput;
 import com.ewan.apiplages.output.ClientOutput;
 import com.ewan.apiplages.output.UtilisateurOutput;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import com.ewan.apiplages.util.crypto.BCryptPasswordEncoder;
 
 
@@ -40,11 +40,11 @@ public class Client extends Utilisateur {
 
 
     public Client(ClientRegistrationInput clientRegistrationInput, BCryptPasswordEncoder encoder) {
-        super(clientRegistrationInput.getNom(),
-                clientRegistrationInput.getPrenom(),
-                clientRegistrationInput.getEmail(),
-                encoder.encode(clientRegistrationInput.getMotDePasse()));
-        this.pays = new Pays(clientRegistrationInput.getPaysInput());
+        super(clientRegistrationInput.nom(),
+                clientRegistrationInput.prenom(),
+                clientRegistrationInput.email(),
+                encoder.encode(clientRegistrationInput.motDePasse()));
+        this.pays = new Pays(clientRegistrationInput.paysInput());
         this.dateHeureInscription = LocalDateTime.now();
 
     }

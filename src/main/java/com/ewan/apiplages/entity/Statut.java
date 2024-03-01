@@ -1,9 +1,9 @@
 package com.ewan.apiplages.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 
 @Entity
@@ -24,6 +24,6 @@ public class Statut {
         super() ;
         this.nom = nom;
     }
-    public Long getStatutId() { return this.statutId; }
+
     public String getNom() { return this.nom; }
 }	

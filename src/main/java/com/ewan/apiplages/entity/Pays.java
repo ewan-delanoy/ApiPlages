@@ -5,12 +5,12 @@ import java.util.List;
 
 import com.ewan.apiplages.input.PaysInput;
 import com.ewan.apiplages.output.PaysOutput;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -27,10 +27,10 @@ public class Pays {
     private String nom;
 
 
-    @OneToMany(mappedBy="pays", fetch=FetchType.EAGER, cascade = CascadeType.REMOVE)
+    // @OneToMany(mappedBy="pays", fetch=FetchType.EAGER, cascade = CascadeType.REMOVE)
     // @ToString.Exclude
-    @JsonIgnore
-    private List<Client> clients;
+    // @JsonIgnore
+    // private List<Client> clients;
 
     // No-args constructor demandé par JPA
     protected Pays() {
@@ -43,8 +43,8 @@ public class Pays {
 
     public Pays(PaysInput paysInput) {
 
-        this.code = paysInput.getCode();
-        this.nom =  paysInput.getNom();
+        this.code = paysInput.code();
+        this.nom =  paysInput.nom();
 
     }
 
@@ -52,6 +52,6 @@ public class Pays {
         return new PaysOutput(this.code,this.nom);
     }
 
-    public String getCode() { return this.code; }
+
     public String getNom() { return this.nom; }
 }

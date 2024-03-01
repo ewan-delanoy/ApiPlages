@@ -31,12 +31,12 @@ public class ApiPlagesController {
     @PostMapping("/clients/reservation")
     public ResponseEntity<Long> createReservation(@RequestBody ReservationInput reservationInput) {
         Long newReservationId = apiPlagesService.effectuerReservation(reservationInput);
-        return new ResponseEntity<>(newReservationId, HttpStatus.CREATED);
+        return new ResponseEntity<>(newReservationId, HttpStatus.OK);
     }
 
     @GetMapping("/clients/{id}/reservations")
     public @ResponseBody ResponseEntity<TripleReservationOutput> reservationsClient(@PathVariable Long id) {
-        return new ResponseEntity<>(apiPlagesService.reservationsClient(id), HttpStatus.FOUND);
+        return new ResponseEntity<>(apiPlagesService.reservationsClient(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/clients/reservations/{rid}")
@@ -47,22 +47,22 @@ public class ApiPlagesController {
 
     @PostMapping("/clients/form-data")
     public @ResponseBody ResponseEntity<PreparationFormulaireOutput> preparerFormulaire(@RequestBody FormInput formInput) {
-        return new ResponseEntity<>(apiPlagesService.preparerFormulaire(formInput), HttpStatus.FOUND);
+        return new ResponseEntity<>(apiPlagesService.preparerFormulaire(formInput), HttpStatus.OK);
     }
     @GetMapping("/concessionnaires/{id}/reservations")
     public @ResponseBody ResponseEntity<TripleReservationOutput> reservationsConcessionnaire(@PathVariable Long id) {
-        return new ResponseEntity<>(apiPlagesService.reservationsConcessionnaire(id), HttpStatus.FOUND);
+        return new ResponseEntity<>(apiPlagesService.reservationsConcessionnaire(id), HttpStatus.OK);
     }
 
     @PostMapping("/concessionnaires/{cid}/reservations/{rid}")
     public ResponseEntity<Boolean> editerStatutReservation(@RequestBody String statutNom,@PathVariable Long rid) {
         apiPlagesService.editerStatutReservation(rid,statutNom);
-        return new ResponseEntity<>(true, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
     @PostMapping("/clients")
     public ResponseEntity<Long> inscrireNouveauClient(@RequestBody ClientRegistrationInput clientRegistrationInput) {
         Long newClientId = apiPlagesService.inscrireNouveauClient(clientRegistrationInput);
-        return new ResponseEntity<>(newClientId, HttpStatus.CREATED);
+        return new ResponseEntity<>(newClientId, HttpStatus.OK);
     }
 
     @GetMapping("/utilisateurs/{id}")
@@ -74,7 +74,7 @@ public class ApiPlagesController {
     @PostMapping("/connexion")
     public @ResponseBody ResponseEntity<LoginOutput> connecterUtilisateur(@RequestBody LoginInput loginInput) {
         LoginOutput resultat = apiPlagesService.connecterUtilisateur(loginInput);
-          return new ResponseEntity<>(resultat, HttpStatus.FOUND);
+          return new ResponseEntity<>(resultat, HttpStatus.OK);
     }
 
     @GetMapping("/ask-for-form-input")

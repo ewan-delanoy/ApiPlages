@@ -1,7 +1,7 @@
 package com.ewan.apiplages.entity;
 
 import com.ewan.apiplages.output.AffectationOutput;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 public class Affectation {

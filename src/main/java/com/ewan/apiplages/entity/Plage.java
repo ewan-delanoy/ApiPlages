@@ -3,7 +3,7 @@ package com.ewan.apiplages.entity;
 
 
 import com.ewan.apiplages.output.PlageOutput;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 
 import java.util.List;

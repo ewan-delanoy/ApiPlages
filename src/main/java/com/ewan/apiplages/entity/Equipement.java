@@ -2,10 +2,10 @@ package com.ewan.apiplages.entity;
 
 import com.ewan.apiplages.enumeration.EquipementEnum;
 import com.ewan.apiplages.output.EquipementOutput;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 
 @Entity
@@ -48,7 +48,7 @@ public class Equipement {
         return lit + virgule  + fauteuil;
     }
 
-    public Long getEquipementId() {return this.equipementId;}
+
     public byte getNbDeLits() {return this.nbDeLits; }
     public byte getNbDeFauteuils() {return this.nbDeFauteuils; }
 }
