@@ -1,8 +1,11 @@
 package com.ewan.apiplages.output;
 
+import java.time.LocalDate;
 import java.util.List;
 
-public record ReservationOutput(List<AffectationOutput> affectations,
-                                ClientOutput client, PlageOutput plage,
+public record ReservationOutput(Long reservationId,
+                                PlageOutput plage, LocalDate dateDebut, LocalDate dateFin,
+                                List<AffectationOutput> affectations,
+                                ClientOutput client,
                                 LienDeParenteOutput lienDeParente, String statutNom) {
 }

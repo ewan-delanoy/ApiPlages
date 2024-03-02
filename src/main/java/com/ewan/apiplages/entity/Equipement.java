@@ -17,10 +17,6 @@ public class Equipement {
     private byte nbDeLits;
     private byte nbDeFauteuils;
 
-    protected Equipement() {
-        super();
-    }
-
     // Constructeur où l'ID est géré automatiquement par JPA
     // Utilisé dans la phase de remplissage initiale des tables
     public Equipement(byte nbDeLits, byte nbDeFauteuils) {
@@ -29,15 +25,20 @@ public class Equipement {
         this.nbDeFauteuils = nbDeFauteuils;
     }
 
-    public EquipementOutput toOutput() {
-        return new EquipementOutput(this.nbDeLits,this.nbDeFauteuils);
-    }
-
-
-
+    // Constructeur a préferer dans tous les autres cas
     public Equipement(EquipementEnum equipementEnum) {
         this(equipementEnum.getNbDeLits (),
                 equipementEnum.getNbDeFauteuils());
+    }
+
+    // Constructeur sans argument demandé par JPA
+    protected Equipement() {
+        super();
+    }
+
+
+    public EquipementOutput toOutput() {
+        return new EquipementOutput(this.nbDeLits,this.nbDeFauteuils);
     }
 
 

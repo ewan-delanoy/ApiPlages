@@ -77,8 +77,11 @@ public class Reservation {
             affectationsOutput.add(affectation.toOutput());
         }
         Plage plage = affectations.get(0).getEmplacement().getFile().getPlage();
-        return new ReservationOutput(affectationsOutput,
-                this.client.toOutput(), plage.toOutput(),
+        return new ReservationOutput(
+                this.reservationId,
+                plage.toOutput(),this.dateDebut,this.dateFin,
+                affectationsOutput,
+                this.client.toOutput(),
                 this.lienDeParente.toOutput(), this.statut.getNom()
         );
     }

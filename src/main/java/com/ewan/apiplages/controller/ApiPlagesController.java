@@ -18,7 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-// @CrossOrigin
 @RequestMapping("/api")
 public class ApiPlagesController {
 
@@ -29,7 +28,7 @@ public class ApiPlagesController {
     }
 
     @PostMapping("/clients/reservation")
-    public ResponseEntity<Long> createReservation(@RequestBody ReservationInput reservationInput) {
+    public ResponseEntity<Long> effectuerReservation(@RequestBody ReservationInput reservationInput) {
         Long newReservationId = apiPlagesService.effectuerReservation(reservationInput);
         return new ResponseEntity<>(newReservationId, HttpStatus.OK);
     }
