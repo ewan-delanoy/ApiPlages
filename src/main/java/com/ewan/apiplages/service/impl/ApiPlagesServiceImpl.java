@@ -46,11 +46,9 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
     }
 
     public TripleReservationOutput reservationsClient (Long clientId) {
-        return new TripleReservationOutput(
-                this.reservationsClientAvecStatut(clientId,StatutEnum.EN_ATTENTE),
-                this.reservationsClientAvecStatut(clientId,StatutEnum.ACCEPTEE),
-                this.reservationsClientAvecStatut(clientId,StatutEnum.REFUSEE)
-        );
+        List<Object> listeDePaires = reservationDao.reservationsPourClient(clientId);
+        List<ReservationOutput> reservations = extraireReservationsOutput(listeDePaires);
+        return Util.tripleReservationOutput(reservations);
     }
 
 
@@ -113,11 +111,9 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
 
 
     public TripleReservationOutput reservationsConcessionnaire (Long concessionnaireId) {
-        return new TripleReservationOutput(
-                this.reservationsConcessionnaireAvecStatut(concessionnaireId,StatutEnum.EN_ATTENTE),
-                this.reservationsConcessionnaireAvecStatut(concessionnaireId,StatutEnum.ACCEPTEE),
-                this.reservationsConcessionnaireAvecStatut(concessionnaireId,StatutEnum.REFUSEE)
-        );
+        List<Object> listeDePaires = reservationDao.reservationsPourConcessionnaire(concessionnaireId);
+        List<ReservationOutput> reservations = extraireReservationsOutput(listeDePaires);
+        return Util.tripleReservationOutput(reservations);
     }
 
     public void editerStatutReservation(Long reservationId, String statutNom) {
@@ -156,11 +152,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         List<Object> listeDePaires= reservationDao.affectationsPourClient(clientId,  statutEnum.getNom());
         return this.extraireReservationsOutput(listeDePaires);
     }
-    private List<ReservationOutput> reservationsConcessionnaireAvecStatut (Long clientId, StatutEnum statutEnum) {
-        List<Object> listeDePaires= reservationDao.affectationsPourConcessionnaire(clientId,  statutEnum.getNom());
-        return this.extraireReservationsOutput(listeDePaires);
 
-    }
 
     private List<EquipementOutput> tousLesEquipements() {
         List<Equipement> equipements = equipementDao.findAll();

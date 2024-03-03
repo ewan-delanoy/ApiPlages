@@ -160,7 +160,7 @@ public class InitializeDatabase implements CommandLineRunner {
     private void ajouterPlages() {
         if (plageDao.count() == 0) {
             Plage plage1 = new Plage("Cala Goloritzé", recupererConcessionnaireEnregistre(1));
-            Plage plage2 = new Plage("Acceptée", recupererConcessionnaireEnregistre(2));
+            Plage plage2 = new Plage("Polignano", recupererConcessionnaireEnregistre(2));
 
             plageDao.saveAll(Arrays.asList(plage1,plage2));
             plagesEnregistrees.add(plage1);
@@ -198,7 +198,8 @@ public class InitializeDatabase implements CommandLineRunner {
 
     private void ajouterReservations() {
         if (reservationDao.count()==0) {
-           iresa(1,1,4,18,2020,6,3,1,2);
+            /*
+           iresa(1,1,4,18,2020,6,3,1,3);
            iresa(1,1,4,21,2020,6,10,1,2);
            iresa(1,1,4,24,2021,6,17,1,2);
 
@@ -209,7 +210,11 @@ public class InitializeDatabase implements CommandLineRunner {
 
            iresa(1,3,3,22,2020,6,5,3,2);
            iresa(1,3,3,25,2020,6,12,3,2);
-           iresa(2,3,3,28,2020,7,19,3,3);
+
+             */
+            iresa(1,2,3,22,2020,5,5,3,3);
+            iresa(1,2,3,25,2020,6,12,3,2);
+            iresa(1,2,3,28,2020,7,19,3,1);
 
         }
 
