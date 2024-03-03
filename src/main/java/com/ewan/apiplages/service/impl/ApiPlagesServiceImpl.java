@@ -148,10 +148,6 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
 
     }
 
-    private List<ReservationOutput> reservationsClientAvecStatut (Long clientId, StatutEnum statutEnum) {
-        List<Object> listeDePaires= reservationDao.affectationsPourClient(clientId,  statutEnum.getNom());
-        return this.extraireReservationsOutput(listeDePaires);
-    }
 
 
     private List<EquipementOutput> tousLesEquipements() {
