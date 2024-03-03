@@ -169,52 +169,57 @@ public class InitializeDatabase implements CommandLineRunner {
     }
 
 
-
-    private void resa(Plage plage,Client client,int numFile,int numEmplacement,
-                       int year, int month, int dayOfMonth,
-                       LienDeParente lienDeParente,Statut statut) {
+    private Reservation createEmptyReservation(Client client,
+                      int year, int month, int firstDay,int lastDay,
+                      LienDeParente lienDeParente,Statut statut) {
         Reservation reservation = new Reservation(
                 client,
-                  LocalDate.of(year, month, dayOfMonth),
-                LocalDate.of(year, month, dayOfMonth+2),
+                LocalDate.of(year, month, firstDay),
+                LocalDate.of(year, month, lastDay),
                 lienDeParente,statut);
         reservationDao.save(reservation);
-        File file1 = fileDao.findByPlageAndNumero(plage,(byte)numFile);
-        Emplacement emplacement1 = emplacementDao.findByFileAndNumEmplacement(file1,(byte)numEmplacement);
-        Affectation affectation1 = new Affectation(emplacement1,recupererEquipementEnregistre(1),reservation);
-        Emplacement emplacement2 = emplacementDao.findByFileAndNumEmplacement(file1,(byte)(numEmplacement+1));
-        Affectation affectation2 = new Affectation(emplacement2,recupererEquipementEnregistre(4),reservation);
-        affectationDao.saveAll(Arrays.asList(affectation1,affectation2));
+        return reservation;
+    }
+
+    private Reservation createEmptyReservationWithIndices(int client,
+                                        int year, int month, int firstDay,int lastDay,
+                                        int lienDeParente,int statut) {
+        return createEmptyReservation(
+                recupererClientEnregistre(client),
+                year, month, firstDay, lastDay,
+                recupererLienDeParenteEnregistre(lienDeParente),recupererStatutEnregistre(statut));
+    }
+
+
+    private void addAffectationToReservation(Plage plage,int numFile,int numEmplacement,int nbDeLits,int nbDeFauteuils,Reservation reservation) {
+
+        File file = fileDao.findByPlageAndNumero(plage,(byte)numFile);
+        Emplacement emplacement = emplacementDao.findByFileAndNumEmplacement(file,(byte)numEmplacement);
+        Equipement equipement = equipementDao.findByNbDeLitsAndNbDeFauteuils((byte)nbDeLits,(byte)nbDeFauteuils);
+        Affectation affectation = new Affectation(emplacement,equipement,reservation);
+        affectationDao.save(affectation);
 
     }
 
-    private void iresa(int plage,int client,int numFile,int numEmplacement,
-                       int year, int month, int dayOfMonth,
-                       int lienDeParente,int statut) {
-        resa(recupererPlageEnregistree(plage),
-                recupererClientEnregistre(client),numFile,numEmplacement,year,month,dayOfMonth,
-                recupererLienDeParenteEnregistre(lienDeParente),recupererStatutEnregistre(statut));
+    private void addAffectationToReservationWithIndex(int plage,int numFile,int numEmplacement,int nbDeLits,int nbDeFauteuils,Reservation reservation) {
+        addAffectationToReservation(recupererPlageEnregistree(plage),numFile,numEmplacement,nbDeLits,nbDeFauteuils,reservation);
     }
 
     private void ajouterReservations() {
         if (reservationDao.count()==0) {
-            /*
-           iresa(1,1,4,18,2020,6,3,1,3);
-           iresa(1,1,4,21,2020,6,10,1,2);
-           iresa(1,1,4,24,2021,6,17,1,2);
 
-           iresa(1,2,4,20,2020,6,4,2,2);
-           iresa(1,2,4,23,2020,6,11,2,2);
-           iresa(1,2,4,26,2020,6,18,2,2);
+            Reservation r1 = createEmptyReservationWithIndices(2,2020,5,5,7,2,1);
+            addAffectationToReservationWithIndex(1,1,10,0,1,r1);
+            addAffectationToReservationWithIndex(1,2,11,0,2,r1);
+            addAffectationToReservationWithIndex(1,3,12,1,0,r1);
+            addAffectationToReservationWithIndex(1,3,13,1,1,r1);
+            addAffectationToReservationWithIndex(1,8,13,2,0,r1);
 
+            Reservation r2 = createEmptyReservationWithIndices(2,2020,6,7,9,3,2);
+            addAffectationToReservationWithIndex(1,1,10,0,1,r2);
 
-           iresa(1,3,3,22,2020,6,5,3,2);
-           iresa(1,3,3,25,2020,6,12,3,2);
-
-             */
-            iresa(1,2,3,22,2020,5,5,3,3);
-            iresa(1,2,3,25,2020,6,12,3,2);
-            iresa(1,2,3,28,2020,7,19,3,1);
+            Reservation r3 = createEmptyReservationWithIndices(2,2020,7,9,11,1,3);
+            addAffectationToReservationWithIndex(1,1,10,0,1,r3);
 
         }
 
