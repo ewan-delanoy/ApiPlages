@@ -5,7 +5,7 @@ public enum LienDeParenteEnum {
     COUSIN_E("Cousin/Cousine"),
     AUCUN_LIEN("Aucun lien");
 
-    private String nom;
+    private final String nom;
 
     LienDeParenteEnum(String nom) {
         this.nom = nom;

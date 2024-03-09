@@ -3,10 +3,7 @@ package com.ewan.apiplages.controller;
 
 import com.ewan.apiplages.enumeration.LienDeParenteEnum;
 import com.ewan.apiplages.input.*;
-import com.ewan.apiplages.output.LoginOutput;
-import com.ewan.apiplages.output.PreparationFormulaireOutput;
-import com.ewan.apiplages.output.TripleReservationOutput;
-import com.ewan.apiplages.output.UtilisateurOutput;
+import com.ewan.apiplages.output.*;
 import com.ewan.apiplages.service.ApiPlagesService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -74,6 +71,11 @@ public class ApiPlagesController {
     public @ResponseBody ResponseEntity<LoginOutput> connecterUtilisateur(@RequestBody LoginInput loginInput) {
         LoginOutput resultat = apiPlagesService.connecterUtilisateur(loginInput);
           return new ResponseEntity<>(resultat, HttpStatus.OK);
+    }
+
+    @GetMapping("/plages")
+    public @ResponseBody ResponseEntity<List<PlageOutput>> getPlages() {
+        return new ResponseEntity<>(apiPlagesService.getPlages(), HttpStatus.OK);
     }
 
     @GetMapping("/ask-for-form-input")

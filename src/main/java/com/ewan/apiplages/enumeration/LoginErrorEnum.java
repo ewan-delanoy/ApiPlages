@@ -5,7 +5,7 @@ public enum LoginErrorEnum {
     MAUVAIS_MOT_DE_PASSE("Mauvais mot de passe"),
     MAUVAIS_EMAIL("Mauvais email");
 
-    private String nom;
+    private final String nom;
 
     LoginErrorEnum(String nom) {
         this.nom = nom;

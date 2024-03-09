@@ -1,5 +1,5 @@
 package com.ewan.apiplages.output;
 
-public record ConcessionnaireOutput(String nom, String prenom, String email,
+public record ConcessionnaireOutput(Long concessionnaireId, String nom, String prenom, String email,
                                     String numeroDeTelephone) {
 }

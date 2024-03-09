@@ -4,7 +4,7 @@ public enum TypeUtilisateurEnum {
     CLIENT("Client"),
     CONCESSIONNAIRE("Concessionnaire");
 
-    private String nom;
+    private final String nom;
     TypeUtilisateurEnum(String nom) {
         this.nom = nom;
     }

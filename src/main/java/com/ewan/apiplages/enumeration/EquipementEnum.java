@@ -7,7 +7,7 @@ public enum EquipementEnum {
     UN_LIT_UN_FAUTEUIL("Un lit et un fauteuil"),
     UN_FAUTEUIL("Un fauteuil"),
     DEUX_FAUTEUILS("Deux fauteuils");
-    private String nom;
+    private final String nom;
     EquipementEnum(String nom) {
         this.nom = nom;
     }

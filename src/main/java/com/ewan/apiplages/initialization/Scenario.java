@@ -6,7 +6,7 @@ import com.ewan.apiplages.enumeration.LienDeParenteEnum;
 import com.ewan.apiplages.input.FormInput;
 import com.ewan.apiplages.input.ReservationInput;
 import com.ewan.apiplages.input.AffectationInput;
-import com.ewan.apiplages.output.EmplacementOutput;
+import com.ewan.apiplages.output.MarkedEmplacementOutput;
 import com.ewan.apiplages.output.PreparationFormulaireOutput;
 import com.ewan.apiplages.service.ApiPlagesService;
 import org.springframework.boot.CommandLineRunner;
@@ -26,20 +26,20 @@ public class Scenario implements CommandLineRunner {
     private final LienDeParenteDao lienDeParenteDao;
     private final PaysDao paysDao;
     private final PlageDao plageDao;
-    private final ReservationDao reservationDao;
-    private final StatutDao statutDao;
-    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    // private final ReservationDao reservationDao;
+    // private final StatutDao statutDao;
+    // private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     private final ApiPlagesService apiPlagesService;
 
     private final boolean IS_CURRENTLY_ACTIVE = false ;
     @Override
-    public void run(String...args) throws Exception {
+    public void run(String...args)  {
         if(this.IS_CURRENTLY_ACTIVE) {
-            runWhenActive(args);
+            runWhenActive();
         }
     }
-    public void runWhenActive(String...args)  {
+    public void runWhenActive()  {
 
         List<Client> clients = clientDao.findAll();
         System.out.println(clients);
@@ -52,7 +52,7 @@ public class Scenario implements CommandLineRunner {
        LocalDate dateFin = LocalDate.of(2020, 6, 19);
        FormInput formInput = new FormInput(plageId, dateDebut, dateFin);
        PreparationFormulaireOutput prep = apiPlagesService.preparerFormulaire(formInput);
-       List<EmplacementOutput> emplacements = prep.emplacements();
+       List<MarkedEmplacementOutput> emplacements = prep.emplacementsMarques();
        System.out.println("Nb d'emplacements : " + emplacements.size());
        // System.out.println("P : " +prep.toString());
        Long idx1 = emplacements.get(60).emplacementId();
@@ -64,6 +64,7 @@ public class Scenario implements CommandLineRunner {
                new AffectationInput(idx2, (byte) 0, (byte) 1)
        );
        ReservationInput reservationInput=new ReservationInput(clientId,plageId,selections,dateDebut,dateFin,aucunLien);
+       reservationInput=null;
        // Long newResId =apiPlagesService.effectuerReservation(reservationInput);
        // System.out.println("newResId = " +newResId);
        // apiPlagesService.supprimerReservation(10L);
@@ -77,8 +78,8 @@ public class Scenario implements CommandLineRunner {
             LienDeParenteDao lienDeParenteDao,
             PaysDao paysDao,
             PlageDao plageDao,
-            ReservationDao reservationDao,
-            StatutDao statutDao,
+            // ReservationDao reservationDao,
+            // StatutDao statutDao,
             ApiPlagesService apiPlagesService
 
     ) {
@@ -89,8 +90,8 @@ public class Scenario implements CommandLineRunner {
         this.lienDeParenteDao = lienDeParenteDao;
         this.paysDao = paysDao;
         this.plageDao = plageDao;
-        this.reservationDao = reservationDao;
-        this.statutDao = statutDao;
+        // this.reservationDao = reservationDao;
+        // this.statutDao = statutDao;
         this.apiPlagesService = apiPlagesService;
 
     }

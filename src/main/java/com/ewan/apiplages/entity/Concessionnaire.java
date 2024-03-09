@@ -30,7 +30,7 @@ public class Concessionnaire extends Utilisateur {
     }
 
     public ConcessionnaireOutput toOutput() {
-        return new ConcessionnaireOutput(this.nom,this.prenom,this.email,
+        return new ConcessionnaireOutput(this.utilisateurId,this.nom,this.prenom,this.email,
                this.numeroDeTelephone);
 
     }

@@ -216,10 +216,16 @@ public class InitializeDatabase implements CommandLineRunner {
             addAffectationToReservationWithIndex(1,8,13,2,0,r1);
 
             Reservation r2 = createEmptyReservationWithIndices(2,2020,6,7,9,3,2);
-            addAffectationToReservationWithIndex(1,1,10,0,1,r2);
+            addAffectationToReservationWithIndex(1,4,10,0,1,r2);
 
             Reservation r3 = createEmptyReservationWithIndices(2,2020,7,9,11,1,3);
-            addAffectationToReservationWithIndex(1,1,10,0,1,r3);
+            addAffectationToReservationWithIndex(1,5,10,0,1,r3);
+
+            Reservation r4 = createEmptyReservationWithIndices(2,2020,8,11,13,2,1);
+            addAffectationToReservationWithIndex(1,6,10,0,1,r4);
+
+            Reservation r5 = createEmptyReservationWithIndices(1,2019,8,11,13,2,1);
+            addAffectationToReservationWithIndex(2,6,10,0,1,r5);
 
         }
 
@@ -242,7 +248,9 @@ public class InitializeDatabase implements CommandLineRunner {
 
     private Concessionnaire recupererConcessionnaireEnregistre(int idx) {return concessionnairesEnregistres.get(idx-1);}
 
-    private Equipement recupererEquipementEnregistre(int idx) { return equipementsEnregistres.get(idx-1);}
+
+    // private Equipement recupererEquipementEnregistre(int idx) { return equipementsEnregistres.get(idx-1);}
+
     private LienDeParente recupererLienDeParenteEnregistre(int idx) {
         return liensDeParenteEnregistres.get(idx-1);
     }

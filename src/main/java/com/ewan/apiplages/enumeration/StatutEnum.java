@@ -3,9 +3,9 @@ package com.ewan.apiplages.enumeration;
 public enum StatutEnum {
     EN_ATTENTE("En attente de traitement"),
     ACCEPTEE("Acceptee"),
-    REFUSEE("Refusée");
+    REFUSEE("Refusee");
 
-    private String nom;
+    private final String nom;
     StatutEnum(String nom) {
         this.nom = nom;
     }

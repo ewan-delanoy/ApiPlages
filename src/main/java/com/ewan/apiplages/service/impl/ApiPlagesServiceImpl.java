@@ -39,6 +39,9 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
+    private static final byte NOMBRE_DE_FILES = 8;
+    private static final byte NOMBRE_DEMPLACEMENTS_PAR_FILE = 36;
+
     public Long inscrireNouveauClient(ClientRegistrationInput clientRegistrationInput) {
         Client client = new Client(clientRegistrationInput,encoder);
         clientDao.save(client);
@@ -61,16 +64,9 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         Plage plage = plageDao.findByPlageId(plageId);
         List<Long> idsOccupes = emplacementDao.idsDesEmplacementsOccupes(plage,dateDebut,dateFin);
         List<Emplacement> emplacements = emplacementDao.findByFilePlagePlageId(plageId);
-        List<EmplacementOutput> emplacementsDisponibles = new ArrayList<>();
-
-        for (Emplacement emplacement : emplacements) {
-            if(!(idsOccupes.contains(emplacement.getEmplacementId()))) {
-                emplacementsDisponibles.add(emplacement.toOutput());
-            }
-        }
-
+        List<MarkedEmplacementOutput> emplacementsMarques = emplacementsMarques(emplacements,idsOccupes);
         return new PreparationFormulaireOutput(
-                emplacementsDisponibles,
+                emplacementsMarques,
                 tousLesEquipements(),
                 tousLesLiensDeParente(),
                 tousLesPays()
@@ -148,7 +144,15 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
 
     }
 
+    public List<PlageOutput> getPlages() {
+        List<Plage> plages = plageDao.findAll();
+        List<PlageOutput> plagesOutput = new ArrayList<>();
 
+        for (Plage plage : plages) {
+            plagesOutput.add(plage.toOutput());
+        }
+        return plagesOutput;
+    }
 
     private List<EquipementOutput> tousLesEquipements() {
         List<Equipement> equipements = equipementDao.findAll();
@@ -217,6 +221,26 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
             }
         }
         return reservations;
+    }
+
+    private static List<MarkedEmplacementOutput>
+       emplacementsMarques(List<Emplacement> emplacements,List<Long> idsOccupes) {
+        List<MarkedEmplacementOutput> marques = new ArrayList<>();
+        int nbrEmplacements = ((int)NOMBRE_DE_FILES) * ((int) NOMBRE_DEMPLACEMENTS_PAR_FILE);
+        // Premier remplissage, avec des null
+        for(int i=1;i <= nbrEmplacements;i++) {
+             marques.add(null);
+        }
+        // Deuxième et dernier remplissage, avec les vraies valeurs
+        for(Emplacement emplacement:emplacements) {
+            byte numeroFile = emplacement.getFile().getNumero();
+            byte numEmplacement = emplacement.getNumEmplacement();
+            Long emplacementId = emplacement.getEmplacementId();
+            boolean estDejaPris = idsOccupes.contains(emplacementId);
+            marques.set((numEmplacement-1)+NOMBRE_DEMPLACEMENTS_PAR_FILE*(numeroFile-1),
+                    new MarkedEmplacementOutput(emplacementId,false,estDejaPris));
+        }
+        return marques;
     }
 
     public ApiPlagesServiceImpl(AffectationDao affectationDao,
