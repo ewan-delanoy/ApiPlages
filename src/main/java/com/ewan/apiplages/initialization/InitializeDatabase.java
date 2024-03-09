@@ -34,7 +34,7 @@ public class InitializeDatabase implements CommandLineRunner {
     private final List<Client> clientsEnregistres = new ArrayList<>();
     private final List<Concessionnaire> concessionnairesEnregistres = new ArrayList<>();
 
-    private final List<Equipement> equipementsEnregistres = new ArrayList<>();
+    // private final List<Equipement> equipementsEnregistres = new ArrayList<>();
     private final List<LienDeParente> liensDeParenteEnregistres = new ArrayList<>();
 
     private final List<Pays> paysEnregistres = new ArrayList<>();
@@ -117,7 +117,7 @@ public class InitializeDatabase implements CommandLineRunner {
             Equipement equipement5 = new Equipement(EquipementEnum.DEUX_FAUTEUILS);
 
             equipementDao.saveAll(Arrays.asList(equipement1,equipement2,equipement3, equipement4,equipement5));
-            equipementsEnregistres.addAll(Arrays.asList(equipement1,equipement2,equipement3, equipement4,equipement5));
+            // equipementsEnregistres.addAll(Arrays.asList(equipement1,equipement2,equipement3, equipement4,equipement5));
         }
     }
 

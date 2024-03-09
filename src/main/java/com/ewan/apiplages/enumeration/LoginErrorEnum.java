@@ -15,11 +15,10 @@ public enum LoginErrorEnum {
         return nom;
     }
     public byte codeErreur() {
-        switch (this) {
-            case CONNEXION_OK : return  0;
-            case MAUVAIS_MOT_DE_PASSE : return 1;
-            case MAUVAIS_EMAIL : return 2;
-        }
-        return 3;
+        return switch (this) {
+            case CONNEXION_OK -> 0;
+            case MAUVAIS_MOT_DE_PASSE -> 1;
+            case MAUVAIS_EMAIL -> 2;
+        };
     }
 }

@@ -10,7 +10,6 @@ import com.ewan.apiplages.output.MarkedEmplacementOutput;
 import com.ewan.apiplages.output.PreparationFormulaireOutput;
 import com.ewan.apiplages.service.ApiPlagesService;
 import org.springframework.boot.CommandLineRunner;
-import com.ewan.apiplages.util.crypto.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -20,12 +19,12 @@ import java.util.List;
 @Component
 public class Scenario implements CommandLineRunner {
     private final ClientDao clientDao;
-    private final ConcessionnaireDao concessionnaireDao;
-    private final EquipementDao equipementDao;
-    private final FileDao fileDao;
-    private final LienDeParenteDao lienDeParenteDao;
-    private final PaysDao paysDao;
-    private final PlageDao plageDao;
+    // private final ConcessionnaireDao concessionnaireDao;
+    // private final EquipementDao equipementDao;
+    // private final FileDao fileDao;
+    // private final LienDeParenteDao lienDeParenteDao;
+    // private final PaysDao paysDao;
+    // private final PlageDao plageDao;
     // private final ReservationDao reservationDao;
     // private final StatutDao statutDao;
     // private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -64,7 +63,10 @@ public class Scenario implements CommandLineRunner {
                new AffectationInput(idx2, (byte) 0, (byte) 1)
        );
        ReservationInput reservationInput=new ReservationInput(clientId,plageId,selections,dateDebut,dateFin,aucunLien);
-       reservationInput=null;
+       Long a= reservationInput.clientId();
+       Long b= reservationInput.clientId();
+       a=(b+1);
+       b=(a+1);
        // Long newResId =apiPlagesService.effectuerReservation(reservationInput);
        // System.out.println("newResId = " +newResId);
        // apiPlagesService.supprimerReservation(10L);
@@ -72,24 +74,24 @@ public class Scenario implements CommandLineRunner {
     }
     public Scenario(
             ClientDao clientDao,
-            ConcessionnaireDao concessionnaireDao,
-            EquipementDao equipementDao,
-            FileDao fileDao,
-            LienDeParenteDao lienDeParenteDao,
-            PaysDao paysDao,
-            PlageDao plageDao,
+            // ConcessionnaireDao concessionnaireDao,
+            //EquipementDao equipementDao,
+            //FileDao fileDao,
+            // LienDeParenteDao lienDeParenteDao,
+            // PaysDao paysDao,
+            //PlageDao plageDao,
             // ReservationDao reservationDao,
             // StatutDao statutDao,
             ApiPlagesService apiPlagesService
 
     ) {
         this.clientDao = clientDao;
-        this.concessionnaireDao = concessionnaireDao;
-        this.equipementDao = equipementDao;
-        this.fileDao = fileDao;
-        this.lienDeParenteDao = lienDeParenteDao;
-        this.paysDao = paysDao;
-        this.plageDao = plageDao;
+        // this.concessionnaireDao = concessionnaireDao;
+        // this.equipementDao = equipementDao;
+        // this.fileDao = fileDao;
+        // this.lienDeParenteDao = lienDeParenteDao;
+        // this.paysDao = paysDao;
+        // this.plageDao = plageDao;
         // this.reservationDao = reservationDao;
         // this.statutDao = statutDao;
         this.apiPlagesService = apiPlagesService;
