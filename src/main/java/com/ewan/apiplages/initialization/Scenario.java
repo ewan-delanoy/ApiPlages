@@ -31,12 +31,12 @@ public class Scenario implements CommandLineRunner {
 
     private final ApiPlagesService apiPlagesService;
 
-    private final boolean IS_CURRENTLY_ACTIVE = false ;
+
     @Override
     public void run(String...args)  {
-        if(this.IS_CURRENTLY_ACTIVE) {
+       // Comment the line below when you don't want to use it
             runWhenActive();
-        }
+
     }
     public void runWhenActive()  {
 
