@@ -6,7 +6,7 @@ import com.ewan.apiplages.enumeration.LienDeParenteEnum;
 import com.ewan.apiplages.input.FormInput;
 import com.ewan.apiplages.input.ReservationInput;
 import com.ewan.apiplages.input.AffectationInput;
-import com.ewan.apiplages.output.MarkedEmplacementOutput;
+import com.ewan.apiplages.output.ParasolOutput;
 import com.ewan.apiplages.output.PreparationFormulaireOutput;
 import com.ewan.apiplages.service.ApiPlagesService;
 import org.springframework.boot.CommandLineRunner;
@@ -35,7 +35,7 @@ public class Scenario implements CommandLineRunner {
     @Override
     public void run(String...args)  {
        // Comment the line below when you don't want to use it
-            runWhenActive();
+        //    runWhenActive();
 
     }
     public void runWhenActive()  {
@@ -51,7 +51,7 @@ public class Scenario implements CommandLineRunner {
        LocalDate dateFin = LocalDate.of(2020, 6, 19);
        FormInput formInput = new FormInput(plageId, dateDebut, dateFin);
        PreparationFormulaireOutput prep = apiPlagesService.preparerFormulaire(formInput);
-       List<MarkedEmplacementOutput> emplacements = prep.emplacementsMarques();
+       List<ParasolOutput> emplacements = prep.emplacementsMarques();
        System.out.println("Nb d'emplacements : " + emplacements.size());
        // System.out.println("P : " +prep.toString());
        Long idx1 = emplacements.get(60).emplacementId();

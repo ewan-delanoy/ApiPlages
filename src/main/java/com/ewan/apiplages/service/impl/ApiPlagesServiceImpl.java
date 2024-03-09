@@ -64,7 +64,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         Plage plage = plageDao.findByPlageId(plageId);
         List<Long> idsOccupes = emplacementDao.idsDesEmplacementsOccupes(plage,dateDebut,dateFin);
         List<Emplacement> emplacements = emplacementDao.findByFilePlagePlageId(plageId);
-        List<MarkedEmplacementOutput> emplacementsMarques = emplacementsMarques(emplacements,idsOccupes);
+        List<ParasolOutput> emplacementsMarques = emplacementsMarques(emplacements,idsOccupes);
         return new PreparationFormulaireOutput(
                 emplacementsMarques,
                 tousLesEquipements(),
@@ -223,13 +223,13 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         return reservations;
     }
 
-    private static List<MarkedEmplacementOutput>
+    private static List<ParasolOutput>
        emplacementsMarques(List<Emplacement> emplacements,List<Long> idsOccupes) {
-        List<MarkedEmplacementOutput> marques = new ArrayList<>();
+        List<ParasolOutput> parasols = new ArrayList<>();
         int nbrEmplacements = ((int)NOMBRE_DE_FILES) * ((int) NOMBRE_DEMPLACEMENTS_PAR_FILE);
         // Premier remplissage, avec des null
         for(int i=1;i <= nbrEmplacements;i++) {
-             marques.add(null);
+             parasols.add(null);
         }
         // Deuxième et dernier remplissage, avec les vraies valeurs
         for(Emplacement emplacement:emplacements) {
@@ -237,10 +237,10 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
             byte numEmplacement = emplacement.getNumEmplacement();
             Long emplacementId = emplacement.getEmplacementId();
             boolean estDejaPris = idsOccupes.contains(emplacementId);
-            marques.set((numEmplacement-1)+NOMBRE_DEMPLACEMENTS_PAR_FILE*(numeroFile-1),
-                    new MarkedEmplacementOutput(emplacementId,false,estDejaPris));
+            parasols.set((numEmplacement-1)+NOMBRE_DEMPLACEMENTS_PAR_FILE*(numeroFile-1),
+                    new ParasolOutput(emplacementId, numeroFile,numEmplacement,false,estDejaPris));
         }
-        return marques;
+        return parasols;
     }
 
     public ApiPlagesServiceImpl(AffectationDao affectationDao,
