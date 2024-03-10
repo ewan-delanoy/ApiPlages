@@ -42,7 +42,7 @@ public class ApiPlagesController {
     }
 
     @PostMapping("/clients/form-data")
-    public @ResponseBody ResponseEntity<PreparationFormulaireOutput> preparerFormulaire(@RequestBody FormInput formInput) {
+    public @ResponseBody ResponseEntity<PreparationReservationOutput> preparerFormulaire(@RequestBody FormInput formInput) {
         return new ResponseEntity<>(apiPlagesService.preparerFormulaire(formInput), HttpStatus.OK);
     }
     @GetMapping("/concessionnaires/{id}/reservations")

@@ -7,8 +7,9 @@ import com.ewan.apiplages.input.FormInput;
 import com.ewan.apiplages.input.ReservationInput;
 import com.ewan.apiplages.input.AffectationInput;
 import com.ewan.apiplages.output.ParasolOutput;
-import com.ewan.apiplages.output.PreparationFormulaireOutput;
+import com.ewan.apiplages.output.PreparationReservationOutput;
 import com.ewan.apiplages.service.ApiPlagesService;
+import com.ewan.apiplages.util.KeepCompilerQuiet;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -34,8 +35,11 @@ public class Scenario implements CommandLineRunner {
 
     @Override
     public void run(String...args)  {
-       // Comment the line below when you don't want to use it
-        //    runWhenActive();
+       boolean isActive = false;
+       isActive = KeepCompilerQuiet.doNotModifyBoolean(isActive);
+        if (isActive) {
+            runWhenActive();
+        }
 
     }
     public void runWhenActive()  {
@@ -50,8 +54,8 @@ public class Scenario implements CommandLineRunner {
        LocalDate dateDebut = LocalDate.of(2020, 6, 4);
        LocalDate dateFin = LocalDate.of(2020, 6, 19);
        FormInput formInput = new FormInput(plageId, dateDebut, dateFin);
-       PreparationFormulaireOutput prep = apiPlagesService.preparerFormulaire(formInput);
-       List<ParasolOutput> emplacements = prep.emplacementsMarques();
+       PreparationReservationOutput prep = apiPlagesService.preparerFormulaire(formInput);
+       List<ParasolOutput> emplacements = prep.parasols();
        System.out.println("Nb d'emplacements : " + emplacements.size());
        // System.out.println("P : " +prep.toString());
        Long idx1 = emplacements.get(60).emplacementId();
@@ -63,15 +67,13 @@ public class Scenario implements CommandLineRunner {
                new AffectationInput(idx2, (byte) 0, (byte) 1)
        );
        ReservationInput reservationInput=new ReservationInput(clientId,plageId,selections,dateDebut,dateFin,aucunLien);
-       Long a= reservationInput.clientId();
-       Long b= reservationInput.clientId();
-       a=(b+1);
-       b=(a+1);
+       KeepCompilerQuiet.doNothingWithLong(reservationInput.clientId());
        // Long newResId =apiPlagesService.effectuerReservation(reservationInput);
        // System.out.println("newResId = " +newResId);
        // apiPlagesService.supprimerReservation(10L);
 
     }
+
     public Scenario(
             ClientDao clientDao,
             // ConcessionnaireDao concessionnaireDao,

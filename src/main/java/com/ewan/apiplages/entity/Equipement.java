@@ -2,6 +2,7 @@ package com.ewan.apiplages.entity;
 
 import com.ewan.apiplages.enumeration.EquipementEnum;
 import com.ewan.apiplages.output.EquipementOutput;
+import com.ewan.apiplages.util.KeepCompilerQuiet;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +28,7 @@ public class Equipement {
 
     // Constructeur a préferer dans tous les autres cas
     public Equipement(EquipementEnum equipementEnum) {
+
         this(equipementEnum.getNbDeLits (),
                 equipementEnum.getNbDeFauteuils());
     }
@@ -38,19 +40,26 @@ public class Equipement {
 
 
     public EquipementOutput toOutput() {
-        return new EquipementOutput(this.nbDeLits,this.nbDeFauteuils);
+        return new EquipementOutput(EquipementEnum.deduceNom(this.nbDeLits,this.nbDeFauteuils),
+                this.nbDeLits,this.nbDeFauteuils);
     }
 
 
-    public String getDescription() {
+    /* public String getDescription() {
         String lit = this.nbDeLits==0?"":(this.nbDeLits==1?"1 lit":(this.nbDeLits)+" lits");
         String virgule = ( this.nbDeLits!=0 && this.nbDeFauteuils!=0)?", ":"";
         String fauteuil = this.nbDeFauteuils==0?"":(this.nbDeFauteuils==1?"1 fauteuil":(this.nbDeFauteuils)+" fauteuils");
         return lit + virgule  + fauteuil;
-    }
+    } */
 
 
     public byte getNbDeLits() {return this.nbDeLits; }
     public byte getNbDeFauteuils() {return this.nbDeFauteuils; }
+
+    public void keepCompilerQuiet() {
+       this.equipementId = KeepCompilerQuiet.doNotModifyLong(this.equipementId);
+    }
+
+
 }
 

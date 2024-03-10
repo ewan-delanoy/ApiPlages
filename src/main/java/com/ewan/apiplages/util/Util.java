@@ -60,4 +60,6 @@ public class Util {
                  .filter(r -> r.statutNom().equals(statutNom) )
                  .collect(Collectors.toList());
     }
+
+
 }

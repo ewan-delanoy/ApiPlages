@@ -28,7 +28,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
     private final EquipementDao equipementDao;
 
     private final LienDeParenteDao lienDeParenteDao;
-    private final PaysDao paysDao;
+    // private final PaysDao paysDao;
 
     private final PlageDao plageDao;
     private final ReservationDao reservationDao;
@@ -57,19 +57,18 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
 
 
 
-    public PreparationFormulaireOutput preparerFormulaire(FormInput fInput) {
+    public PreparationReservationOutput preparerFormulaire(FormInput fInput) {
         Long plageId = fInput.plageId();
         LocalDate dateDebut = fInput.dateDebut();
         LocalDate dateFin = fInput.dateFin();
         Plage plage = plageDao.findByPlageId(plageId);
         List<Long> idsOccupes = emplacementDao.idsDesEmplacementsOccupes(plage,dateDebut,dateFin);
         List<Emplacement> emplacements = emplacementDao.findByFilePlagePlageId(plageId);
-        List<ParasolOutput> emplacementsMarques = emplacementsMarques(emplacements,idsOccupes);
-        return new PreparationFormulaireOutput(
-                emplacementsMarques,
+        List<ParasolOutput> parasols = emplacementsMarques(emplacements,idsOccupes);
+        return new PreparationReservationOutput(
+                parasols,
                 tousLesEquipements(),
-                tousLesLiensDeParente(),
-                tousLesPays()
+                tousLesLiensDeParente()
         );
     }
 
@@ -164,7 +163,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         return equipementsOutput;
     }
 
-    private List<PaysOutput> tousLesPays() {
+    /* private List<PaysOutput> tousLesPays() {
         List<Pays> lesPays = paysDao.findAll();
         List<PaysOutput> lesPaysOutput = new ArrayList<>();
 
@@ -172,7 +171,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
             lesPaysOutput.add(pays.toOutput());
         }
         return lesPaysOutput;
-    }
+    } */
 
     private List<LienDeParenteOutput> tousLesLiensDeParente() {
         List<LienDeParente> liensDeParente = lienDeParenteDao.findAll();
@@ -238,7 +237,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
             Long emplacementId = emplacement.getEmplacementId();
             boolean estDejaPris = idsOccupes.contains(emplacementId);
             parasols.set((numEmplacement-1)+NOMBRE_DEMPLACEMENTS_PAR_FILE*(numeroFile-1),
-                    new ParasolOutput(emplacementId, numeroFile,numEmplacement,false,estDejaPris));
+                    new ParasolOutput(emplacementId, numeroFile,numEmplacement,estDejaPris));
         }
         return parasols;
     }
@@ -248,7 +247,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
                                 EmplacementDao emplacementDao,
                                 EquipementDao equipementDao,
                                 LienDeParenteDao lienDeParenteDao,
-                                PaysDao paysDao,
+                                // PaysDao paysDao,
                                 PlageDao plageDao,
                                 ReservationDao reservationDao,
                                 StatutDao statutDao,
@@ -259,7 +258,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         this.emplacementDao = emplacementDao;
         this.equipementDao = equipementDao;
         this.lienDeParenteDao = lienDeParenteDao;
-        this.paysDao = paysDao ;
+        // this.paysDao = paysDao ;
         this.plageDao = plageDao;
         this.reservationDao = reservationDao;
         this.statutDao = statutDao;

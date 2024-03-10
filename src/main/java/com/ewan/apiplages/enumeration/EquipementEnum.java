@@ -29,4 +29,14 @@ public enum EquipementEnum {
         };
     }
 
+    public static String deduceNom(byte nbDeLits,byte nbDeFauteuils) {
+
+        if(nbDeLits == 2) return DEUX_LITS.nom;
+        if(nbDeFauteuils == 2) return DEUX_FAUTEUILS.nom;
+        if(nbDeLits == 0) return UN_FAUTEUIL.nom;
+        if(nbDeFauteuils == 0) return UN_LIT.nom;
+        return UN_LIT_UN_FAUTEUIL.nom;
+    }
+
+
 }
