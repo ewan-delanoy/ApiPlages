@@ -42,8 +42,8 @@ public class ApiPlagesController {
     }
 
     @PostMapping("/clients/form-data")
-    public @ResponseBody ResponseEntity<PreparationReservationOutput> preparerFormulaire(@RequestBody FormInput formInput) {
-        return new ResponseEntity<>(apiPlagesService.preparerFormulaire(formInput), HttpStatus.OK);
+    public @ResponseBody ResponseEntity<PreparationReservationOutput> preparerFormulaire(@RequestBody PreparationReservationInput preparationReservationInput) {
+        return new ResponseEntity<>(apiPlagesService.preparerFormulaire(preparationReservationInput), HttpStatus.OK);
     }
     @GetMapping("/concessionnaires/{id}/reservations")
     public @ResponseBody ResponseEntity<TripleReservationOutput> reservationsConcessionnaire(@PathVariable Long id) {
@@ -79,11 +79,11 @@ public class ApiPlagesController {
     }
 
     @GetMapping("/ask-for-form-input")
-    public @ResponseBody FormInput askForFormInput() {
+    public @ResponseBody PreparationReservationInput askForFormInput() {
         Long plageId = 1L;
         LocalDate dateDebut = LocalDate.of(2020, 6, 4);
         LocalDate dateFin = LocalDate.of(2020, 6, 19);
-        return  new FormInput(plageId, dateDebut, dateFin);
+        return  new PreparationReservationInput(plageId, dateDebut, dateFin);
     }
 
     @GetMapping("/ask-for-client-input")

@@ -15,7 +15,7 @@ public interface ApiPlagesService {
     // services utilisés par le client
     Long inscrireNouveauClient(ClientRegistrationInput clientRegistrationInput);
     TripleReservationOutput reservationsClient (Long utilisateurId);
-    PreparationReservationOutput preparerFormulaire(FormInput fInput);
+    PreparationReservationOutput preparerFormulaire(PreparationReservationInput fInput);
     Long effectuerReservation(ReservationInput reservationInput);
 
     // services utilisés par le concessionnaire

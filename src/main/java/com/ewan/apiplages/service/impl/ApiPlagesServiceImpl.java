@@ -57,7 +57,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
 
 
 
-    public PreparationReservationOutput preparerFormulaire(FormInput fInput) {
+    public PreparationReservationOutput preparerFormulaire(PreparationReservationInput fInput) {
         Long plageId = fInput.plageId();
         LocalDate dateDebut = fInput.dateDebut();
         LocalDate dateFin = fInput.dateFin();
