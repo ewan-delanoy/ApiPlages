@@ -27,7 +27,8 @@ public interface EmplacementDao extends JpaRepository<Emplacement, Long> {
 									 @Param("dateFin") LocalDate dateFin);
 	Emplacement findByFileAndNumEmplacement(File file,byte numEmplacement);
 
+	Emplacement findByFileNumeroAndNumEmplacement(byte numeroFile,byte numEmplacement);
 	List<Emplacement> findByFilePlagePlageId(Long plageId);
 
-	Emplacement findByEmplacementId(Long emplacementId);
+	// Emplacement findByEmplacementId(Long emplacementId);
 }

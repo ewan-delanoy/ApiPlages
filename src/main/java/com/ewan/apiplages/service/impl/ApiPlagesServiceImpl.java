@@ -27,6 +27,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
     private final EmplacementDao emplacementDao;
     private final EquipementDao equipementDao;
 
+    private final FileDao fileDao;
     private final LienDeParenteDao lienDeParenteDao;
     // private final PaysDao paysDao;
 
@@ -64,9 +65,15 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         Plage plage = plageDao.findByPlageId(plageId);
         List<Long> idsOccupes = emplacementDao.idsDesEmplacementsOccupes(plage,dateDebut,dateFin);
         List<Emplacement> emplacements = emplacementDao.findByFilePlagePlageId(plageId);
+        List<File> files = fileDao.findByPlagePlageId(plageId);
+        List<FileOutput> filesOutput = new ArrayList<>();
+        for (File File : files) {
+            filesOutput.add(File.toOutput());
+        }
         List<ParasolOutput> parasols = emplacementsMarques(emplacements,idsOccupes);
         return new PreparationReservationOutput(
                 parasols,
+                filesOutput,
                 tousLesEquipements(),
                 tousLesLiensDeParente()
         );
@@ -92,7 +99,8 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         reservationDao.save(reservation);
 
         for (AffectationInput affectationInput : affectationsInput) {
-            Emplacement emplacement = emplacementDao.findByEmplacementId(affectationInput.emplacementId());
+            Emplacement emplacement = emplacementDao.findByFileNumeroAndNumEmplacement(
+                     affectationInput.numeroFile(),affectationInput.numEmplacement());
             Equipement equipement = equipementDao.findByNbDeLitsAndNbDeFauteuils
                     (affectationInput.nbDeLits(),affectationInput.nbDeFauteuils());
             Affectation affectation = new Affectation(
@@ -246,6 +254,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
                                 ClientDao clientDao,
                                 EmplacementDao emplacementDao,
                                 EquipementDao equipementDao,
+                                FileDao fileDao,
                                 LienDeParenteDao lienDeParenteDao,
                                 // PaysDao paysDao,
                                 PlageDao plageDao,
@@ -257,6 +266,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         this.clientDao = clientDao ;
         this.emplacementDao = emplacementDao;
         this.equipementDao = equipementDao;
+        this.fileDao = fileDao;
         this.lienDeParenteDao = lienDeParenteDao;
         // this.paysDao = paysDao ;
         this.plageDao = plageDao;

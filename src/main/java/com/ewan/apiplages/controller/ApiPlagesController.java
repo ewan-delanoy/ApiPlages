@@ -101,8 +101,8 @@ public class ApiPlagesController {
         Long clientId = 5L;
         Long plageId = 1L;
         List<AffectationInput> affectations= Arrays.asList(
-                new AffectationInput(60L,(byte)1,(byte)0),
-                new AffectationInput(120L,(byte)0,(byte)1)
+                new AffectationInput((byte) 1, (byte) 2,(byte)1,(byte)0),
+                new AffectationInput((byte) 1, (byte) 2,(byte)0,(byte)1)
         );
         LocalDate dateDebut = LocalDate.of(2019, 7, 3);
         LocalDate dateFin = LocalDate.of(2019, 7, 8);

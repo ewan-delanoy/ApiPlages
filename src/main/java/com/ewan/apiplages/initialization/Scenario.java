@@ -63,8 +63,8 @@ public class Scenario implements CommandLineRunner {
        System.out.println("idx1 = " +idx1);
        System.out.println("idx2 = " +idx2);
        List<AffectationInput> selections= Arrays.asList(
-               new AffectationInput(idx1, (byte) 1, (byte) 0),
-               new AffectationInput(idx2, (byte) 0, (byte) 1)
+               new AffectationInput((byte) 3, (byte) 4, (byte) 1, (byte) 0),
+               new AffectationInput((byte) 4, (byte) 3, (byte) 0, (byte) 1)
        );
        ReservationInput reservationInput=new ReservationInput(clientId,plageId,selections,dateDebut,dateFin,aucunLien);
        KeepCompilerQuiet.doNothingWithLong(reservationInput.clientId());

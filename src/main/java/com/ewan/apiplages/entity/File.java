@@ -1,7 +1,8 @@
 package com.ewan.apiplages.entity;
 
-import java.util.List;
 
+import com.ewan.apiplages.output.FileOutput;
+import com.ewan.apiplages.util.KeepCompilerQuiet;
 import jakarta.persistence.*;
 
 @Entity
@@ -20,22 +21,21 @@ public class File {
 
 
     // No-args constructor demandé par JPA
-    protected File() {
+    public File() {
         super();
     }
     public File(Plage plage,byte numero) {
         this.plage = plage ;
-        this.prixJournalier = (double) (20-2*numero);
+        this.prixJournalier = (20-2*numero);
         this.numero = numero;
     }
 
-    public String getDescription() {
-        return "F" + this.numero;
-    }
 
-    public Long getFileId() {
-        return this.fileId;
+
+    public FileOutput toOutput() {
+        return new FileOutput(this.numero,this.prixJournalier);
     }
+    // public Long getFileId() {return this.fileId;}
     public Plage getPlage() {
         return this.plage;
     }
@@ -46,6 +46,10 @@ public class File {
 
     public byte getNumero() {
         return this.numero;
+    }
+
+    public void keepCompilerQuiet() {
+        this.fileId = KeepCompilerQuiet.doNotModifyLong(this.fileId);
     }
 }
 
