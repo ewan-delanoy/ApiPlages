@@ -208,12 +208,12 @@ public class InitializeDatabase implements CommandLineRunner {
     private void ajouterReservations() {
         if (reservationDao.count()==0) {
 
-            Reservation r1 = createEmptyReservationWithIndices(2,2020,5,5,7,2,1);
-            addAffectationToReservationWithIndex(1,1,10,0,1,r1);
-            addAffectationToReservationWithIndex(1,2,11,0,2,r1);
-            addAffectationToReservationWithIndex(1,3,12,1,0,r1);
-            addAffectationToReservationWithIndex(1,3,13,1,1,r1);
-            addAffectationToReservationWithIndex(1,8,13,2,0,r1);
+            Reservation r1 = createEmptyReservationWithIndices(2,2024,4,14,15,2,1);
+            addAffectationToReservationWithIndex(1,1,2,0,1,r1);
+            addAffectationToReservationWithIndex(1,2,1,0,2,r1);
+            addAffectationToReservationWithIndex(1,3,4,1,0,r1);
+            addAffectationToReservationWithIndex(1,4,3,1,1,r1);
+            addAffectationToReservationWithIndex(1,5,5,2,0,r1);
 
             Reservation r2 = createEmptyReservationWithIndices(2,2020,6,7,9,3,2);
             addAffectationToReservationWithIndex(1,4,10,0,1,r2);

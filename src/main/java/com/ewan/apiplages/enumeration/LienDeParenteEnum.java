@@ -2,7 +2,7 @@ package com.ewan.apiplages.enumeration;
 
 public enum LienDeParenteEnum {
     FRERE_SOEUR("Frère/Soeur"),
-    COUSIN_E("Cousin/Cousine"),
+    COUSIN_E("Cousin/e"),
     AUCUN_LIEN("Aucun lien");
 
     private final String nom;
