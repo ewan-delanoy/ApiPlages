@@ -9,6 +9,8 @@ public record UtilisateurOutput(
         // champs spécifiques aux clients
         PaysOutput pays,LocalDateTime dateHeureInscription,
         // champs spécifiques aux concessionnaires
-        String numeroDeTelephone,String typeUtilisateur
+        String numeroDeTelephone,
+        // utilisé dans le front-end
+        boolean estUnClient
         ) {
 }

@@ -3,7 +3,6 @@ package com.ewan.apiplages.entity;
 import java.time.LocalDateTime;
 
 
-import com.ewan.apiplages.enumeration.TypeUtilisateurEnum;
 import com.ewan.apiplages.input.ClientRegistrationInput;
 import com.ewan.apiplages.output.ClientOutput;
 import com.ewan.apiplages.output.UtilisateurOutput;
@@ -59,7 +58,7 @@ public class Client extends Utilisateur {
         return new  UtilisateurOutput(
                 this.utilisateurId,this.nom,this.prenom,this.email,
                 this.pays.toOutput(),this.dateHeureInscription,
-                null, TypeUtilisateurEnum.CLIENT.getNom()
+                null,true
         );
     }
 

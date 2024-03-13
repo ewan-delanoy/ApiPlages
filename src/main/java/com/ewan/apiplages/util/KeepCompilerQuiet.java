@@ -1,6 +1,8 @@
 package com.ewan.apiplages.util;
 
+import com.ewan.apiplages.entity.Affectation;
 import com.ewan.apiplages.entity.Equipement;
+import com.ewan.apiplages.entity.File;
 
 public class KeepCompilerQuiet {
 
@@ -36,6 +38,10 @@ public class KeepCompilerQuiet {
     public static void doNothing() {
         Equipement equipement = new Equipement((byte)1,(byte)1);
         equipement.keepCompilerQuiet();
+        File file = new File();
+        file.keepCompilerQuiet();
+        Affectation affectation = new Affectation();
+        affectation.keepCompilerQuiet();
         doNothing1();
     }
 

@@ -1,6 +1,7 @@
 package com.ewan.apiplages.entity;
 
 import com.ewan.apiplages.output.AffectationOutput;
+import com.ewan.apiplages.util.KeepCompilerQuiet;
 import jakarta.persistence.*;
 
 @Entity
@@ -17,7 +18,7 @@ public class Affectation {
     private Reservation reservation;
 
     // No-args constructor demandé par JPA
-    protected Affectation() {
+    public Affectation() {
         super();
     }
     public Affectation(Emplacement emplacement,Equipement equipement,Reservation reservation) {
@@ -29,15 +30,19 @@ public class Affectation {
 
     public AffectationOutput toOutput() {
         return new AffectationOutput(
-                this.emplacement.getFile().getNumero(),
-                this.emplacement.getFile().getPrixJournalier(),
+                this.emplacement.getFile().toOutput(),
                 this.emplacement.getNumEmplacement(),
-                this.equipement.getNbDeLits(),
-                this.equipement.getNbDeFauteuils()
+                this.equipement.toOutput()
         );
 
     }
 
     public Emplacement getEmplacement() {return this.emplacement; }
+
+    public void keepCompilerQuiet() {
+       if (this.affectationId < 0) {
+           this.affectationId = KeepCompilerQuiet.doNotModifyLong(this.reservation.getReservationId());
+       }
+    }
 
 }
