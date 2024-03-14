@@ -33,7 +33,8 @@ public class LienDeParente {
     }
 
     public LienDeParenteOutput toOutput() {
-        return new LienDeParenteOutput(this.nom,this.coefficient);
+
+        return new LienDeParenteOutput(this.nom,this.coefficient,this.nom.equals(LienDeParenteEnum.AUCUN_LIEN.getNom()));
     }
 
 

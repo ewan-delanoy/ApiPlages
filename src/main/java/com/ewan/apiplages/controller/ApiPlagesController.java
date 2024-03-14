@@ -78,6 +78,11 @@ public class ApiPlagesController {
         return new ResponseEntity<>(apiPlagesService.getPlages(), HttpStatus.OK);
     }
 
+    @GetMapping("/pays")
+    public @ResponseBody ResponseEntity<List<PaysOutput>> getPays() {
+        return new ResponseEntity<>(apiPlagesService.getPays(), HttpStatus.OK);
+    }
+
     @GetMapping("/ask-for-form-input")
     public @ResponseBody PreparationReservationInput askForFormInput() {
         Long plageId = 1L;

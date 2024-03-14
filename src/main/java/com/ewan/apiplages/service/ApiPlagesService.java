@@ -25,4 +25,7 @@ public interface ApiPlagesService {
     UtilisateurOutput getUtilisateurById(Long utilisateurId);
 
     List<PlageOutput> getPlages();
+
+    List<PaysOutput> getPays();
+
  }

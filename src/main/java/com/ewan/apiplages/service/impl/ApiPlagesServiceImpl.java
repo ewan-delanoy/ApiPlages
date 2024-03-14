@@ -22,6 +22,7 @@ import java.util.Optional;
 public class ApiPlagesServiceImpl implements ApiPlagesService {
 
     private final AffectationDao affectationDao;
+
     private final ClientDao clientDao;
 
     private final EmplacementDao emplacementDao;
@@ -29,7 +30,8 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
 
     private final FileDao fileDao;
     private final LienDeParenteDao lienDeParenteDao;
-    // private final PaysDao paysDao;
+
+    private final PaysDao paysDao;
 
     private final PlageDao plageDao;
     private final ReservationDao reservationDao;
@@ -72,6 +74,8 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         }
         List<ParasolOutput> parasols = emplacementsMarques(emplacements,idsOccupes);
         return new PreparationReservationOutput(
+                NOMBRE_DE_FILES,
+                NOMBRE_DEMPLACEMENTS_PAR_FILE,
                 parasols,
                 filesOutput,
                 tousLesEquipements(),
@@ -159,6 +163,16 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
             plagesOutput.add(plage.toOutput());
         }
         return plagesOutput;
+    }
+
+    public List<PaysOutput> getPays() {
+        List<Pays> lesPays = paysDao.findAll();
+        List<PaysOutput> lesPaysOutput = new ArrayList<>();
+
+        for (Pays pays : lesPays) {
+            lesPaysOutput.add(pays.toOutput());
+        }
+        return lesPaysOutput;
     }
 
     private List<EquipementOutput> tousLesEquipements() {
@@ -256,7 +270,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
                                 EquipementDao equipementDao,
                                 FileDao fileDao,
                                 LienDeParenteDao lienDeParenteDao,
-                                // PaysDao paysDao,
+                                PaysDao paysDao,
                                 PlageDao plageDao,
                                 ReservationDao reservationDao,
                                 StatutDao statutDao,
@@ -268,7 +282,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         this.equipementDao = equipementDao;
         this.fileDao = fileDao;
         this.lienDeParenteDao = lienDeParenteDao;
-        // this.paysDao = paysDao ;
+        this.paysDao = paysDao ;
         this.plageDao = plageDao;
         this.reservationDao = reservationDao;
         this.statutDao = statutDao;
