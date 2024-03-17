@@ -40,4 +40,6 @@ public class LienDeParente {
 
     public String getNom() { return this.nom; }
 
+    public double getCoefficient() { return this.coefficient; }
+
 }

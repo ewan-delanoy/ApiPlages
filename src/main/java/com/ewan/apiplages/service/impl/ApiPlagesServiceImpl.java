@@ -86,25 +86,33 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
     public Long effectuerReservation(ReservationInput reservationInput)
     {
        // Extraire les parametres de l'input
+        Long plageId = reservationInput.plageId();
         Long clientId = reservationInput.clientId();
         List<AffectationInput> affectationsInput=reservationInput.affectations();
         LocalDate dateDebut = reservationInput.dateDebut();
         LocalDate dateFin = reservationInput.dateFin();
         String lienDeParenteNom = reservationInput.lienDeParenteNom();
+        String numeroCarte =  reservationInput.numeroCarte();
+        byte moisExpiration = reservationInput.moisExpiration();
+        short anneeExpiration = reservationInput.anneeExpiration();
+        String cryptogramme = reservationInput.cryptogramme();
 
         Statut enAttente = statutDao.findByNom(StatutEnum.EN_ATTENTE.getNom());
         Client client = clientDao.findByUtilisateurId(clientId);
         LienDeParente lienDeParente = lienDeParenteDao.findByNom(lienDeParenteNom);
 
 
+
         Reservation reservation = new Reservation(client,
                 dateDebut,dateFin,
-                lienDeParente,enAttente);
+                lienDeParente,enAttente,
+                numeroCarte, moisExpiration, anneeExpiration, cryptogramme);
         reservationDao.save(reservation);
 
         for (AffectationInput affectationInput : affectationsInput) {
-            Emplacement emplacement = emplacementDao.findByFileNumeroAndNumEmplacement(
-                     affectationInput.numeroFile(),affectationInput.numEmplacement());
+            File file = fileDao.findByPlagePlageIdAndNumero(plageId,affectationInput.numeroFile());
+            Emplacement emplacement = emplacementDao. findByFileAndNumEmplacement(
+                    file,affectationInput.numEmplacement());
             Equipement equipement = equipementDao.findByNbDeLitsAndNbDeFauteuils
                     (affectationInput.nbDeLits(),affectationInput.nbDeFauteuils());
             Affectation affectation = new Affectation(
@@ -259,7 +267,7 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
             Long emplacementId = emplacement.getEmplacementId();
             boolean estDejaPris = idsOccupes.contains(emplacementId);
             parasols.set((numEmplacement-1)+NOMBRE_DEMPLACEMENTS_PAR_FILE*(numeroFile-1),
-                    new ParasolOutput(emplacementId, numeroFile,numEmplacement,estDejaPris));
+                    new ParasolOutput(emplacement.toOutput(), estDejaPris));
         }
         return parasols;
     }

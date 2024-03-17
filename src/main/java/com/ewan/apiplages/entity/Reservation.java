@@ -34,7 +34,6 @@ public class Reservation {
     @DateTimeFormat(iso=ISO.DATE)
     private LocalDate dateFin;
 
-    private double montantAReglerEnEuros;
     private String numeroCarte ;
 
     private byte moisExpiration ;
@@ -42,9 +41,6 @@ public class Reservation {
     private short anneeExpiration ;
 
     private String cryptogramme ;
-
-    @Lob  // Large Object
-    private String remarques;
 
     // Une réservation a un statut
     // Cette annotation va créer une clé étrangère
@@ -61,28 +57,38 @@ public class Reservation {
     }
     public Reservation(Client client,
                        LocalDate dateDebut,LocalDate dateFin,
-                       LienDeParente lienDeParente,Statut statut) {
+                       LienDeParente lienDeParente,Statut statut,
+                       String numeroCarte, byte moisExpiration, short anneeExpiration, String cryptogramme) {
         this.client = client ;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
         this.lienDeParente = lienDeParente;
         this.statut = statut;
-        this.montantAReglerEnEuros = 100;
+        this.numeroCarte = numeroCarte;
+        this.moisExpiration = moisExpiration;
+        this.anneeExpiration = anneeExpiration;
+        this.cryptogramme = cryptogramme;
+
     }
 
     public ReservationOutput toOutput(List<Affectation> affectations) {
 
         List<AffectationOutput> affectationsOutput = new ArrayList<>();
+        double totalAvantRemise = 0;
         for (Affectation affectation : affectations) {
             affectationsOutput.add(affectation.toOutput());
+            totalAvantRemise += affectation.getEmplacement().getFile().getPrixJournalier() ;
         }
+        double totalApresRemise = totalAvantRemise * this.lienDeParente.getCoefficient();
         Plage plage = affectations.get(0).getEmplacement().getFile().getPlage();
         return new ReservationOutput(
                 this.reservationId,
                 plage.toOutput(),this.dateDebut,this.dateFin,
                 affectationsOutput,
                 this.client.toOutput(),
-                this.lienDeParente.toOutput(), this.statut.getNom()
+                this.lienDeParente.toOutput(), this.statut.getNom(),
+                this.numeroCarte, this.moisExpiration, this.anneeExpiration,
+                totalAvantRemise,totalApresRemise
         );
     }
 

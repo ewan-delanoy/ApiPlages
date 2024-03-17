@@ -58,15 +58,15 @@ public class Scenario implements CommandLineRunner {
        List<ParasolOutput> emplacements = prep.parasols();
        System.out.println("Nb d'emplacements : " + emplacements.size());
        // System.out.println("P : " +prep.toString());
-       Long idx1 = emplacements.get(60).emplacementId();
-       Long idx2 = emplacements.get(120).emplacementId();
+       long idx1 = 60L; // emplacements.get(60).emplacementId();
+       long idx2 = 61L; // emplacements.get(120).emplacementId();
        System.out.println("idx1 = " +idx1);
        System.out.println("idx2 = " +idx2);
        List<AffectationInput> selections= Arrays.asList(
                new AffectationInput((byte) 3, (byte) 4, (byte) 1, (byte) 0),
                new AffectationInput((byte) 4, (byte) 3, (byte) 0, (byte) 1)
        );
-       ReservationInput reservationInput=new ReservationInput(clientId,plageId,selections,dateDebut,dateFin,aucunLien);
+       ReservationInput reservationInput=new ReservationInput(clientId,plageId,selections,dateDebut,dateFin,aucunLien,"0000000000000000", (byte) 1, (short) 2027, "321");
        KeepCompilerQuiet.doNothingWithLong(reservationInput.clientId());
        // Long newResId =apiPlagesService.effectuerReservation(reservationInput);
        // System.out.println("newResId = " +newResId);

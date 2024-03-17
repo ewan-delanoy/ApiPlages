@@ -31,9 +31,7 @@ public class Emplacement {
     }
 
     public EmplacementOutput toOutput() {
-        return new EmplacementOutput(this.emplacementId,this.numEmplacement,
-                this.file.getNumero()
-        );
+        return new EmplacementOutput(this.file.toOutput(), this.numEmplacement);
     }
 
     public File getFile() {return this.file; }

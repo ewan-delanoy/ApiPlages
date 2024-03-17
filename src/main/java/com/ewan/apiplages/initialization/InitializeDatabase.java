@@ -176,7 +176,8 @@ public class InitializeDatabase implements CommandLineRunner {
                 client,
                 LocalDate.of(year, month, firstDay),
                 LocalDate.of(year, month, lastDay),
-                lienDeParente,statut);
+                lienDeParente,statut,
+                "0000000000000000", (byte) 1, (short) 2027, "321");
         reservationDao.save(reservation);
         return reservation;
     }
@@ -218,7 +219,7 @@ public class InitializeDatabase implements CommandLineRunner {
             Reservation r2 = createEmptyReservationWithIndices(2,2020,6,7,9,3,2);
             addAffectationToReservationWithIndex(1,4,10,0,1,r2);
 
-            Reservation r3 = createEmptyReservationWithIndices(2,2020,7,9,11,1,3);
+            Reservation r3 = createEmptyReservationWithIndices(2,2020,7,9,11,1,2);
             addAffectationToReservationWithIndex(1,5,10,0,1,r3);
 
             Reservation r4 = createEmptyReservationWithIndices(2,2020,8,11,13,2,1);

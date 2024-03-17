@@ -10,6 +10,8 @@ public interface FileDao extends JpaRepository<File, Long> {
 
     File findByPlageAndNumero(Plage plage, byte numero);
 
+    File findByPlagePlageIdAndNumero(Long plageId, byte numero);
+
     List<File> findByPlagePlageId(Long plageId);
 
 }

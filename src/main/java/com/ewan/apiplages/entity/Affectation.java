@@ -30,8 +30,7 @@ public class Affectation {
 
     public AffectationOutput toOutput() {
         return new AffectationOutput(
-                this.emplacement.getFile().toOutput(),
-                this.emplacement.getNumEmplacement(),
+                this.emplacement.toOutput(),
                 this.equipement.toOutput()
         );
 

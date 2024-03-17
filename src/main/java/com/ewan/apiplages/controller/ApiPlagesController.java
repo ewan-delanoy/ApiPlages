@@ -112,7 +112,7 @@ public class ApiPlagesController {
         LocalDate dateDebut = LocalDate.of(2019, 7, 3);
         LocalDate dateFin = LocalDate.of(2019, 7, 8);
         String aucunLien = LienDeParenteEnum.AUCUN_LIEN.getNom();
-        return new ReservationInput(clientId,plageId,affectations,dateDebut,dateFin,aucunLien);
+        return new ReservationInput(clientId,plageId,affectations,dateDebut,dateFin,aucunLien,"0000000000000000", (byte) 1, (short) 2027, "321");
     }
 
 }
