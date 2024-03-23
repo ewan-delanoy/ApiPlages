@@ -18,7 +18,8 @@ public interface EmplacementDao extends JpaRepository<Emplacement, Long> {
       		"INNER JOIN e.affectations a " +
       		"WHERE " +
       		"(e.file.plage = :plage) AND " +
-      		"((a.reservation.dateDebut BETWEEN :dateDebut AND :dateFin) " +
+					"(a.reservation.statut.nom != 'Refusee') AND " +
+					"((a.reservation.dateDebut BETWEEN :dateDebut AND :dateFin) " +
       		"OR " +
       		"(a.reservation.dateFin BETWEEN :dateDebut AND :dateFin)) "
       		)
