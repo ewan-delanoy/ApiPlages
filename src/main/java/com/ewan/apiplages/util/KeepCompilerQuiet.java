@@ -3,6 +3,9 @@ package com.ewan.apiplages.util;
 import com.ewan.apiplages.entity.Affectation;
 import com.ewan.apiplages.entity.Equipement;
 import com.ewan.apiplages.entity.File;
+import com.ewan.apiplages.entity.Reservation;
+
+import java.time.LocalDate;
 
 public class KeepCompilerQuiet {
 
@@ -20,6 +23,24 @@ public class KeepCompilerQuiet {
 
     private static Long doNotModifyLong1(Long l) {
         return l;
+    }
+
+    public static LocalDate doNotModifyDate(LocalDate date) {
+        int year = date.getYear();
+        return (year<5000)?doNotModifyDate1(date):date;
+    }
+
+    private static String doNotModifyString1(String str) {
+        return str;
+    }
+
+    public static String doNotModifyString(String str) {
+        int year = str.equals("abc") ? 5 : (str.length() + 6);
+        return (year < 4)?doNotModifyString1(str):str;
+    }
+
+    private static LocalDate doNotModifyDate1(LocalDate date) {
+        return date;
     }
 
     public static void doNothingWithLong(Long l) {
@@ -42,6 +63,8 @@ public class KeepCompilerQuiet {
         file.keepCompilerQuiet();
         Affectation affectation = new Affectation();
         affectation.keepCompilerQuiet();
+        Reservation reservation = new Reservation();
+        reservation.keepCompilerQuiet();
         doNothing1();
     }
 
