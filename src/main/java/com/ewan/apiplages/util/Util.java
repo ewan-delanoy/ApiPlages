@@ -10,10 +10,13 @@ import com.ewan.apiplages.output.ReservationOutput;
 import com.ewan.apiplages.output.TripleReservationOutput;
 import com.ewan.apiplages.output.UtilisateurOutput;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Util {
+
+    public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public static UtilisateurOutput utilisateurOutput(Utilisateur utilisateur) {
         if(utilisateur instanceof Client) {

@@ -89,8 +89,8 @@ public class ApiPlagesServiceImpl implements ApiPlagesService {
         Long plageId = reservationInput.plageId();
         Long clientId = reservationInput.clientId();
         List<AffectationInput> affectationsInput=reservationInput.affectations();
-        LocalDate dateDebut = reservationInput.dateDebut();
-        LocalDate dateFin = reservationInput.dateFin();
+        LocalDate dateDebut = LocalDate.parse(reservationInput.dateDebut(),Util.formatter);
+        LocalDate dateFin = LocalDate.parse(reservationInput.dateFin(),Util.formatter);
         String lienDeParenteNom = reservationInput.lienDeParenteNom();
         String numeroCarte =  reservationInput.numeroCarte();
         byte moisExpiration = reservationInput.moisExpiration();

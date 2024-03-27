@@ -6,6 +6,7 @@ import java.util.List;
 
 
 import com.ewan.apiplages.output.*;
+import com.ewan.apiplages.util.KeepCompilerQuiet;
 import jakarta.persistence.*;
 
 
@@ -34,6 +35,7 @@ public class Reservation {
     @DateTimeFormat(iso=ISO.DATE)
     private LocalDate dateFin;
 
+
     private String numeroCarte ;
 
     private byte moisExpiration ;
@@ -52,7 +54,7 @@ public class Reservation {
     private LienDeParente lienDeParente;
 
     // No-args constructor demandé par JPA
-    protected Reservation() {
+    public Reservation() {
         super();
     }
     public Reservation(Client client,
@@ -96,13 +98,25 @@ public class Reservation {
     public Long getReservationId() {return this.reservationId;}
     public Client getClient() {return this.client; }
 
-    public LocalDate getDateDebut() {return this.dateDebut; }
-    public LocalDate getDateFin() {return this.dateFin; }
 
     public LienDeParente getLienDeParente() {return this.lienDeParente; }
 
     public Statut getStatut() {return this.statut; }
 
     public void setStatut(Statut newStatut) {this.statut = newStatut; }
+
+    public void keepCompilerQuiet() {
+        if (this.reservationId < 0) {
+            if(this.affectations.isEmpty()) {
+                this.reservationId = KeepCompilerQuiet.doNotModifyLong(this.reservationId);
+            }
+            this.dateDebut = KeepCompilerQuiet.doNotModifyDate(this.dateDebut);
+            this.dateFin = KeepCompilerQuiet.doNotModifyDate(this.dateFin);
+            this.affectations = new ArrayList<>();
+            this.cryptogramme = KeepCompilerQuiet.doNotModifyString(this.cryptogramme);
+            this.cryptogramme = KeepCompilerQuiet.doNotModifyString(this.getLienDeParente().getNom());
+            this.cryptogramme = KeepCompilerQuiet.doNotModifyString(this.getStatut().getNom());
+        }
+    }
 
 }

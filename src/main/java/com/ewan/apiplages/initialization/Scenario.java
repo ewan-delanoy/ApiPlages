@@ -10,6 +10,7 @@ import com.ewan.apiplages.output.ParasolOutput;
 import com.ewan.apiplages.output.PreparationReservationOutput;
 import com.ewan.apiplages.service.ApiPlagesService;
 import com.ewan.apiplages.util.KeepCompilerQuiet;
+import com.ewan.apiplages.util.Util;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -66,7 +67,9 @@ public class Scenario implements CommandLineRunner {
                new AffectationInput((byte) 3, (byte) 4, (byte) 1, (byte) 0),
                new AffectationInput((byte) 4, (byte) 3, (byte) 0, (byte) 1)
        );
-       ReservationInput reservationInput=new ReservationInput(clientId,plageId,selections,dateDebut,dateFin,aucunLien,"0000000000000000", (byte) 1, (short) 2027, "321");
+        String dateDebutString = dateDebut.format(Util.formatter);
+        String dateFinString = dateDebut.format(Util.formatter);
+       ReservationInput reservationInput=new ReservationInput(clientId,plageId,selections,dateDebutString,dateFinString,aucunLien,"0000000000000000", (byte) 1, (short) 2027, "321");
        KeepCompilerQuiet.doNothingWithLong(reservationInput.clientId());
        // Long newResId =apiPlagesService.effectuerReservation(reservationInput);
        // System.out.println("newResId = " +newResId);

@@ -5,6 +5,7 @@ import com.ewan.apiplages.enumeration.LienDeParenteEnum;
 import com.ewan.apiplages.input.*;
 import com.ewan.apiplages.output.*;
 import com.ewan.apiplages.service.ApiPlagesService;
+import com.ewan.apiplages.util.Util;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -111,8 +112,10 @@ public class ApiPlagesController {
         );
         LocalDate dateDebut = LocalDate.of(2019, 7, 3);
         LocalDate dateFin = LocalDate.of(2019, 7, 8);
+        String dateDebutString = dateDebut.format(Util.formatter);
+        String dateFinString = dateFin.format(Util.formatter);
         String aucunLien = LienDeParenteEnum.AUCUN_LIEN.getNom();
-        return new ReservationInput(clientId,plageId,affectations,dateDebut,dateFin,aucunLien,"0000000000000000", (byte) 1, (short) 2027, "321");
+        return new ReservationInput(clientId,plageId,affectations,dateDebutString,dateFinString,aucunLien,"0000000000000000", (byte) 1, (short) 2027, "321");
     }
 
 }
